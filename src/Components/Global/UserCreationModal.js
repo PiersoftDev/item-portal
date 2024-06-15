@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useStates } from '../../utils/StateProvider'
 import { FaWindowClose } from 'react-icons/fa'
 import axios from 'axios'
-import { AutoComplete, Checkbox, Tag, message } from 'antd'
+import { AutoComplete, Checkbox, Spin, Tag, message } from 'antd'
 
 const UserCreationModal = () => {
   const {
@@ -17,6 +17,7 @@ const UserCreationModal = () => {
     setRequestDependencies,
   } = useStates()
 
+  const [loading, setLoading] = useState(false)
   const [projectoptions, setProjectOptions] = useState([])
   const [inputValue, setInputValue] = useState('')
   const [selectedRoles, setSelectedRoles] = useState([])
@@ -133,7 +134,7 @@ const UserCreationModal = () => {
       roles: selectedRoles,
     }
     try {
-      // setLoading(true)
+      setLoading(true)
       const response = await axios.post(
         'https://mdm.p360.build/v1/mdm/user/create',
         updatedUser
@@ -145,8 +146,9 @@ const UserCreationModal = () => {
       CloseCreateUserModal()
     } catch (err) {
       console.log(err)
+      message.error('Something Went Wrong')
     } finally {
-      // setLoading(false)
+      setLoading(false)
     }
   }
 
@@ -318,6 +320,11 @@ const UserCreationModal = () => {
             </Button>
           </ButtonContainer>
         </UserContainer>
+        {loading && (
+          <LoadingOverlay>
+            <Spin size='large' />
+          </LoadingOverlay>
+        )}
       </CustomModal>
     </div>
   )
@@ -326,6 +333,7 @@ const UserCreationModal = () => {
 export default UserCreationModal
 
 const UserContainer = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
   //   border: 1px solid #ccc;
@@ -334,6 +342,14 @@ const UserContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+`
+const LoadingOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
 `
 
 const CreateUserTitleContainer = styled.div`
