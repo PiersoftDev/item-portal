@@ -446,8 +446,8 @@ const ItemsList = () => {
                       </td>
                       <td className="status">
                         <StatusBox
-                          initiated={record.status === 'Initiated'}
-                          rejected={record.status === 'Rejected'}
+                          initiated={record.status === 'Pending'}
+                          rejected={record.status === 'Declined'}
                           draft={record.status === 'Draft'}
                           live={
                             record.status === 'Live' ||

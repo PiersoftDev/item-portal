@@ -120,7 +120,7 @@ const StateProvider = ({ children }) => {
     surchargeCostComponent: 'Lumpsum Charges',
     projectOrderSystem: 'mnl',
     pegPRPWarehouseOrder: 'yes',
-    status: 'Initiated',
+    status: 'Pending',
     currentLevel: 'L1',
     creatorId: userDetails.id,
     comments: [],
