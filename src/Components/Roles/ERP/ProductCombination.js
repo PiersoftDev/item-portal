@@ -39,12 +39,24 @@ const ProductCombination = () => {
     productLine: '',
   })
 
+  const CookiesData = () => {
+    const accessToken = localStorage.getItem('accessToken')
+    const Cookie = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+    return Cookie
+  }
+
   useEffect(() => {
     const fetchItem = async () => {
       try {
+        const Cookie = CookiesData()
         setLoading(true)
         const res = await axios.get(
-          'https://mdm.p360.build/v1/mdm/product-link/fetch-all'
+          'https://mdm.p360.build/v1/mdm/product-link/fetch-all',
+          Cookie
         )
         setProductLinkList(res.data.data)
       } catch (err) {

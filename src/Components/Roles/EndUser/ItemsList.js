@@ -61,10 +61,11 @@ const ItemsList = () => {
 
   useEffect(() => {
     const fetchItem = async () => {
-      // const Cookie = CookiesData()
+      const Cookie = CookiesData()
       try {
         const res = await axios.get(
-          'https://mdm.p360.build/v1/mdm/purchase-item/fetch-all'
+          'https://mdm.p360.build/v1/mdm/purchase-item/fetch-all',
+          Cookie
         )
         setEndUserRequestList(res.data.data)
       } catch (err) {
@@ -535,7 +536,7 @@ export default ItemsList
 
 const Wrapper = styled.div`
   margin: 0.6rem 0 0 0;
-  height: 79%;
+  height: 72%;
   display: flex;
   flex-direction: column;
   font-family: verdana;
@@ -556,7 +557,7 @@ const Wrapper = styled.div`
       height: 100%;
       width: 99%;
       min-width: 1110px;
-      max-height: 60vh;
+      max-height: 57vh;
       @media screen and (min-height: 698px) {
         max-height: 70vh;
         min-width: 1250px;
@@ -907,13 +908,6 @@ const PersonIcon = styled(IoPersonCircleSharp)`
 const InfoIcon = styled(IoInformationCircleSharp)`
   font-size: 13px;
   color: #596bb3;
-`
-
-const DotIcon = styled(GoDotFill)`
-  position: relative;
-  font-size: 10px;
-  displays: flex;
-  align-items: center;
 `
 
 //Popover Contain

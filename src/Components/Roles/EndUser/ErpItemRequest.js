@@ -37,15 +37,27 @@ const ErpItemRequest = () => {
     setRejectReason(e.target.value)
   }
 
+  const CookiesData = () => {
+    const accessToken = localStorage.getItem('accessToken')
+    const Cookie = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+    return Cookie
+  }
+
   useEffect(() => {
     const fetchDependencies = async () => {
+      const Cookie = CookiesData()
       const response = await axios.post(
         'https://mdm.p360.build/v1/mdm/warehouse/search',
         {
           searchTerm: level1PendingRequest.warehouseName
             ? level1PendingRequest.warehouseName
             : '',
-        }
+        },
+        Cookie
       )
       let warehouse = response?.data?.data || []
       setRequestDependencies({
@@ -111,9 +123,11 @@ const ErpItemRequest = () => {
       }
       console.log(reqbody)
       setLoading(true)
+      const Cookie = CookiesData()
       const response = await axios.put(
         'https://mdm.p360.build/v1/mdm/purchase-item/update',
-        reqbody
+        reqbody,
+        Cookie
       )
       console.log(response.data)
 
@@ -146,9 +160,11 @@ const ErpItemRequest = () => {
           comments: [...level1PendingRequest.comments, rejectReason],
         }
         setLoading(true)
+        const Cookie = CookiesData()
         const response = await axios.put(
           'https://mdm.p360.build/v1/mdm/purchase-item/update',
-          reqbody
+          reqbody,
+          Cookie
         )
         console.log(response.data)
         setLevel1PendingRequest({})

@@ -6,6 +6,7 @@ import { IoIosMail } from 'react-icons/io'
 import { FaMobileAlt, FaSearchLocation } from 'react-icons/fa'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { message } from 'antd'
 
 const UserProfile = () => {
   const { userDetails, setuserDeails } = useStates()
@@ -27,6 +28,7 @@ const UserProfile = () => {
         const res = await axios.get(
           `https://mdm.p360.build/v1/mdm/user/logoutUser/+91${userDetails.mobileNumber}`
         )
+        console.log('User logged Out', res.data)
         navigate('/login')
         localStorage.removeItem('accessToken')
         localStorage.removeItem('idToken')
@@ -35,6 +37,7 @@ const UserProfile = () => {
       }
     } catch (error) {
       console.error('Error during logout:', error)
+      message.error('Something went wrong')
     }
   }
   return (
@@ -74,7 +77,8 @@ export default UserProfile
 const Wrapper = styled.div`
   position: relative;
   width: 17vw;
-  max-width: 300px;
+  min-width: 200px;
+  max-width: 250px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -137,8 +141,14 @@ const Button = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid red;
-  padding: 0.3rem 0.6rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+  border: 1px solid #ef6262;
+  padding: 0.1rem 0.6rem;
   border-radius: 5px;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    background-color: #ef6262;
+  }
 `

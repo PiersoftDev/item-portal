@@ -20,12 +20,29 @@ const UserCreationModal = () => {
   const [projectoptions, setProjectOptions] = useState([])
   const [inputValue, setInputValue] = useState('')
   const [selectedRoles, setSelectedRoles] = useState([])
+  const [errors, setErrors] = useState({
+    fullName: '',
+    email: '',
+    mobileNumber: '',
+  })
+
+  const CookiesData = () => {
+    const accessToken = localStorage.getItem('accessToken')
+    const Cookie = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+    return Cookie
+  }
 
   useEffect(() => {
     const fetchDependencies = async () => {
+      const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/project/search`,
-        { searchTerm: inputValue ? inputValue : '' }
+        { searchTerm: inputValue ? inputValue : '' },
+        Cookie
       )
       let Project = response?.data?.data || []
       setRequestDependencies({
@@ -48,6 +65,7 @@ const UserCreationModal = () => {
     setCreateUserModal(false)
     setCreateUser(IntialUser)
     setSelectedRoles([])
+    setErrors({})
   }
 
   const ValueChange = (field, value) => {
@@ -55,6 +73,7 @@ const UserCreationModal = () => {
       ...prevItem,
       [field]: value,
     }))
+    setErrors((prevErrors) => ({ ...prevErrors, [field]: '' }))
   }
   const handleSelect = (value, option) => {
     if (!createUser.projects.some((project) => project.id === option.id)) {
@@ -93,6 +112,22 @@ const UserCreationModal = () => {
   }
 
   const handleSubmit = async () => {
+    const fieldErrors = {}
+    if (!createUser.fullName) {
+      fieldErrors.fullName = 'Full Name required'
+    }
+    if (!createUser.email) {
+      fieldErrors.email = 'Email required'
+    }
+    if (!createUser.mobileNumber) {
+      fieldErrors.mobileNumber = 'Number required'
+    }
+
+    if (Object.keys(fieldErrors).length > 0) {
+      setErrors(fieldErrors)
+      return false
+    }
+
     const updatedUser = {
       ...createUser,
       roles: selectedRoles,
@@ -118,6 +153,7 @@ const UserCreationModal = () => {
   const ResetClick = () => {
     setCreateUser(IntialUser)
     setSelectedRoles([])
+    setErrors({})
   }
 
   return (
@@ -144,6 +180,9 @@ const UserCreationModal = () => {
                   autoComplete='off'
                   placeholder='Enter Full Name'
                 />
+                {errors.fullName && (
+                  <ErrorMessage>{errors.fullName}</ErrorMessage>
+                )}
               </Container>
             </FieldContainer>
             <FieldContainer>
@@ -158,6 +197,7 @@ const UserCreationModal = () => {
                   autoComplete='off'
                   placeholder='Enter Email'
                 />
+                {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
               </Container>
             </FieldContainer>
             <FieldContainer>
@@ -181,6 +221,9 @@ const UserCreationModal = () => {
                   type='text'
                   placeholder='Enter Phone Number'
                 />
+                {errors.mobileNumber && (
+                  <ErrorMessage>{errors.mobileNumber}</ErrorMessage>
+                )}
               </Container>
             </FieldContainer>
             <FieldContainer>
@@ -446,7 +489,7 @@ const ButtonContainer = styled.div`
 const Button = styled.button`
   font-size: 0.6rem !important;
   letter-spacing: 0.5px;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -470,4 +513,9 @@ const ProjectOptionsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+`
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 0.5rem;
+  white-space: nowrap;
 `
