@@ -395,7 +395,7 @@ const Level1ItemRequest = () => {
       try {
         const reqbody = {
           ...level1PendingRequest,
-          status: 'Rejected',
+          status: 'Declined',
           comments: [...level1PendingRequest.comments, rejectReason],
         }
         setLoading(true)
