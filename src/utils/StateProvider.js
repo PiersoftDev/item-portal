@@ -184,6 +184,13 @@ const StateProvider = ({ children }) => {
   const [createUser, setCreateUser] = useState(IntialUser)
   const [createUserModal, setCreateUserModal] = useState(false)
 
+  const [itemListFilters, setItemListFilters] = useState({
+    itemType: '',
+    status: '',
+    level: '',
+    searchTerm: '',
+  })
+
   return (
     <States.Provider
       value={{
@@ -261,6 +268,8 @@ const StateProvider = ({ children }) => {
         IntialUser,
         createUser,
         setCreateUser,
+        itemListFilters,
+        setItemListFilters,
       }}
     >
       {children}

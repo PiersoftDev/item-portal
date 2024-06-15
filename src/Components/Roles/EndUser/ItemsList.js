@@ -13,11 +13,13 @@ import {
 } from 'react-icons/io5'
 import { MdPlace } from 'react-icons/md'
 import { FaPerson, FaPhone } from 'react-icons/fa6'
-import { GoDotFill } from 'react-icons/go'
+// import { GoDotFill } from 'react-icons/go'
 import { RxCross2 } from 'react-icons/rx'
 import NoDataFound from './NodataFound.png'
+
 import { Dropdown, Modal, Popover, message } from 'antd'
-import CustomModal from '../../Global/CustomModal'
+// import CustomModal from '../../Global/CustomModal'
+
 import Level1ItemRequest from '../Level1/Level1ItemRequest'
 import Level2ItemRequest from '../Level2/Level2ItemRequest'
 import Level3ItemRequest from './Level3ItemRequest'
@@ -56,6 +58,9 @@ const ItemsList = () => {
     InitialErrors,
     liverequestModal,
     setLiveRequestModal,
+    userDetails,
+    itemListFilters,
+    setuserDeails,
   } = useStates()
 
   const [openHistory, setOpenHistory] = useState(false)
@@ -75,11 +80,34 @@ const ItemsList = () => {
   }
 
   useEffect(() => {
+    const storedUserDetails = localStorage.getItem('userDetails')
+    if (storedUserDetails) {
+      const parsedUserDetails = JSON.parse(storedUserDetails)
+      setuserDeails(parsedUserDetails)
+    } else {
+      console.log('User details not found in localStorage')
+    }
+  }, [])
+
+  useEffect(() => {
     const fetchItem = async () => {
       const Cookie = CookiesData()
+      const UserId = userDetails?.roles?.includes('L0') ? userDetails.id : ''
+      const isAdmin = userDetails?.roles?.includes('Admin') ? true : false
+
       try {
-        const res = await axios.get(
-          'https://mdm.p360.build/v1/mdm/purchase-item/fetch-all',
+        const res = await axios.post(
+          'https://mdm.p360.build/v1/mdm/purchase-item/filter',
+          {
+            itemType: itemListFilters.itemType,
+            status: itemListFilters.status,
+            level: itemListFilters.level,
+            searchTerm: itemListFilters.searchTerm,
+            creatorId: UserId,
+            pageNo: 0,
+            pageSize: 100,
+            isAdmin: isAdmin,
+          },
           Cookie
         )
         setEndUserRequestList(res.data.data)
@@ -87,8 +115,11 @@ const ItemsList = () => {
         console.error('Error fetching items:', err)
       }
     }
-    fetchItem()
-  }, [])
+
+    if (userDetails && userDetails.roles) {
+      fetchItem()
+    }
+  }, [userDetails])
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text).then(

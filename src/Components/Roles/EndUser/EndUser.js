@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import DashBoardSection from './UserDashBoardSection'
 import ItemsList from './ItemsList'
+import { useStates } from '../../../utils/StateProvider'
 
 const EndUser = () => {
   return (

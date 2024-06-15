@@ -72,23 +72,30 @@ const TopBar = () => {
   const CreateContent = (record) => {
     return (
       <PopOverContainer>
-        <CreateButton onClick={CreateUserClick}>
-          <FaUser size={8} />
-          <Text>User</Text>
-        </CreateButton>
-        <CreateButton onClick={RequestButtonClick}>
-          <BiSolidPurchaseTag size={10} />
-
-          <Text>Purchase Item</Text>
-        </CreateButton>
-        <CreateButton>
-          <FaFileContract size={10} />
-          <Text>SubCon Item</Text>
-        </CreateButton>
-        <CreateButton onClick={ProductCombinationModalClick}>
-          <FaLink size={10} />
-          <Text>Item Clasification</Text>
-        </CreateButton>
+        {userDetails.roles?.includes('Admin') && (
+          <CreateButton onClick={CreateUserClick}>
+            <FaUser size={8} />
+            <Text>User</Text>
+          </CreateButton>
+        )}
+        {userDetails.roles?.includes('Admin', 'L0') && (
+          <CreateButton onClick={RequestButtonClick}>
+            <BiSolidPurchaseTag size={10} />
+            <Text>Purchase Item</Text>
+          </CreateButton>
+        )}
+        {userDetails.roles?.includes('Admin', 'L0') && (
+          <CreateButton>
+            <FaFileContract size={10} />
+            <Text>SubCon Item</Text>
+          </CreateButton>
+        )}
+        {userDetails.roles?.includes('Admin', 'L4') && (
+          <CreateButton onClick={ProductCombinationModalClick}>
+            <FaLink size={10} />
+            <Text>Item Clasification</Text>
+          </CreateButton>
+        )}
       </PopOverContainer>
     )
   }
@@ -98,20 +105,23 @@ const TopBar = () => {
       <Container>
         <LogoImg src={PortalLogo} alt='Portal Logo' />
         <RightHeader>
-          <Popover
-            content={CreateContent()}
-            clicked
-            open={clicked}
-            onOpenChange={handleOpenChange}
-            placement='leftTop'
-            trigger='click'
-          >
-            <Button>
-              <BsPlus size={15} />
+          {userDetails.roles?.includes('Admin', 'End User', 'ERP') && (
+            <Popover
+              content={CreateContent()}
+              clicked
+              open={clicked}
+              onOpenChange={handleOpenChange}
+              placement='leftTop'
+              trigger='click'
+            >
+              <Button>
+                <BsPlus size={15} />
 
-              <div className='profileTitle'>Create</div>
-            </Button>
-          </Popover>
+                <div className='profileTitle'>Create</div>
+              </Button>
+            </Popover>
+          )}
+
           {/* )} */}
           {/* <Button onClick={RequestModalOpenClick}>
             <StyledIcon>
@@ -133,12 +143,6 @@ const TopBar = () => {
               <ProfileIcon />
             </Button>
           </Popover>
-
-          {/* <Popover content={content}>
-            <MenuButton>
-              <BsList className='Icon' />
-            </MenuButton>
-          </Popover> */}
         </RightHeader>
         <Modal
           style={{ minWidth: '400px' }}
