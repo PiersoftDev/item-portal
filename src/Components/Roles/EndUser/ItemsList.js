@@ -16,8 +16,10 @@ import { FaPerson, FaPhone } from 'react-icons/fa6'
 // import { GoDotFill } from 'react-icons/go'
 import { RxCross2 } from 'react-icons/rx'
 import NoDataFound from './NodataFound.png'
-import { Modal, Popover, message } from 'antd'
+
+import { Dropdown, Modal, Popover, message } from 'antd'
 // import CustomModal from '../../Global/CustomModal'
+
 import Level1ItemRequest from '../Level1/Level1ItemRequest'
 import Level2ItemRequest from '../Level2/Level2ItemRequest'
 import Level3ItemRequest from './Level3ItemRequest'
@@ -25,6 +27,15 @@ import ErpItemRequest from './ErpItemRequest'
 import LiveItemRequest from './LiveItemRequest'
 import { FaCopy } from 'react-icons/fa6'
 import ListFilterModel from './ListFilterModel'
+import HistoryModal from './modals/HistoryModal'
+import CommentsModal from './modals/CommentsModal'
+import SimilarItemsModal from './modals/SimilarItemsModal'
+import { BsThreeDotsVertical } from 'react-icons/bs'
+import { FaHistory } from 'react-icons/fa'
+import { LiaComments } from 'react-icons/lia'
+import { HiTemplate } from 'react-icons/hi'
+
+import { TbDatabase } from 'react-icons/tb'
 
 const ItemsList = () => {
   const {
@@ -53,6 +64,12 @@ const ItemsList = () => {
     itemListFilterModalopen,
     setItemListFilterModalopen,
   } = useStates()
+
+  const [openHistory, setOpenHistory] = useState(false)
+  const [openComments, setOpenComments] = useState(false)
+  const [openSimilarItems, setOpenSimilarItems] = useState(false)
+
+  const [selectedRecord, setSelectedRecord] = useState(null)
 
   const CookiesData = () => {
     const accessToken = localStorage.getItem('accessToken')
@@ -168,6 +185,20 @@ const ItemsList = () => {
     setErrors(InitialErrors)
   }
 
+  const openHistoryModal = (record) => {
+    setOpenHistory(true)
+    setSelectedRecord(record)
+  }
+
+  const openCommentsModal = (record) => {
+    setOpenComments(true)
+    setSelectedRecord(record)
+  }
+
+  const openSimilarItemsModal = (record) => {
+    setOpenSimilarItems(true)
+    setSelectedRecord(record)
+  }
   //   // {
   //   //   title: 'Verification',
   //   //   fixed: 'right',
@@ -309,6 +340,7 @@ const ItemsList = () => {
                   <th>Unit</th>
                   <th className='task-progress'>Task Progress</th>
                   <th className='status'>Status</th>
+                  <th className='actions'>Actions</th>
                 </TableRow>
               </thead>
               <tbody>
@@ -316,7 +348,7 @@ const ItemsList = () => {
                   endUserRequestList.map((record) => (
                     <TableRow
                       key={record.id}
-                      onClick={() => Level1RequestModalOpen(record)}
+                      // onClick={() => Level1RequestModalOpen(record)}
                     >
                       {/* {columns.map((data) => (
                       <>
@@ -425,6 +457,78 @@ const ItemsList = () => {
                           {/* <DotIcon /> */}
                           {record.status}
                         </StatusBox>
+                      </td>
+
+                      <td className='actions'>
+                        <Dropdown
+                          menu={{
+                            items: [
+                              {
+                                key: '1',
+                                label: (
+                                  <Actions
+                                    onClick={() =>
+                                      Level1RequestModalOpen(record)
+                                    }
+                                  >
+                                    <span>
+                                      <TbDatabase />
+                                    </span>
+                                    <span>L1 Record</span>
+                                  </Actions>
+                                ),
+                              },
+                              {
+                                key: '2',
+                                label: (
+                                  <Actions
+                                    onClick={() => {
+                                      openSimilarItemsModal(record)
+                                    }}
+                                  >
+                                    <span>
+                                      <HiTemplate />
+                                    </span>
+                                    <span>Similar Items</span>
+                                  </Actions>
+                                ),
+                              },
+                              {
+                                key: '3',
+                                label: (
+                                  <Actions
+                                    onClick={() => {
+                                      openCommentsModal(record)
+                                    }}
+                                  >
+                                    <span>
+                                      <LiaComments />
+                                    </span>
+                                    <span>Comments</span>
+                                  </Actions>
+                                ),
+                              },
+                              {
+                                key: '4',
+                                label: (
+                                  <Actions
+                                    onClick={() => openHistoryModal(record)}
+                                  >
+                                    <span>
+                                      <FaHistory />
+                                    </span>
+                                    <span>History</span>
+                                  </Actions>
+                                ),
+                              },
+                            ],
+                          }}
+                          placement='bottom'
+                        >
+                          <Button>
+                            <BsThreeDotsVertical />
+                          </Button>
+                        </Dropdown>
                       </td>
                     </TableRow>
                   ))
@@ -562,6 +666,33 @@ const ItemsList = () => {
       >
         <LiveItemRequest />
       </ItemRequestCustomModal>
+
+      {openHistory && (
+        <HistoryModal
+          openHistory={openHistory}
+          setOpenHistory={setOpenHistory}
+          selectedRecord={selectedRecord}
+          setSelectedRecord={setSelectedRecord}
+        />
+      )}
+
+      {openComments && (
+        <CommentsModal
+          openComments={openComments}
+          setOpenComments={setOpenComments}
+          selectedRecord={selectedRecord}
+          setSelectedRecord={setSelectedRecord}
+        />
+      )}
+
+      {openSimilarItems && (
+        <SimilarItemsModal
+          openSimilarItems={openSimilarItems}
+          setOpenSimilarItems={setOpenSimilarItems}
+          selectedRecord={selectedRecord}
+          setSelectedRecord={setSelectedRecord}
+        />
+      )}
     </>
   )
 }
@@ -580,6 +711,12 @@ const Wrapper = styled.div`
   padding: 0 1rem 1rem 0rem;
   position: relative;
   overflow: hidden;
+
+  .actions-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
   .ant-select {
     width: 20vw;
   }
@@ -806,14 +943,20 @@ const TableRow = styled.tr`
       text-overflow: ellipsis;
     }
   }
-  .task-progress {
+  /* .task-progress {
     width: 120px !important;
     // transform: translate(40%, 0);
   }
-  .status {
+  .status,
+  .actions {
     width: 140px !important;
     display: flex;
     justify-content: center;
+  } */
+
+  .actions {
+    width: 140px;
+    display: flex;
   }
 
   &:hover {
@@ -1056,4 +1199,10 @@ const Count = styled.span`
   font-size: 0.6rem;
   letter-spacing: 0.5px;
   color: #333;
+`
+
+const Actions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `
