@@ -16,7 +16,7 @@ import { FaPerson, FaPhone } from 'react-icons/fa6'
 import { GoDotFill } from 'react-icons/go'
 import { RxCross2 } from 'react-icons/rx'
 import NoDataFound from './NodataFound.png'
-import { Modal, Popover, message } from 'antd'
+import { Dropdown, Modal, Popover, message } from 'antd'
 import CustomModal from '../../Global/CustomModal'
 import Level1ItemRequest from '../Level1/Level1ItemRequest'
 import Level2ItemRequest from '../Level2/Level2ItemRequest'
@@ -200,6 +200,21 @@ const ItemsList = () => {
     )
   }
 
+  const items = [
+    {
+      key: '1',
+      label: 'History',
+    },
+    {
+      key: '2',
+      label: 'Similar items',
+    },
+    {
+      key: '3',
+      label: 'Comments',
+    },
+  ]
+
   return (
     <>
       <Wrapper>
@@ -215,8 +230,8 @@ const ItemsList = () => {
                 </Button>
                 <Popover
                   content={ListFilterModel}
-                  placement='leftTop'
-                  trigger='click'
+                  placement="leftTop"
+                  trigger="click"
                 >
                   <Button>
                     <IoFilterSharp />
@@ -227,26 +242,27 @@ const ItemsList = () => {
             </TopContainer>
             <MiddleContainer>
               <Tag>
-                <div className='text'>Progress : L1,L2</div>
-                <RxCross2 className='icon' />
+                <div className="text">Progress : L1,L2</div>
+                <RxCross2 className="icon" />
               </Tag>
               <Tag>
-                <div className='text'>Status : All</div>
-                <RxCross2 className='icon' />
+                <div className="text">Status : All</div>
+                <RxCross2 className="icon" />
               </Tag>
             </MiddleContainer>
           </Top>
           <TableContainer>
             <Table>
               <thead>
-                <TableRow className='header'>
+                <TableRow className="header">
                   <th>Requirement Description</th>
                   <th>External Id</th>
                   <th>Item Group</th>
                   <th>Detailed Description</th>
                   <th>Unit</th>
-                  <th className='task-progress'>Task Progress</th>
-                  <th className='status'>Status</th>
+                  <th className="task-progress">Task Progress</th>
+                  <th className="status">Status</th>
+                  <th className="actions">Actions</th>
                 </TableRow>
               </thead>
               <tbody>
@@ -271,8 +287,8 @@ const ItemsList = () => {
                         <DataContainer>
                           <Popover
                             content={ProfileContent(record)}
-                            placement='right'
-                            title='Contact Information'
+                            placement="right"
+                            title="Contact Information"
                           >
                             <PersonIcon />
                           </Popover>
@@ -302,8 +318,8 @@ const ItemsList = () => {
                         <DataContainer>
                           <Popover
                             content={InfoContent(record)}
-                            placement='right'
-                            title='Item Information'
+                            placement="right"
+                            title="Item Information"
                           >
                             <InfoIcon />
                           </Popover>
@@ -321,36 +337,36 @@ const ItemsList = () => {
                       </td>
 
                       <td key={record.uom}>{record.uom}</td>
-                      <td className='task-progress'>
+                      <td className="task-progress">
                         <ProgressBarContainer>
                           <ProgressBar
-                            title='Level 0'
+                            title="Level 0"
                             active={record.currentLevel === 'L0'}
                             live={record.currentLevel === 'Live'}
                           />
                           <ProgressBar
-                            title='Level 1'
+                            title="Level 1"
                             live={record.currentLevel === 'Live'}
                             active={record.currentLevel === 'L1'}
                           />
                           <ProgressBar
-                            title='Level 2'
+                            title="Level 2"
                             live={record.currentLevel === 'Live'}
                             active={record.currentLevel === 'L2'}
                           />
                           <ProgressBar
-                            title='Level 3'
+                            title="Level 3"
                             live={record.currentLevel === 'Live'}
                             active={record.currentLevel === 'L3'}
                           />
                           <ProgressBar
-                            title='Live'
+                            title="Live"
                             live={record.currentLevel === 'Live'}
                             active={record.currentLevel === 'L4'}
                           />
                         </ProgressBarContainer>
                       </td>
-                      <td className='status'>
+                      <td className="status">
                         <StatusBox
                           initiated={record.status === 'Initiated'}
                           rejected={record.status === 'Rejected'}
@@ -364,12 +380,23 @@ const ItemsList = () => {
                           {record.status}
                         </StatusBox>
                       </td>
+
+                      <td className="actions">
+                        <Dropdown
+                          menu={{
+                            items,
+                          }}
+                          placement="bottom"
+                        >
+                          <Button>actions</Button>
+                        </Dropdown>
+                      </td>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow>
                     <DataNotFound>
-                      <img src={NoDataFound} alt='No Data Found' />
+                      <img src={NoDataFound} alt="No Data Found" />
                     </DataNotFound>
                   </TableRow>
                 )}
@@ -747,7 +774,8 @@ const TableRow = styled.tr`
     width: 120px !important;
     // transform: translate(40%, 0);
   }
-  .status {
+  .status,
+  .actions {
     width: 140px !important;
     display: flex;
     justify-content: center;
