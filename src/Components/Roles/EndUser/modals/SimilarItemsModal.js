@@ -18,6 +18,7 @@ function SimilarItemsModal({
       open={openSimilarItems}
       onCancel={handleCancel}
       footer={null}
+      destroyOnClose={true}
     >
       <p>Some contents...</p>
       <p>Some contents...</p>

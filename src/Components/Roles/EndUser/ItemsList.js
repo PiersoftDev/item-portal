@@ -635,24 +635,32 @@ const ItemsList = () => {
         <LiveItemRequest />
       </ItemRequestCustomModal>
 
-      <HistoryModal
-        openHistory={openHistory}
-        setOpenHistory={setOpenHistory}
-        selectedRecord={selectedRecord}
-        setSelectedRecord={setSelectedRecord}
-      />
-      <CommentsModal
-        openComments={openComments}
-        setOpenComments={setOpenComments}
-        selectedRecord={selectedRecord}
-        setSelectedRecord={setSelectedRecord}
-      />
-      <SimilarItemsModal
-        openSimilarItems={openSimilarItems}
-        setOpenSimilarItems={setOpenSimilarItems}
-        selectedRecord={selectedRecord}
-        setSelectedRecord={setSelectedRecord}
-      />
+      {openHistory && (
+        <HistoryModal
+          openHistory={openHistory}
+          setOpenHistory={setOpenHistory}
+          selectedRecord={selectedRecord}
+          setSelectedRecord={setSelectedRecord}
+        />
+      )}
+
+      {openComments && (
+        <CommentsModal
+          openComments={openComments}
+          setOpenComments={setOpenComments}
+          selectedRecord={selectedRecord}
+          setSelectedRecord={setSelectedRecord}
+        />
+      )}
+
+      {openSimilarItems && (
+        <SimilarItemsModal
+          openSimilarItems={openSimilarItems}
+          setOpenSimilarItems={setOpenSimilarItems}
+          selectedRecord={selectedRecord}
+          setSelectedRecord={setSelectedRecord}
+        />
+      )}
     </>
   )
 }

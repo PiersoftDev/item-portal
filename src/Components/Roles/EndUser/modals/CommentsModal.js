@@ -18,6 +18,7 @@ function CommentsModal({
       open={openComments}
       onCancel={handleCancel}
       footer={null}
+      destroyOnClose={true}
     >
       <p>Some contents...</p>
       <p>Some contents...</p>

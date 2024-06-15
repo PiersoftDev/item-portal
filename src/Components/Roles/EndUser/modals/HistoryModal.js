@@ -1,788 +1,9 @@
-import { Modal, Timeline } from 'antd'
-import React from 'react'
+import { Modal, Tag, Timeline } from 'antd'
+import React, { useEffect, useState } from 'react'
 import TimeLineListChildComponent from './TimeLineListChildComponent'
 import styled from 'styled-components'
-
-const sampleChangesData = {
-  '5.00': [
-    {
-      commitId: '5.00',
-      statusField: "'extId' = 'BHW102378599901'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:48',
-    },
-    {
-      commitId: '5.00',
-      statusField: "'warehouseId' changed: '' -> '10000'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:48',
-    },
-    {
-      commitId: '5.00',
-      statusField: "'warehouseName' changed: '' -> 'DELHI OFFICE'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:48',
-    },
-    {
-      commitId: '5.00',
-      statusField: "'status' changed: 'Initiated' -> 'Draft'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:48',
-    },
-    {
-      commitId: '5.00',
-      statusField: "'currentLevel' changed: 'L4' -> 'Live'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:48',
-    },
-  ],
-  '4.00': [
-    {
-      commitId: '4.00',
-      statusField: "'materialCostComponentId' changed: '' -> '30002'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:36',
-    },
-    {
-      commitId: '4.00',
-      statusField: "'materialCostComponent' changed: '' -> 'MEP-Material'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:36',
-    },
-    {
-      commitId: '4.00',
-      statusField: "'groupCodeId' changed: '' -> 'M01'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:36',
-    },
-    {
-      commitId: '4.00',
-      statusField: "'groupCode' changed: '' -> 'Exp-Cement'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:36',
-    },
-    {
-      commitId: '4.00',
-      statusField: "'currentLevel' changed: 'L3' -> 'L4'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:36',
-    },
-  ],
-  '1.00': [
-    {
-      commitId: '1.00',
-      statusField:
-        'new object: com.piersoft.mdm.persistence.mongo.document.PurchaseItem/666d2b9cd8beac5d177ffe0a',
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'id' = '666d2b9cd8beac5d177ffe0a'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'siteId' = '10000'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'site' = 'Delhi RO'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'requesterId' = '300245'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'requester' = 'Srinivas Metla'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'phoneNumber' = '7702588509'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'requirementDesc' = 'Test Description'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'description' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'itemTypeId' = 'B'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'itemType' = 'purchase'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'itemGroupId' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'itemGroup' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'productTypeId' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'productType' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'productClassId' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'productClass' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'productLineId' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'productLine' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'specifications' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'detailedDescription' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'generatedDescription' = '  '",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'uomId' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'uom' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'uomDesc' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'purchaseUnitId' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'purchaseUnit' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'purchasePriceUnitId' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'purchasePriceUnit' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'purchasePrice' = '1.0'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'hsnCode' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'materialCostComponentId' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'materialCostComponent' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'groupCodeId' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'groupCode' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'inheritProjectPeg' = 'yes'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'currency' = 'INR'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'purchasePriceGroupId' = 'NA'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'purchasePriceGroup' = 'Not Applicable'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'purchaseStatisticalGroupId' = 'NA'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'purchaseStatisticalGroup' = 'Not Applicable'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'warehouseId' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'warehouseName' = ''",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'orderHorizon' = '1'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'itemValuationGroupId' = 'MAUC'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'itemValuationGroup' = 'MAUC'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'operationalCostComponentId' = 'OPR'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'operationalCostComponent' = 'Operation Cost'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'surchargeCostComponentId' = 'SUR'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'surchargeCostComponent' = 'Lumpsum Charges'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'projectOrderSystem' = 'mnl'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'pegPRPWarehouseOrder' = 'yes'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'status' = 'Initiated'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-    {
-      commitId: '1.00',
-      statusField: "'currentLevel' = 'L1'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:20:20',
-    },
-  ],
-  '2.00': [
-    {
-      commitId: '2.00',
-      statusField: "'itemGroupId' changed: '' -> 'HW'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'itemGroup' changed: '' -> 'Hardware'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'productTypeId' changed: '' -> '102'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'productType' changed: '' -> 'Screw'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'productClassId' changed: '' -> '378'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'productClass' changed: '' -> 'Self Tapping - '",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'productLineId' changed: '' -> '599'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'productLine' changed: '' -> 'SS - '",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'specifications' changed: '' -> 'Test Specifications '",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField:
-        "'detailedDescription' changed: '' -> 'Self Tapping -  SS -  Test Specifications '",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField:
-        "'generatedDescription' changed: '  ' -> 'Self Tapping -  SS -  Test Specifications '",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'uomId' changed: '' -> '100_BOX'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'uom' changed: '' -> 'BOX'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'uomDesc' changed: '' -> 'Box'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'purchaseUnitId' changed: '' -> '100_BOX'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'purchaseUnit' changed: '' -> 'BOX'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'purchasePriceUnitId' changed: '' -> '100_BOX'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'purchasePriceUnit' changed: '' -> 'BOX'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-    {
-      commitId: '2.00',
-      statusField: "'currentLevel' changed: 'L1' -> 'L2'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:03',
-    },
-  ],
-  '3.00': [
-    {
-      commitId: '3.00',
-      statusField: "'hsnCode' changed: '' -> '92882828'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:23',
-    },
-    {
-      commitId: '3.00',
-      statusField: "'currentLevel' changed: 'L2' -> 'L3'",
-      previousValue: null,
-      currentValue: null,
-      action: null,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:23',
-    },
-  ],
-}
+import dayjs from 'dayjs'
+import axios from 'axios'
 
 function HistoryModal({
   openHistory,
@@ -790,46 +11,81 @@ function HistoryModal({
   selectedRecord,
   setSelectedRecord,
 }) {
+  const [changeLogData, setChangeLogData] = useState([])
+
   const handleCancel = () => {
     setOpenHistory(false)
     setSelectedRecord(null)
   }
 
-  const changeLogList = Object.keys(sampleChangesData).reduce(
-    (acc, currCommitId) => {
-      let commitData = sampleChangesData[currCommitId]
-      let formattedCommitHistory = {}
+  const fetchChangeLogData = async () => {
+    try {
+      console.log(selectedRecord)
+      const res = await axios.get(
+        `https://mdm.p360.build/v1/mdm/purchase-item/audit/${selectedRecord?.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        }
+      )
 
-      if (commitData?.length > 0) {
-        let { commitId, author, commitDate } = commitData[0]
-        formattedCommitHistory.commitId = commitId
-        formattedCommitHistory.author = author
-        formattedCommitHistory.commitDate = commitDate
-      }
-      let actions = commitData.map(({ statusField }) => statusField)
-      console.log(actions)
-      formattedCommitHistory.actions = actions
-      acc.push(formattedCommitHistory)
-      return acc
-    },
-    []
+      const changeLogList = processChangeLogResponseData(res?.data?.data || {})
+
+      setChangeLogData(changeLogList)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const processChangeLogResponseData = (data) => {
+    const changeLogList = Object.keys(data)
+      .reduce((acc, currCommitId) => {
+        let commitData = data[currCommitId]
+        let formattedCommitHistory = {}
+
+        if (commitData?.length > 0) {
+          let { commitId, author, commitDate } = commitData[0]
+          formattedCommitHistory.commitId = commitId
+          formattedCommitHistory.author = author
+          formattedCommitHistory.commitDate = commitDate
+        }
+        let actions = commitData.map(({ statusField }) => statusField)
+        console.log(actions)
+        formattedCommitHistory.actions = actions
+        acc.push(formattedCommitHistory)
+        return acc
+      }, [])
+      .sort((a, b) => dayjs(a.commitDate).isBefore(dayjs(b.commitDate)))
+
+    return changeLogList
+  }
+
+  useEffect(() => {
+    fetchChangeLogData()
+  }, [])
+
+  const recordIdComponent = (
+    <div>
+      Commit history for the record :{' '}
+      <Tag color="green"> {selectedRecord?.id}</Tag>
+    </div>
   )
-
-  console.log(changeLogList)
 
   return (
     <Modal
-      title={`Commit history for the record : ${selectedRecord?.id}`}
+      title={recordIdComponent}
       open={openHistory}
       onCancel={handleCancel}
       footer={null}
       centered={true}
+      destroyOnClose={true}
 
       //   width={'800px'}
     >
       <Wrapper>
         <Timeline
-          items={changeLogList.map((item) => {
+          items={changeLogData.map((item) => {
             return {
               children: <TimeLineListChildComponent {...item} />,
             }
