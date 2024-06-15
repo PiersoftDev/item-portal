@@ -242,13 +242,16 @@ const ItemsList = () => {
         <BodyContainer>
           <Top>
             <TopContainer>
-              <Title>Items List</Title>
+              <Title>
+                Items List (
+                <Count>Total Records : {endUserRequestList.length}</Count>)
+              </Title>
               <TopRightContainer>
                 {/* <Button>Progress Type : End User</Button> */}
-                <Button>
+                {/* <Button>
                   <BiSortAlt2 />
                   Sort
-                </Button>
+                </Button> */}
                 <Popover
                   open={itemListFilterModalopen}
                   onOpenChange={handleOpenChange}
@@ -258,33 +261,42 @@ const ItemsList = () => {
                 >
                   <Button>
                     <IoFilterSharp />
-                    More filters
+                    Filters
                   </Button>
                 </Popover>
               </TopRightContainer>
             </TopContainer>
-            <MiddleContainer>
-              {itemListFilters.itemType && (
-                <Tag>
-                  <div className='text'>
-                    Item Type : {itemListFilters.itemType}
-                  </div>
-                  <RxCross2 className='icon' />
-                </Tag>
-              )}
-              {itemListFilters.level && (
-                <Tag>
-                  <div className='text'>Progress : {itemListFilters.level}</div>
-                  <RxCross2 className='icon' />
-                </Tag>
-              )}
-              {itemListFilters.status && (
-                <Tag>
-                  <div className='text'>Status : {itemListFilters.status}</div>
-                  <RxCross2 className='icon' />
-                </Tag>
-              )}
-            </MiddleContainer>
+            {itemListFilters.itemType || itemListFilters.level}
+            {itemListFilters.status ? (
+              <MiddleContainer>
+                {itemListFilters.itemType && (
+                  <Tag>
+                    <div className='text'>
+                      Item Type : {itemListFilters.itemType}
+                    </div>
+                    <RxCross2 className='icon' />
+                  </Tag>
+                )}
+                {itemListFilters.level && (
+                  <Tag>
+                    <div className='text'>
+                      Progress : {itemListFilters.level}
+                    </div>
+                    <RxCross2 className='icon' />
+                  </Tag>
+                )}
+                {itemListFilters.status && (
+                  <Tag>
+                    <div className='text'>
+                      Status : {itemListFilters.status}
+                    </div>
+                    <RxCross2 className='icon' />
+                  </Tag>
+                )}
+              </MiddleContainer>
+            ) : (
+              ''
+            )}
           </Top>
           <TableContainer>
             <Table>
@@ -427,7 +439,7 @@ const ItemsList = () => {
             </Table>
           </TableContainer>
         </BodyContainer>
-        <Count>Total Records : {endUserRequestList.length}</Count>
+
         <SimilarValues />
       </Wrapper>
       <ItemRequestCustomModal
@@ -645,13 +657,14 @@ const Wrapper = styled.div`
 `
 const BodyContainer = styled.div`
   position: relative;
-  padding: 1rem;
+  padding: 1rem 0;
+  margin-right: 0.6rem;
   width: 97%;
   height: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  border: 1.2px solid #ccc;
+  // border: 1.2px solid #ccc;
   border-radius: 5px;
 `
 
@@ -660,19 +673,19 @@ const Top = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 10%;
-  min-height: 80px;
+  // height: 10%;
+  // min-height: 80px;
   max-height: 90px;
   border: 1.2px solid #ccc;
   border-radius: 5px;
-  height: 12vh;
+  // height: 12vh;
 `
 
 const TopContainer = styled.div`
   position: relative;
   width: 100%;
   // border: 1.2px solid #ccc;
-  padding: 1rem 1rem;
+  padding: 0.6rem 1rem;
   margin: 0 0.2rem;
   border-radius: 5px;
   display: flex;
@@ -713,7 +726,7 @@ const TableContainer = styled.div`
   max-height: 65vh;
   min-height: 300px !important;
   overflow: auto;
-  padding: 0 0.2rem;
+  padding: 0 0rem;
 `
 
 const Table = styled.table`
@@ -1039,11 +1052,8 @@ const CloseIcon = styled.div`
   }
 `
 
-const Count = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 2rem;
-  font-size: 0.7rem;
+const Count = styled.span`
+  font-size: 0.6rem;
   letter-spacing: 0.5px;
   color: #333;
 `

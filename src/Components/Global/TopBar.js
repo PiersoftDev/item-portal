@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { BsPersonCircle, BsPower, BsPlus, BsList } from 'react-icons/bs'
-import { useNavigate } from 'react-router-dom'
+import { BsPersonCircle, BsPlus } from 'react-icons/bs'
+// import { useNavigate } from 'react-router-dom'
 import { Modal, Popover } from 'antd'
 import UserCard from '../SubComponents/UserCard'
 import NewRequest from '../PurchaseItem/ItemRequest'
@@ -17,13 +17,13 @@ import UserCreationModal from './UserCreationModal'
 import UserProfile from './UserProfile'
 
 const TopBar = () => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const {
     UserProfileOpen,
     setUserProfileOpen,
     endUserRequestOpen,
     setEndUserRequestOpen,
-    userRole,
+    // userRole,
     productCombinationModal,
     setProductCombinationModal,
     createUserModal,
@@ -31,7 +31,7 @@ const TopBar = () => {
     userDetails,
   } = useStates()
 
-  const [endUserRequestModalOpen, setEndUserRequestModalOpen] = useState(false)
+  // const [endUserRequestModalOpen, setEndUserRequestModalOpen] = useState(false)
   const [clicked, setClicked] = useState(false)
 
   const hide = () => {
@@ -47,18 +47,18 @@ const TopBar = () => {
     hide()
   }
 
-  const RequestModalOpenClick = () => {
-    setEndUserRequestModalOpen(!endUserRequestModalOpen)
-  }
+  // const RequestModalOpenClick = () => {
+  //   setEndUserRequestModalOpen(!endUserRequestModalOpen)
+  // }
 
   const RequestButtonClick = () => {
     setEndUserRequestOpen(true)
     hide()
   }
 
-  const UserProfileClick = () => {
-    setUserProfileOpen(true)
-  }
+  // const UserProfileClick = () => {
+  //   setUserProfileOpen(true)
+  // }
 
   const UserProfileClose = () => {
     setUserProfileOpen(false)
@@ -72,25 +72,29 @@ const TopBar = () => {
   const CreateContent = (record) => {
     return (
       <PopOverContainer>
-        {userDetails.roles?.includes('Admin') && (
+        {userDetails.roles?.some((role) => ['Admin'].includes(role)) && (
           <CreateButton onClick={CreateUserClick}>
             <FaUser size={8} />
             <Text>User</Text>
           </CreateButton>
         )}
-        {userDetails.roles?.includes('Admin', 'L0') && (
+        {userDetails.roles?.some((role) =>
+          ['Admin', 'L0'].includes(role)
+        ) && (
           <CreateButton onClick={RequestButtonClick}>
             <BiSolidPurchaseTag size={10} />
             <Text>Purchase Item</Text>
           </CreateButton>
         )}
-        {userDetails.roles?.includes('Admin', 'L0') && (
+        {userDetails.roles?.some((role) =>
+          ['Admin', 'L0'].includes(role)
+        ) && (
           <CreateButton>
             <FaFileContract size={10} />
             <Text>SubCon Item</Text>
           </CreateButton>
         )}
-        {userDetails.roles?.includes('Admin', 'L4') && (
+        {userDetails.roles?.some((role) => ['Admin', 'L4'].includes(role)) && (
           <CreateButton onClick={ProductCombinationModalClick}>
             <FaLink size={10} />
             <Text>Item Clasification</Text>
@@ -105,7 +109,9 @@ const TopBar = () => {
       <Container>
         <LogoImg src={PortalLogo} alt='Portal Logo' />
         <RightHeader>
-          {userDetails.roles?.includes('Admin', 'End User', 'ERP') && (
+          {userDetails.roles?.some((role) =>
+            ['Admin', 'L0', 'L4'].includes(role)
+          ) && (
             <Popover
               content={CreateContent()}
               clicked
@@ -368,10 +374,10 @@ const PopOverContainer = styled.div`
   // background-color: #f9f9f9;
 `
 
-const Icon = styled.div`
-  color: #555;
-  font-size: 0.8rem;
-`
+// const Icon = styled.div`
+//   color: #555;
+//   font-size: 0.8rem;
+// `
 
 const Text = styled.span`
   font-size: 0.7rem;

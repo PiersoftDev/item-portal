@@ -122,6 +122,7 @@ const StateProvider = ({ children }) => {
     pegPRPWarehouseOrder: 'yes',
     status: 'Initiated',
     currentLevel: 'L1',
+    creatorId: userDetails.id,
     comments: [],
   }
 

@@ -51,20 +51,22 @@ const UserProfile = () => {
       </UserTitle>
       <DetailesContainer>
         <InfoContent>
-          <IoIosMail />
+          <IoIosMail size={12} />
           <Value>{userDetails.email}</Value>
         </InfoContent>
         <InfoContent>
-          <FaMobileAlt />
+          <FaMobileAlt size={12} />
           <Value>{userDetails.mobileNumber}</Value>
         </InfoContent>
-        {userDetails.projects && (
+        {userDetails.projects?.length === 0 ? (
           <InfoContent>
-            <FaSearchLocation />
+            <FaSearchLocation size={12} />
             {userDetails.projects.map((project) => {
               return <Value>{project}</Value>
             })}
           </InfoContent>
+        ) : (
+          ''
         )}
       </DetailesContainer>
       <Button onClick={logoutClick}>Logout</Button>
