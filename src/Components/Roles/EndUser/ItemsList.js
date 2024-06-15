@@ -1016,7 +1016,7 @@ const DataContainer = styled.div`
   display: flex;
   // justify-content: center;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.3rem; 
 `
 
 const DataValue = styled.div`
