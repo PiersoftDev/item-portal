@@ -201,6 +201,7 @@ const Level2ItemRequest = () => {
               : record
           )
         )
+        cancelRejectConfirmation()
         // setEndUserRequestList([...endUserRequestList, response.data.data])
       } catch (err) {
         console.log(err)

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { AutoComplete, Checkbox, Input, Modal, Select, message } from 'antd'
 import { useStates } from '../../../utils/StateProvider'
@@ -209,6 +209,7 @@ const Level3ItemRequest = () => {
               : record
           )
         )
+        cancelRejectConfirmation()
         // setEndUserRequestList([...endUserRequestList, response.data.data])
       } catch (err) {
         console.log(err)
