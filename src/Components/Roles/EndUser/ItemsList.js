@@ -141,16 +141,28 @@ const ItemsList = () => {
   // }
 
   const Level1RequestModalOpen = (record) => {
-    if (record.currentLevel === 'L1') {
+    if (
+      record.currentLevel === 'L1' &&
+      userDetails.roles?.some((role) => ['Admin', 'L1'].includes(role))
+    ) {
       setLevel1RequestModal(!level1requestModal)
       setLevel1PendingRequest(record)
-    } else if (record.currentLevel === 'L2') {
+    } else if (
+      record.currentLevel === 'L2' &&
+      userDetails.roles?.some((role) => ['Admin', 'L2'].includes(role))
+    ) {
       setLevel2RequestModal(!level2requestModal)
       setLevel1PendingRequest(record)
-    } else if (record.currentLevel === 'L3') {
+    } else if (
+      record.currentLevel === 'L3' &&
+      userDetails.roles?.some((role) => ['Admin', 'L3'].includes(role))
+    ) {
       setLevel3RequestModal(!level3requestModal)
       setLevel1PendingRequest(record)
-    } else if (record.currentLevel === 'L4') {
+    } else if (
+      record.currentLevel === 'L4' &&
+      userDetails.roles?.some((role) => ['Admin', 'L4'].includes(role))
+    ) {
       setErpRequestModal(!erprequestModal)
       setLevel1PendingRequest(record)
     } else if (record.currentLevel === 'Live') {
@@ -297,8 +309,9 @@ const ItemsList = () => {
                 </Popover>
               </TopRightContainer>
             </TopContainer>
-            {itemListFilters.itemType || itemListFilters.level}
-            {itemListFilters.status ? (
+            {itemListFilters.itemType ||
+            itemListFilters.level ||
+            itemListFilters.status ? (
               <MiddleContainer>
                 {itemListFilters.itemType && (
                   <Tag>
