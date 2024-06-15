@@ -21,11 +21,23 @@ const UserCreationModal = () => {
   const [inputValue, setInputValue] = useState('')
   const [selectedRoles, setSelectedRoles] = useState([])
 
+  const CookiesData = () => {
+    const accessToken = localStorage.getItem('accessToken')
+    const Cookie = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+    return Cookie
+  }
+
   useEffect(() => {
     const fetchDependencies = async () => {
+      const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/project/search`,
-        { searchTerm: inputValue ? inputValue : '' }
+        { searchTerm: inputValue ? inputValue : '' },
+        Cookie
       )
       let Project = response?.data?.data || []
       setRequestDependencies({
@@ -446,7 +458,7 @@ const ButtonContainer = styled.div`
 const Button = styled.button`
   font-size: 0.6rem !important;
   letter-spacing: 0.5px;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;

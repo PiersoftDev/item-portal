@@ -74,7 +74,8 @@ export default UserProfile
 const Wrapper = styled.div`
   position: relative;
   width: 17vw;
-  max-width: 300px;
+  min-width: 200px;
+  max-width: 250px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -137,8 +138,14 @@ const Button = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid red;
-  padding: 0.3rem 0.6rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+  border: 1px solid #ef6262;
+  padding: 0.1rem 0.6rem;
   border-radius: 5px;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    background-color: #ef6262;
+  }
 `
