@@ -14,32 +14,16 @@ function CommentsModal({
     setSelectedRecord(null)
   }
 
-  const comments = [
-    {
-      commentId: '1234',
-      comment: 'Pls enter all the valid fields',
+  let { comments } = selectedRecord || []
+
+  comments = comments.map((comment, index) => {
+    return {
+      commentId: index,
+      comment: comment,
       author: 'Ramesh Ramathota',
       commitDate: '2024-06-15 11:21:36',
-    },
-    {
-      commentId: '153',
-      comment: 'Pls enter all the valid fields',
-      author: 'Durga naga',
-      commitDate: '2024-06-15 11:21:36',
-    },
-    {
-      commentId: '111',
-      comment: 'Pls enter all the valid fields',
-      author: 'Ram',
-      commitDate: '2024-06-15 11:21:36',
-    },
-    {
-      commentId: '1234',
-      comment: 'Pls enter all the valid fields',
-      author: 'Krishna',
-      commitDate: '2024-06-15 11:21:36',
-    },
-  ]
+    }
+  })
 
   const recordIdComponent = (
     <div>
@@ -56,13 +40,17 @@ function CommentsModal({
       destroyOnClose={true}
     >
       <Wrapper>
-        <Timeline
-          items={comments.map((item) => {
-            return {
-              children: <TimeLineChildCommentsComponent {...item} />,
-            }
-          })}
-        />
+        {comments?.length === 0 ? (
+          <div>No comments </div>
+        ) : (
+          <Timeline
+            items={comments.map((item) => {
+              return {
+                children: <TimeLineChildCommentsComponent {...item} />,
+              }
+            })}
+          />
+        )}
       </Wrapper>
     </Modal>
   )
