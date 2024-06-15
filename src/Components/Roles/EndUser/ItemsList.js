@@ -36,6 +36,10 @@ import { LiaComments } from 'react-icons/lia'
 import { HiTemplate } from 'react-icons/hi'
 
 import { TbDatabase } from 'react-icons/tb'
+import { FaEye } from 'react-icons/fa'
+import ProductLinkHierarchyModal from './modals/ProductLinkHierarchyModal'
+
+import { TbHierarchy2 } from 'react-icons/tb'
 
 const ItemsList = () => {
   const {
@@ -68,6 +72,8 @@ const ItemsList = () => {
   const [openHistory, setOpenHistory] = useState(false)
   const [openComments, setOpenComments] = useState(false)
   const [openSimilarItems, setOpenSimilarItems] = useState(false)
+  const [openProductLinkHierarchy, setOpenProductLinkHierarchy] =
+    useState(false)
 
   const [selectedRecord, setSelectedRecord] = useState(null)
 
@@ -202,6 +208,11 @@ const ItemsList = () => {
     setSelectedRecord(record)
   }
 
+  const openProductLinkHierarchyFunc = (record) => {
+    setOpenProductLinkHierarchy(true)
+    setSelectedRecord(record)
+  }
+
   const openCommentsModal = (record) => {
     setOpenComments(true)
     setSelectedRecord(record)
@@ -299,8 +310,8 @@ const ItemsList = () => {
                   open={itemListFilterModalopen}
                   onOpenChange={handleOpenChange}
                   content={ListFilterModel}
-                  placement='leftTop'
-                  trigger='click'
+                  placement="leftTop"
+                  trigger="click"
                 >
                   <Button>
                     <IoFilterSharp />
@@ -315,26 +326,26 @@ const ItemsList = () => {
               <MiddleContainer>
                 {itemListFilters.itemType && (
                   <Tag>
-                    <div className='text'>
+                    <div className="text">
                       Item Type : {itemListFilters.itemType}
                     </div>
-                    <RxCross2 className='icon' />
+                    <RxCross2 className="icon" />
                   </Tag>
                 )}
                 {itemListFilters.level && (
                   <Tag>
-                    <div className='text'>
+                    <div className="text">
                       Progress : {itemListFilters.level}
                     </div>
-                    <RxCross2 className='icon' />
+                    <RxCross2 className="icon" />
                   </Tag>
                 )}
                 {itemListFilters.status && (
                   <Tag>
-                    <div className='text'>
+                    <div className="text">
                       Status : {itemListFilters.status}
                     </div>
-                    <RxCross2 className='icon' />
+                    <RxCross2 className="icon" />
                   </Tag>
                 )}
               </MiddleContainer>
@@ -345,15 +356,15 @@ const ItemsList = () => {
           <TableContainer>
             <Table>
               <thead>
-                <TableRow className='header'>
+                <TableRow className="header">
                   <th>Requirement Description</th>
                   <th>External Id</th>
                   <th>Item Group</th>
                   <th>Detailed Description</th>
                   <th>Unit</th>
-                  <th className='task-progress'>Task Progress</th>
-                  <th className='status'>Status</th>
-                  <th className='actions'>Actions</th>
+                  <th className="task-progress">Task Progress</th>
+                  <th className="status">Status</th>
+                  <th className="actions">Actions</th>
                 </TableRow>
               </thead>
               <tbody>
@@ -378,8 +389,8 @@ const ItemsList = () => {
                         <DataContainer>
                           <Popover
                             content={ProfileContent(record)}
-                            placement='right'
-                            title='Contact Information'
+                            placement="right"
+                            title="Contact Information"
                           >
                             <PersonIcon />
                           </Popover>
@@ -409,8 +420,8 @@ const ItemsList = () => {
                         <DataContainer>
                           <Popover
                             content={InfoContent(record)}
-                            placement='right'
-                            title='Item Information'
+                            placement="right"
+                            title="Item Information"
                           >
                             <InfoIcon />
                           </Popover>
@@ -428,36 +439,36 @@ const ItemsList = () => {
                       </td>
 
                       <td key={record.uom}>{record.uom}</td>
-                      <td className='task-progress'>
+                      <td className="task-progress">
                         <ProgressBarContainer>
                           <ProgressBar
-                            title='Level 0'
+                            title="Level 0"
                             active={record.currentLevel === 'L0'}
                             live={record.currentLevel === 'Live'}
                           />
                           <ProgressBar
-                            title='Level 1'
+                            title="Level 1"
                             live={record.currentLevel === 'Live'}
                             active={record.currentLevel === 'L1'}
                           />
                           <ProgressBar
-                            title='Level 2'
+                            title="Level 2"
                             live={record.currentLevel === 'Live'}
                             active={record.currentLevel === 'L2'}
                           />
                           <ProgressBar
-                            title='Level 3'
+                            title="Level 3"
                             live={record.currentLevel === 'Live'}
                             active={record.currentLevel === 'L3'}
                           />
                           <ProgressBar
-                            title='Live'
+                            title="Live"
                             live={record.currentLevel === 'Live'}
                             active={record.currentLevel === 'L4'}
                           />
                         </ProgressBarContainer>
                       </td>
-                      <td className='status'>
+                      <td className="status">
                         <StatusBox
                           initiated={record.status === 'Pending'}
                           rejected={record.status === 'Declined'}
@@ -472,11 +483,11 @@ const ItemsList = () => {
                         </StatusBox>
                       </td>
 
-                      <td className='actions'>
+                      <td className="actions">
                         <Dropdown
                           trigger={['click']}
                           arrow={true}
-                          placement='left'
+                          placement="left"
                           menu={{
                             items: [
                               {
@@ -488,7 +499,7 @@ const ItemsList = () => {
                                     }
                                   >
                                     <span>
-                                      <TbDatabase />
+                                      <FaEye />
                                     </span>
                                     <span>View Record</span>
                                   </Actions>
@@ -537,6 +548,21 @@ const ItemsList = () => {
                                   </Actions>
                                 ),
                               },
+                              {
+                                key: '5',
+                                label: (
+                                  <Actions
+                                    onClick={() =>
+                                      openProductLinkHierarchyFunc(record)
+                                    }
+                                  >
+                                    <span>
+                                      <TbHierarchy2 />
+                                    </span>
+                                    <span>Product Link Hierarchy</span>
+                                  </Actions>
+                                ),
+                              },
                             ],
                           }}
                         >
@@ -550,7 +576,7 @@ const ItemsList = () => {
                 ) : (
                   <TableRow>
                     <DataNotFound>
-                      <img src={NoDataFound} alt='No Data Found' />
+                      <img src={NoDataFound} alt="No Data Found" />
                     </DataNotFound>
                   </TableRow>
                 )}
@@ -704,6 +730,15 @@ const ItemsList = () => {
         <SimilarItemsModal
           openSimilarItems={openSimilarItems}
           setOpenSimilarItems={setOpenSimilarItems}
+          selectedRecord={selectedRecord}
+          setSelectedRecord={setSelectedRecord}
+        />
+      )}
+
+      {openProductLinkHierarchy && (
+        <ProductLinkHierarchyModal
+          openProductLinkHierarchy={openProductLinkHierarchy}
+          setOpenProductLinkHierarchy={setOpenProductLinkHierarchy}
           selectedRecord={selectedRecord}
           setSelectedRecord={setSelectedRecord}
         />
@@ -1016,7 +1051,7 @@ const DataContainer = styled.div`
   display: flex;
   // justify-content: center;
   align-items: center;
-  gap: 0.3rem; 
+  gap: 0.3rem;
 `
 
 const DataValue = styled.div`
