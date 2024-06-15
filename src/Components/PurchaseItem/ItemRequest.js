@@ -315,7 +315,7 @@ const NewRequest = () => {
   const SubmitItem = async () => {
     const fieldErrors = {}
     if (!newItem.site) {
-      fieldErrors.site = 'Project required'
+      fieldErrors.site = 'Site required'
     }
     if (!newItem.requester) {
       fieldErrors.requester = 'Requester required'
@@ -336,8 +336,6 @@ const NewRequest = () => {
       newItem.phoneNumber &&
       newItem.requirementDesc
     ) {
-
-      
       try {
         const Cookie = CookiesData()
         setLoading(true)
