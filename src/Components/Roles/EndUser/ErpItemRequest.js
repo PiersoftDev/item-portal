@@ -60,18 +60,24 @@ const ErpItemRequest = () => {
         Cookie
       )
       let warehouse = response?.data?.data || []
+
+      const uniqueOptions = new Map()
+      warehouse.forEach((record) => {
+        if (!uniqueOptions.has(record.description)) {
+          uniqueOptions.set(record.description, {
+            Description: `${record.id} - ${record.description}`,
+            value: record.description,
+            id: record.id,
+          })
+        }
+      })
+
       setRequestDependencies({
         ...Requestdependencies,
         warehouses: warehouse,
       })
 
-      setWarehouseOptions(
-        warehouse.map((record) => ({
-          Description: `${record.id} - ${record.description}`,
-          value: record.description,
-          id: record.id,
-        }))
-      )
+      setWarehouseOptions([...uniqueOptions.values()])
     }
     fetchDependencies()
   }, [level1PendingRequest.warehouseName])
