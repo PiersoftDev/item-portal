@@ -38,6 +38,12 @@ function HistoryModal({
     }
   }
 
+  function getFirstStringInSingleQuotes(str) {
+    const regex = /'([^']*)'/
+    const match = str.match(regex)
+    return match ? match[1] : null
+  }
+
   const processChangeLogResponseData = (data) => {
     const changeLogList = Object.keys(data)
       .reduce((acc, currCommitId) => {
@@ -50,7 +56,13 @@ function HistoryModal({
           formattedCommitHistory.author = author
           formattedCommitHistory.commitDate = commitDate
         }
-        let actions = commitData.map(({ statusField }) => statusField)
+        let actions = commitData
+          .filter(
+            ({ statusField }) =>
+              !getFirstStringInSingleQuotes(statusField)?.includes('Id')
+          )
+          .map(({ statusField }) => statusField)
+
         console.log(actions)
         formattedCommitHistory.actions = actions
         acc.push(formattedCommitHistory)

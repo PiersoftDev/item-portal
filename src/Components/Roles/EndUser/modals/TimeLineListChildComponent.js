@@ -66,20 +66,20 @@ const TimeLineListChildComponent = ({
           //     )
           //   }
 
-          return <li>{action}</li>
+          return <li key={index}>{action}</li>
 
-          return (
-            <li key={index} className="updated-event-action">
-              <span> Updated </span>
-              <span className="updated-property">{propertyName} </span>
-              <span>from</span>
-              <Tag style={actionColors['deleted']}>{left}</Tag>
-              <span>to</span>
-              <Tag style={actionColors['created']}>{right}</Tag>
+          //   return (
+          //     <li key={index} className="updated-event-action">
+          //       <span> Updated </span>
+          //       <span className="updated-property">{propertyName} </span>
+          //       <span>from</span>
+          //       <Tag style={actionColors['deleted']}>{left}</Tag>
+          //       <span>to</span>
+          //       <Tag style={actionColors['created']}>{right}</Tag>
 
-              {/* {`Updated the  ${propertyName}  from  ${left} to ${right} `} */}
-            </li>
-          )
+          //       {/* {`Updated the  ${propertyName}  from  ${left} to ${right} `} */}
+          //     </li>
+          //   )
         })}
       </ul>
     </Wrapper>
