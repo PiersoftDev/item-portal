@@ -451,7 +451,7 @@ const NewRequest = () => {
                   onChange={(e) => {
                     if (
                       !isNaN(e.target.value) &&
-                      !e.target.value.startsWith('')
+                      !e.target.value.startsWith(' ')
                     ) {
                       ValueChange('phoneNumber', e.target.value)
                     }
