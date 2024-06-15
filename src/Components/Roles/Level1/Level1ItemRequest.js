@@ -36,16 +36,28 @@ const Level1ItemRequest = () => {
     setRejectReason(e.target.value)
   }
 
+  const CookiesData = () => {
+    const accessToken = localStorage.getItem('accessToken')
+    const Cookie = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+    return Cookie
+  }
+
   useEffect(() => {
     const fetchDependencies = async () => {
       if (level1PendingRequest.itemType) {
+        const Cookie = CookiesData()
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/item-group/${level1PendingRequest.itemType}`,
           {
             searchTerm: level1PendingRequest.itemGroup
               ? level1PendingRequest.itemGroup
               : '',
-          }
+          },
+          Cookie
         )
         let itemGroup = response?.data?.data || []
         setRequestDependencies({
@@ -69,13 +81,15 @@ const Level1ItemRequest = () => {
   useEffect(() => {
     const fetchDependencies = async () => {
       if (level1PendingRequest.itemGroupId) {
+        const Cookie = CookiesData()
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/product-type/${level1PendingRequest.itemGroupId}`,
           {
             searchTerm: level1PendingRequest.productType
               ? level1PendingRequest.productType
               : '',
-          }
+          },
+          Cookie
         )
         let productType = response?.data?.data || []
         setRequestDependencies({
@@ -103,13 +117,15 @@ const Level1ItemRequest = () => {
   useEffect(() => {
     const fetchDependencies = async () => {
       if (level1PendingRequest.productTypeId) {
+        const Cookie = CookiesData()
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/product-class/${level1PendingRequest.productTypeId}`,
           {
             searchTerm: level1PendingRequest.productClass
               ? level1PendingRequest.productClass
               : '',
-          }
+          },
+          Cookie
         )
         let productClass = response?.data?.data || []
         setRequestDependencies({
@@ -137,13 +153,15 @@ const Level1ItemRequest = () => {
   useEffect(() => {
     const fetchDependencies = async () => {
       if (level1PendingRequest.productClassId) {
+        const Cookie = CookiesData()
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/product-line/${level1PendingRequest.productClassId}`,
           {
             searchTerm: level1PendingRequest.productLine
               ? level1PendingRequest.productLine
               : '',
-          }
+          },
+          Cookie
         )
         let productLine = response?.data?.data || []
         setRequestDependencies({
@@ -170,13 +188,15 @@ const Level1ItemRequest = () => {
 
   useEffect(() => {
     const fetchDependencies = async () => {
+      const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/uom/search`,
         {
           searchTerm: level1PendingRequest.uomDesc
             ? level1PendingRequest.uomDesc
             : '',
-        }
+        },
+        Cookie
       )
       let UOM = response?.data?.data || []
       setRequestDependencies({
@@ -198,13 +218,15 @@ const Level1ItemRequest = () => {
 
   useEffect(() => {
     const fetchDependencies = async () => {
+      const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/cost-component/fetch-by-cost-component-type/material`,
         {
           searchTerm: level1PendingRequest.materialCostComponent
             ? level1PendingRequest.materialCostComponent
             : '',
-        }
+        },
+        Cookie
       )
       let costComponent = response?.data?.data || []
       setRequestDependencies({
@@ -225,13 +247,15 @@ const Level1ItemRequest = () => {
 
   useEffect(() => {
     const fetchDependencies = async () => {
+      const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/group-code/search`,
         {
           searchTerm: level1PendingRequest.groupCode
             ? level1PendingRequest.groupCode
             : '',
-        }
+        },
+        Cookie
       )
       let groupCode = response?.data?.data || []
       setRequestDependencies({
@@ -326,9 +350,11 @@ const Level1ItemRequest = () => {
         const reqbody = { ...level1PendingRequest, currentLevel: 'L2' }
         console.log(reqbody)
         setLoading(true)
+        const Cookie = CookiesData()
         const response = await axios.put(
           'https://mdm.p360.build/v1/mdm/purchase-item/update',
-          reqbody
+          reqbody,
+          Cookie
         )
         console.log(response.data)
         // const updatedList = endUserRequestList.map((record) =>
@@ -373,9 +399,11 @@ const Level1ItemRequest = () => {
           comments: [...level1PendingRequest.comments, rejectReason],
         }
         setLoading(true)
+        const Cookie = CookiesData()
         const response = await axios.put(
           'https://mdm.p360.build/v1/mdm/purchase-item/update',
-          reqbody
+          reqbody,
+          Cookie
         )
         console.log(response.data)
         setLevel1PendingRequest({})

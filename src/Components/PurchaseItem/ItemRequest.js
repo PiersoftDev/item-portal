@@ -33,11 +33,23 @@ const NewRequest = () => {
   const [uomOptions, setUOMOptions] = useState([])
   const [groupCodeOptions, setGroupCodeOptions] = useState([])
 
+  const CookiesData = () => {
+    const accessToken = localStorage.getItem('accessToken')
+    const Cookie = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+    return Cookie
+  }
+
   useEffect(() => {
     const fetchDependencies = async () => {
+      const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/project/search`,
-        { searchTerm: newItem.site ? newItem.site : '' }
+        { searchTerm: newItem.site ? newItem.site : '' },
+        Cookie
       )
       let project = response?.data?.data || []
       setRequestDependencies({
@@ -59,9 +71,11 @@ const NewRequest = () => {
   useEffect(() => {
     const fetchDependencies = async () => {
       try {
+        const Cookie = CookiesData()
         const response = await axios.post(
           'https://mdm.p360.build/v1/mdm/employee/search/0/50',
-          { searchTerm: newItem.requester || '' }
+          { searchTerm: newItem.requester || '' },
+          Cookie
         )
         const empData = response?.data?.data || []
 
@@ -94,9 +108,11 @@ const NewRequest = () => {
   useEffect(() => {
     const fetchDependencies = async () => {
       if (newItem.itemType) {
+        const Cookie = CookiesData()
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/item-group/${newItem.itemType}`,
-          { searchTerm: newItem.itemGroup ? newItem.itemGroup : '' }
+          { searchTerm: newItem.itemGroup ? newItem.itemGroup : '' },
+          Cookie
         )
         let itemGroup = response?.data?.data || []
         setRequestDependencies({
@@ -120,9 +136,11 @@ const NewRequest = () => {
   useEffect(() => {
     const fetchDependencies = async () => {
       if (newItem.itemGroupId) {
+        const Cookie = CookiesData()
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/product-type/${newItem.itemGroupId}`,
-          { searchTerm: newItem.productType ? newItem.productType : '' }
+          { searchTerm: newItem.productType ? newItem.productType : '' },
+          Cookie
         )
         let productType = response?.data?.data || []
         setRequestDependencies({
@@ -146,9 +164,11 @@ const NewRequest = () => {
   useEffect(() => {
     const fetchDependencies = async () => {
       if (newItem.productTypeId) {
+        const Cookie = CookiesData()
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/product-class/${newItem.productTypeId}`,
-          { searchTerm: newItem.productClass ? newItem.productClass : '' }
+          { searchTerm: newItem.productClass ? newItem.productClass : '' },
+          Cookie
         )
         let productClass = response?.data?.data || []
         setRequestDependencies({
@@ -172,9 +192,11 @@ const NewRequest = () => {
   useEffect(() => {
     const fetchDependencies = async () => {
       if (newItem.productClassId) {
+        const Cookie = CookiesData()
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/product-line/${newItem.productClassId}`,
-          { searchTerm: newItem.productLine ? newItem.productLine : '' }
+          { searchTerm: newItem.productLine ? newItem.productLine : '' },
+          Cookie
         )
         let productLine = response?.data?.data || []
         setRequestDependencies({
@@ -197,9 +219,11 @@ const NewRequest = () => {
 
   useEffect(() => {
     const fetchDependencies = async () => {
+      const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/uom/search`,
-        { searchTerm: newItem.uomDesc ? newItem.uomDesc : '' }
+        { searchTerm: newItem.uomDesc ? newItem.uomDesc : '' },
+        Cookie
       )
       let UOM = response?.data?.data || []
       setRequestDependencies({
@@ -221,13 +245,15 @@ const NewRequest = () => {
 
   useEffect(() => {
     const fetchDependencies = async () => {
+      const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/cost-component/fetch-by-cost-component-type/material`,
         {
           searchTerm: newItem.materialCostComponent
             ? newItem.materialCostComponent
             : '',
-        }
+        },
+        Cookie
       )
       let costComponent = response?.data?.data || []
       setRequestDependencies({
@@ -248,9 +274,11 @@ const NewRequest = () => {
 
   useEffect(() => {
     const fetchDependencies = async () => {
+      const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/group-code/search`,
-        { searchTerm: newItem.groupCode ? newItem.groupCode : '' }
+        { searchTerm: newItem.groupCode ? newItem.groupCode : '' },
+        Cookie
       )
       let groupCode = response?.data?.data || []
       setRequestDependencies({
@@ -309,10 +337,12 @@ const NewRequest = () => {
       newItem.requirementDesc
     ) {
       try {
+        const Cookie = CookiesData()
         setLoading(true)
         const response = await axios.post(
           'https://mdm.p360.build/v1/mdm/purchase-item/create',
-          newItem
+          newItem,
+          Cookie
         )
         console.log(response.data)
         setNewItem(InitialItem)

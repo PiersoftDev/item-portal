@@ -18,12 +18,24 @@ const SimilarValues = () => {
   const [loadind, setLoading] = useState(false)
   const [compareRecord, setCompareRecord] = useState()
 
+  const CookiesData = () => {
+    const accessToken = localStorage.getItem('accessToken')
+    const Cookie = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+    return Cookie
+  }
+
   useEffect(() => {
     const fetchSimilar = async () => {
       try {
+        const Cookie = CookiesData()
         setLoading(true)
         const res = await axios.get(
-          `https://mdm.p360.build/v1/mdm/p360/item/fetch-similar/${similarItem?.id}`
+          `https://mdm.p360.build/v1/mdm/p360/item/fetch-similar/${similarItem?.id}`,
+          Cookie
         )
         console.log(res)
         setSimilarValues(res.data.data)

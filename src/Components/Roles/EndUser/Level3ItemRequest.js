@@ -35,16 +35,27 @@ const Level3ItemRequest = () => {
   const RejectReasonChange = (e) => {
     setRejectReason(e.target.value)
   }
+  const CookiesData = () => {
+    const accessToken = localStorage.getItem('accessToken')
+    const Cookie = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+    return Cookie
+  }
 
   useEffect(() => {
     const fetchDependencies = async () => {
+      const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/cost-component/fetch-by-cost-component-type/material`,
         {
           searchTerm: level1PendingRequest.materialCostComponent
             ? level1PendingRequest.materialCostComponent
             : '',
-        }
+        },
+        Cookie
       )
       let costComponent = response?.data?.data || []
       setRequestDependencies({
@@ -65,13 +76,15 @@ const Level3ItemRequest = () => {
 
   useEffect(() => {
     const fetchDependencies = async () => {
+      const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/group-code/search`,
         {
           searchTerm: level1PendingRequest.groupCode
             ? level1PendingRequest.groupCode
             : '',
-        }
+        },
+        Cookie
       )
       let groupCode = response?.data?.data || []
       setRequestDependencies({
@@ -137,12 +150,14 @@ const Level3ItemRequest = () => {
       level1PendingRequest.materialCostComponent
     ) {
       try {
+        const Cookie = CookiesData()
         const reqbody = { ...level1PendingRequest, currentLevel: 'L4' }
         console.log(reqbody)
         setLoading(true)
         const response = await axios.put(
           'https://mdm.p360.build/v1/mdm/purchase-item/update',
-          reqbody
+          reqbody,
+          Cookie
         )
         console.log(response.data)
 
@@ -177,10 +192,12 @@ const Level3ItemRequest = () => {
           status: 'Rejected',
           comments: [...level1PendingRequest.comments, rejectReason],
         }
+        const Cookie = CookiesData()
         setLoading(true)
         const response = await axios.put(
           'https://mdm.p360.build/v1/mdm/purchase-item/update',
-          reqbody
+          reqbody,
+          Cookie
         )
         console.log(response.data)
         setLevel1PendingRequest({})

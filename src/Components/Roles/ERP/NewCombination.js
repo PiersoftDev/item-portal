@@ -24,16 +24,39 @@ const NewCombination = () => {
   const [productClassoptions, setProductClassOptions] = useState([])
   const [productLineoptions, setProductLineOptions] = useState([])
 
+  const CookiesData = () => {
+    const accessToken = localStorage.getItem('accessToken')
+    const Cookie = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+    return Cookie
+  }
+
   useEffect(() => {
     const fetchDependencies = async () => {
       // if (userRole === 'ERP') {
       try {
+        const Cookie = CookiesData()
         const [itemGroup, productType, productClass, productLine] =
           await Promise.all([
-            axios.get('https://mdm.p360.build/v1/mdm/item-group/fetch-all'),
-            axios.get('https://mdm.p360.build/v1/mdm/product-type/fetch-all'),
-            axios.get('https://mdm.p360.build/v1/mdm/product-class/fetch-all'),
-            axios.get('https://mdm.p360.build/v1/mdm/product-line/fetch-all'),
+            axios.get(
+              'https://mdm.p360.build/v1/mdm/item-group/fetch-all',
+              Cookie
+            ),
+            axios.get(
+              'https://mdm.p360.build/v1/mdm/product-type/fetch-all',
+              Cookie
+            ),
+            axios.get(
+              'https://mdm.p360.build/v1/mdm/product-class/fetch-all',
+              Cookie
+            ),
+            axios.get(
+              'https://mdm.p360.build/v1/mdm/product-line/fetch-all',
+              Cookie
+            ),
           ])
 
         setDependencies({
@@ -74,9 +97,11 @@ const NewCombination = () => {
 
   const VerifyField = async (prop) => {
     try {
+      const Cookie = CookiesData()
       const response = await axios.post(
         'https://mdm.p360.build/v1/mdm/product-link/verify',
-        newProductLink
+        newProductLink,
+        Cookie
       )
 
       const existingData = response.data.data

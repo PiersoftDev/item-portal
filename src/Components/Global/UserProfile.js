@@ -6,6 +6,7 @@ import { IoIosMail } from 'react-icons/io'
 import { FaMobileAlt, FaSearchLocation } from 'react-icons/fa'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { message } from 'antd'
 
 const UserProfile = () => {
   const { userDetails, setuserDeails } = useStates()
@@ -27,6 +28,7 @@ const UserProfile = () => {
         const res = await axios.get(
           `https://mdm.p360.build/v1/mdm/user/logoutUser/+91${userDetails.mobileNumber}`
         )
+        console.log('User logged Out', res.data)
         navigate('/login')
         localStorage.removeItem('accessToken')
         localStorage.removeItem('idToken')
@@ -35,6 +37,7 @@ const UserProfile = () => {
       }
     } catch (error) {
       console.error('Error during logout:', error)
+      message.error('Something went wrong')
     }
   }
   return (
