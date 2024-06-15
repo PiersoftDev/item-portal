@@ -171,8 +171,8 @@ const ListFilterModel = () => {
           value={itemListFilters.status}
           onChange={(value) => ValueChange('status', value)}
         >
-          <Option value='Initiated'>Initiated</Option>
-          <Option value='Rejected'>Rejected</Option>
+          <Option value='Pending'>Pending</Option>
+          <Option value='Declined'>Declined</Option>
           <Option value='Draft'>Draft</Option>
           <Option value='Live'>Live</Option>
         </Select>

@@ -84,7 +84,7 @@ const LoginForm = () => {
           localStorage.setItem('accessToken', res.data.accessToken)
           localStorage.setItem('refreshToken', res.data.refreshToken)
 
-          navigate('/')
+          navigate('/home')
           setLogingDetails({
             username: '',
             confirmationCode: '',

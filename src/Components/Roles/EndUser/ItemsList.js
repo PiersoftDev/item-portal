@@ -126,7 +126,7 @@ const ItemsList = () => {
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text).then(
       () => {
-        message.success('Coppied')
+        message.success('Copied')
         console.log('Copying to clipboard was successful!')
       },
       (err) => {
@@ -141,16 +141,28 @@ const ItemsList = () => {
   // }
 
   const Level1RequestModalOpen = (record) => {
-    if (record.currentLevel === 'L1') {
+    if (
+      record.currentLevel === 'L1' &&
+      userDetails.roles?.some((role) => ['Admin', 'L1'].includes(role))
+    ) {
       setLevel1RequestModal(!level1requestModal)
       setLevel1PendingRequest(record)
-    } else if (record.currentLevel === 'L2') {
+    } else if (
+      record.currentLevel === 'L2' &&
+      userDetails.roles?.some((role) => ['Admin', 'L2'].includes(role))
+    ) {
       setLevel2RequestModal(!level2requestModal)
       setLevel1PendingRequest(record)
-    } else if (record.currentLevel === 'L3') {
+    } else if (
+      record.currentLevel === 'L3' &&
+      userDetails.roles?.some((role) => ['Admin', 'L3'].includes(role))
+    ) {
       setLevel3RequestModal(!level3requestModal)
       setLevel1PendingRequest(record)
-    } else if (record.currentLevel === 'L4') {
+    } else if (
+      record.currentLevel === 'L4' &&
+      userDetails.roles?.some((role) => ['Admin', 'L4'].includes(role))
+    ) {
       setErpRequestModal(!erprequestModal)
       setLevel1PendingRequest(record)
     } else if (record.currentLevel === 'Live') {
@@ -287,8 +299,8 @@ const ItemsList = () => {
                   open={itemListFilterModalopen}
                   onOpenChange={handleOpenChange}
                   content={ListFilterModel}
-                  placement="leftTop"
-                  trigger="click"
+                  placement='leftTop'
+                  trigger='click'
                 >
                   <Button>
                     <IoFilterSharp />
@@ -297,31 +309,32 @@ const ItemsList = () => {
                 </Popover>
               </TopRightContainer>
             </TopContainer>
-            {itemListFilters.itemType || itemListFilters.level}
-            {itemListFilters.status ? (
+            {itemListFilters.itemType ||
+            itemListFilters.level ||
+            itemListFilters.status ? (
               <MiddleContainer>
                 {itemListFilters.itemType && (
                   <Tag>
-                    <div className="text">
+                    <div className='text'>
                       Item Type : {itemListFilters.itemType}
                     </div>
-                    <RxCross2 className="icon" />
+                    <RxCross2 className='icon' />
                   </Tag>
                 )}
                 {itemListFilters.level && (
                   <Tag>
-                    <div className="text">
+                    <div className='text'>
                       Progress : {itemListFilters.level}
                     </div>
-                    <RxCross2 className="icon" />
+                    <RxCross2 className='icon' />
                   </Tag>
                 )}
                 {itemListFilters.status && (
                   <Tag>
-                    <div className="text">
+                    <div className='text'>
                       Status : {itemListFilters.status}
                     </div>
-                    <RxCross2 className="icon" />
+                    <RxCross2 className='icon' />
                   </Tag>
                 )}
               </MiddleContainer>
@@ -332,15 +345,15 @@ const ItemsList = () => {
           <TableContainer>
             <Table>
               <thead>
-                <TableRow className="header">
+                <TableRow className='header'>
                   <th>Requirement Description</th>
                   <th>External Id</th>
                   <th>Item Group</th>
                   <th>Detailed Description</th>
                   <th>Unit</th>
-                  <th className="task-progress">Task Progress</th>
-                  <th className="status">Status</th>
-                  <th className="actions">Actions</th>
+                  <th className='task-progress'>Task Progress</th>
+                  <th className='status'>Status</th>
+                  <th className='actions'>Actions</th>
                 </TableRow>
               </thead>
               <tbody>
@@ -365,8 +378,8 @@ const ItemsList = () => {
                         <DataContainer>
                           <Popover
                             content={ProfileContent(record)}
-                            placement="right"
-                            title="Contact Information"
+                            placement='right'
+                            title='Contact Information'
                           >
                             <PersonIcon />
                           </Popover>
@@ -396,8 +409,8 @@ const ItemsList = () => {
                         <DataContainer>
                           <Popover
                             content={InfoContent(record)}
-                            placement="right"
-                            title="Item Information"
+                            placement='right'
+                            title='Item Information'
                           >
                             <InfoIcon />
                           </Popover>
@@ -415,36 +428,36 @@ const ItemsList = () => {
                       </td>
 
                       <td key={record.uom}>{record.uom}</td>
-                      <td className="task-progress">
+                      <td className='task-progress'>
                         <ProgressBarContainer>
                           <ProgressBar
-                            title="Level 0"
+                            title='Level 0'
                             active={record.currentLevel === 'L0'}
                             live={record.currentLevel === 'Live'}
                           />
                           <ProgressBar
-                            title="Level 1"
+                            title='Level 1'
                             live={record.currentLevel === 'Live'}
                             active={record.currentLevel === 'L1'}
                           />
                           <ProgressBar
-                            title="Level 2"
+                            title='Level 2'
                             live={record.currentLevel === 'Live'}
                             active={record.currentLevel === 'L2'}
                           />
                           <ProgressBar
-                            title="Level 3"
+                            title='Level 3'
                             live={record.currentLevel === 'Live'}
                             active={record.currentLevel === 'L3'}
                           />
                           <ProgressBar
-                            title="Live"
+                            title='Live'
                             live={record.currentLevel === 'Live'}
                             active={record.currentLevel === 'L4'}
                           />
                         </ProgressBarContainer>
                       </td>
-                      <td className="status">
+                      <td className='status'>
                         <StatusBox
                           initiated={record.status === 'Pending'}
                           rejected={record.status === 'Declined'}
@@ -459,11 +472,11 @@ const ItemsList = () => {
                         </StatusBox>
                       </td>
 
-                      <td className="actions">
+                      <td className='actions'>
                         <Dropdown
                           trigger={['click']}
                           arrow={true}
-                          placement="left"
+                          placement='left'
                           menu={{
                             items: [
                               {
@@ -477,7 +490,7 @@ const ItemsList = () => {
                                     <span>
                                       <TbDatabase />
                                     </span>
-                                    <span>L1 Record</span>
+                                    <span>View Record</span>
                                   </Actions>
                                 ),
                               },
@@ -537,7 +550,7 @@ const ItemsList = () => {
                 ) : (
                   <TableRow>
                     <DataNotFound>
-                      <img src={NoDataFound} alt="No Data Found" />
+                      <img src={NoDataFound} alt='No Data Found' />
                     </DataNotFound>
                   </TableRow>
                 )}
@@ -722,77 +735,6 @@ const Wrapper = styled.div`
   .ant-select {
     width: 20vw;
   }
-
-  .custom-table {
-    .ant-table {
-      border-radius: 1rem;
-      overflow-x: auto;
-      height: 100%;
-      width: 99%;
-      min-width: 1110px;
-      max-height: 57vh;
-      @media screen and (min-height: 698px) {
-        max-height: 70vh;
-        min-width: 1250px;
-      }
-    }
-
-    .ant-table-container {
-      .ant-table-body {
-        &::-webkit-scrollbar {
-          width: 0.2rem;
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background-color: #9dacbd;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-
-        &::-webkit-scrollbar-track {
-          background-color: #e6f3f8;
-          border-radius: 5px;
-        }
-      }
-    }
-
-    .ant-table-thead th {
-      font-size: 0.7rem;
-      font-weight: 600;
-      font-family: 'Roboto', sans-serif;
-      padding: 0.4rem;
-      text-align: center;
-      white-space: nowrap;
-      color: #3b4040;
-      letter-spacing: 0.5px;
-      position: sticky;
-      // background: #9dacbd;
-      width: auto !important;
-      top: 0;
-      text-indent: 0.5rem;
-      z-index: 1;
-    }
-    .ant-table-tbody td {
-      font-size: 0.8rem;
-      font-weight: 400;
-      font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
-        Helvetica, Arial, sans-serif;
-      padding: 0.5rem;
-      width: auto !important;
-      min-width: 15vw;
-      white-space: nowrap;
-      color: #3c3836;
-      cursor: pointer;
-      text-align: center;
-      z-index: 0;
-      // text-indent: -0.8rem;
-    }
-
-    .ant-table-tbody tr:hover {
-      background: #f2f4f5;
-      opacity: 100%;
-    }
-  }
 `
 const BodyContainer = styled.div`
   position: relative;
@@ -918,6 +860,10 @@ const TableRow = styled.tr`
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    &:last-child {
+      min-width: 80px !important;
+      max-width: 80px !important;
+    }
   }
   td {
     font-size: 0.7rem;
@@ -943,6 +889,10 @@ const TableRow = styled.tr`
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+    &:last-child {
+      min-width: 80px !important;
+      max-width: 80px !important;
     }
   }
   /* .task-progress {
