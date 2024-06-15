@@ -50,6 +50,8 @@ const ItemsList = () => {
     userDetails,
     itemListFilters,
     setuserDeails,
+    itemListFilterModalopen,
+    setItemListFilterModalopen,
   } = useStates()
 
   const CookiesData = () => {
@@ -230,6 +232,10 @@ const ItemsList = () => {
     )
   }
 
+  const handleOpenChange = (newOpen) => {
+    setItemListFilterModalopen(newOpen)
+  }
+
   return (
     <>
       <Wrapper>
@@ -244,6 +250,8 @@ const ItemsList = () => {
                   Sort
                 </Button>
                 <Popover
+                  open={itemListFilterModalopen}
+                  onOpenChange={handleOpenChange}
                   content={ListFilterModel}
                   placement='leftTop'
                   trigger='click'
@@ -256,14 +264,26 @@ const ItemsList = () => {
               </TopRightContainer>
             </TopContainer>
             <MiddleContainer>
-              <Tag>
-                <div className='text'>Progress : L1,L2</div>
-                <RxCross2 className='icon' />
-              </Tag>
-              <Tag>
-                <div className='text'>Status : All</div>
-                <RxCross2 className='icon' />
-              </Tag>
+              {itemListFilters.itemType && (
+                <Tag>
+                  <div className='text'>
+                    Item Type : {itemListFilters.itemType}
+                  </div>
+                  <RxCross2 className='icon' />
+                </Tag>
+              )}
+              {itemListFilters.level && (
+                <Tag>
+                  <div className='text'>Progress : {itemListFilters.level}</div>
+                  <RxCross2 className='icon' />
+                </Tag>
+              )}
+              {itemListFilters.status && (
+                <Tag>
+                  <div className='text'>Status : {itemListFilters.status}</div>
+                  <RxCross2 className='icon' />
+                </Tag>
+              )}
             </MiddleContainer>
           </Top>
           <TableContainer>

@@ -58,6 +58,8 @@ const ListFilterModel = () => {
     setItemListFilters,
     userDetails,
     setEndUserRequestList,
+    itemListFilterModalopen,
+    setItemListFilterModalopen,
   } = useStates()
 
   const ValueChange = (field, value) => {
@@ -87,6 +89,10 @@ const ListFilterModel = () => {
     return Cookie
   }
 
+  const hide = () => {
+    setItemListFilterModalopen(!itemListFilterModalopen)
+  }
+
   const ApplyNowClick = async () => {
     const Cookie = CookiesData()
     const UserId = userDetails.roles.includes('L0') ? userDetails.id : ''
@@ -107,6 +113,7 @@ const ListFilterModel = () => {
         Cookie
       )
       setEndUserRequestList(res.data.data)
+      hide()
     } catch (err) {
       console.error('Error fetching items:', err)
     }
