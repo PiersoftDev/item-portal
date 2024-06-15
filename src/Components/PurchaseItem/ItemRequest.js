@@ -449,7 +449,10 @@ const NewRequest = () => {
                   value={newItem.phoneNumber}
                   maxLength={10}
                   onChange={(e) => {
-                    if (!isNaN(e.target.value)) {
+                    if (
+                      !isNaN(e.target.value) &&
+                      !e.target.value.startsWith('')
+                    ) {
                       ValueChange('phoneNumber', e.target.value)
                     }
                   }}
