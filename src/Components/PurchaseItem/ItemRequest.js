@@ -557,7 +557,7 @@ const NewRequest = () => {
                     label: option.Description,
                     value: option.value,
                   }))}
-                  disabled={newItem.productClass}
+                  disabled={newItem.productClass || !newItem.itemGroup}
                   onChange={(value) => {
                     ValueChange('productType', value)
                   }}
@@ -591,7 +591,7 @@ const NewRequest = () => {
                     label: option.Description,
                     value: option.value,
                   }))}
-                  disabled={newItem.productLine}
+                  disabled={newItem.productLine || !newItem.productType}
                   onChange={(value) => {
                     ValueChange('productClass', value)
                     ValueChange(
@@ -628,6 +628,7 @@ const NewRequest = () => {
                     label: option.Description,
                     value: option.value,
                   }))}
+                  disabled={!newItem.productClass}
                   onChange={(value) => {
                     ValueChange('productLine', value)
                     ValueChange(

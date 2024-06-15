@@ -583,7 +583,10 @@ const Level1ItemRequest = () => {
                     label: option.Description,
                     value: option.value,
                   }))}
-                  disabled={level1PendingRequest.productClass}
+                  disabled={
+                    level1PendingRequest.productClass ||
+                    !level1PendingRequest.itemGroup
+                  }
                   onChange={(value) => {
                     ValueChange('productType', value)
                   }}
@@ -620,7 +623,10 @@ const Level1ItemRequest = () => {
                     label: option.Description,
                     value: option.value,
                   }))}
-                  disabled={level1PendingRequest.productLine}
+                  disabled={
+                    level1PendingRequest.productLine ||
+                    !level1PendingRequest.productType
+                  }
                   onChange={(value) => {
                     ValueChange('productClass', value)
                     ValueChange(
@@ -662,6 +668,7 @@ const Level1ItemRequest = () => {
                     label: option.Description,
                     value: option.value,
                   }))}
+                  disabled={!level1PendingRequest.productClass}
                   onChange={(value) => {
                     ValueChange('productLine', value)
                     ValueChange(
