@@ -4,24 +4,25 @@ import styled from 'styled-components'
 import { Navigate, Outlet, useNavigate } from 'react-router-dom'
 import { useStates } from '../utils/StateProvider'
 import TopBar from './Global/TopBar'
+import EndUser from './Roles/EndUser/EndUser'
 
 const SharedLayout = () => {
-  const { userRole } = useStates()
+  // const { userRole } = useStates()
   const navigate = useNavigate()
-  const renderDashboardSection = () => {
-    switch (userRole) {
-      case 'End User':
-        return <Navigate to='end-user' />
-      case 'Manager':
-        return <Navigate to='level-1' />
-      case 'Tax Department':
-        return <Navigate to='level-2' />
-      case 'ERP':
-        return <Navigate to='erp' />
-      default:
-        return <Navigate to='/login' />
-    }
-  }
+  // const renderDashboardSection = () => {
+  //   switch (userRole) {
+  //     case 'End User':
+  //       return <Navigate to='end-user' />
+  //     case 'Manager':
+  //       return <Navigate to='level-1' />
+  //     case 'Tax Department':
+  //       return <Navigate to='level-2' />
+  //     case 'ERP':
+  //       return <Navigate to='erp' />
+  //     default:
+  //       return <Navigate to='/login' />
+  //   }
+  // }
 
   const idToken = localStorage.getItem('idToken')
   if (!idToken) {
@@ -32,10 +33,9 @@ const SharedLayout = () => {
     <Wrapper>
       <TopBar />
       <Container>
-        {renderDashboardSection()}
-        {/* <ItemsList /> */}
+        <EndUser />
       </Container>
-      <Outlet />
+      {/* <Outlet /> */}
     </Wrapper>
   )
 }
@@ -58,7 +58,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 0 1rem;
+  margin: 0;
   transition: all 0.5s ease-in-out;
 `
 

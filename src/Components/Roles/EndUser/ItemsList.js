@@ -720,77 +720,6 @@ const Wrapper = styled.div`
   .ant-select {
     width: 20vw;
   }
-
-  .custom-table {
-    .ant-table {
-      border-radius: 1rem;
-      overflow-x: auto;
-      height: 100%;
-      width: 99%;
-      min-width: 1110px;
-      max-height: 57vh;
-      @media screen and (min-height: 698px) {
-        max-height: 70vh;
-        min-width: 1250px;
-      }
-    }
-
-    .ant-table-container {
-      .ant-table-body {
-        &::-webkit-scrollbar {
-          width: 0.2rem;
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background-color: #9dacbd;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-
-        &::-webkit-scrollbar-track {
-          background-color: #e6f3f8;
-          border-radius: 5px;
-        }
-      }
-    }
-
-    .ant-table-thead th {
-      font-size: 0.7rem;
-      font-weight: 600;
-      font-family: 'Roboto', sans-serif;
-      padding: 0.4rem;
-      text-align: center;
-      white-space: nowrap;
-      color: #3b4040;
-      letter-spacing: 0.5px;
-      position: sticky;
-      // background: #9dacbd;
-      width: auto !important;
-      top: 0;
-      text-indent: 0.5rem;
-      z-index: 1;
-    }
-    .ant-table-tbody td {
-      font-size: 0.8rem;
-      font-weight: 400;
-      font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
-        Helvetica, Arial, sans-serif;
-      padding: 0.5rem;
-      width: auto !important;
-      min-width: 15vw;
-      white-space: nowrap;
-      color: #3c3836;
-      cursor: pointer;
-      text-align: center;
-      z-index: 0;
-      // text-indent: -0.8rem;
-    }
-
-    .ant-table-tbody tr:hover {
-      background: #f2f4f5;
-      opacity: 100%;
-    }
-  }
 `
 const BodyContainer = styled.div`
   position: relative;
@@ -916,6 +845,10 @@ const TableRow = styled.tr`
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    &:last-child {
+      min-width: 80px !important;
+      max-width: 80px !important;
+    }
   }
   td {
     font-size: 0.7rem;
@@ -941,6 +874,10 @@ const TableRow = styled.tr`
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+    &:last-child {
+      min-width: 80px !important;
+      max-width: 80px !important;
     }
   }
   /* .task-progress {

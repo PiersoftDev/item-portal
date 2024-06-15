@@ -15,12 +15,12 @@ const App = () => {
       <StateProvider>
         <Routes>
           <Route path='/login' element={<Login />} />
-          <Route path='/' element={<SharedLayout />}>
-            <Route path='end-user' element={<EndUser />} />
+          <Route path='/home' element={<SharedLayout />} />
+          {/* <Route path='end-user' element={<EndUser />} />
             <Route path='level-1' element={<Level1 />} />
             <Route path='level-2' element={<Level2 />} />
-            <Route path='erp' element={<ERP />} />
-          </Route>
+            <Route path='erp' element={<ERP />} /> */}
+
           <Route path='*' element={<Error />} />
         </Routes>
       </StateProvider>
