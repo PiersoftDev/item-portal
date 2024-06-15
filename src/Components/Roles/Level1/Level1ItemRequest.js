@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { AutoComplete, Checkbox, Input, Modal, Select, message } from 'antd'
 import { useStates } from '../../../utils/StateProvider'
@@ -11,7 +11,7 @@ const Level1ItemRequest = () => {
   const {
     errors,
     endUserRequestList,
-    setEndUserRequestList,
+    // setEndUserRequestList,
     level1PendingRequest,
     setLevel1PendingRequest,
     Requestdependencies,
@@ -23,7 +23,7 @@ const Level1ItemRequest = () => {
   const [loading, setLoading] = useState(false)
   const [rejectReason, setRejectReason] = useState('')
   const [rejectReasonModal, setRejectReasonModal] = useState(false)
-  const [projectoptions, setProjectOptions] = useState([])
+  // const [projectoptions, setProjectOptions] = useState([])
   const [itemgroupoptions, setItemGroupOptions] = useState([])
   const [productTypeoptions, setProductTypeOptions] = useState([])
   const [productClassoptions, setProductClassOptions] = useState([])
@@ -408,6 +408,8 @@ const Level1ItemRequest = () => {
         console.log(response.data)
         setLevel1PendingRequest({})
         setLevel1RequestModal(false)
+        window.location.reload()
+        cancelRejectConfirmation()
         // setEndUserRequestList([...endUserRequestList, response.data.data])
       } catch (err) {
         console.log(err)

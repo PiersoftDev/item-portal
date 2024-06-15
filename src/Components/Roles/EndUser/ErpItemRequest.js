@@ -176,6 +176,7 @@ const ErpItemRequest = () => {
               : record
           )
         )
+        cancelRejectConfirmation()
         // setEndUserRequestList([...endUserRequestList, response.data.data])
       } catch (err) {
         console.log(err)
