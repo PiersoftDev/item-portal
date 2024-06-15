@@ -191,6 +191,8 @@ const StateProvider = ({ children }) => {
     searchTerm: '',
   })
 
+  const [itemListFilterModalopen, setItemListFilterModalopen] = useState(false)
+
   return (
     <States.Provider
       value={{
@@ -270,6 +272,8 @@ const StateProvider = ({ children }) => {
         setCreateUser,
         itemListFilters,
         setItemListFilters,
+        itemListFilterModalopen,
+        setItemListFilterModalopen,
       }}
     >
       {children}
