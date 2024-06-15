@@ -41,7 +41,7 @@ const LoginForm = () => {
   useEffect(() => {
     const AccessToken = localStorage.getItem('accessToken')
     if (AccessToken) {
-      navigate('/')
+      navigate('/home')
     }
   }, [])
 
@@ -210,7 +210,7 @@ const InputContainer = styled.div`
     }
     &::placeholder {
       color: #444;
-      font-weight: 600;
+      font-weight: 400;
     }
   }
   button {

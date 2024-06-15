@@ -15,7 +15,7 @@ import { MdPlace } from 'react-icons/md'
 import { FaPerson, FaPhone } from 'react-icons/fa6'
 // import { GoDotFill } from 'react-icons/go'
 import { RxCross2 } from 'react-icons/rx'
-import NoDataFound from './NodataFound.png'
+import NoDataFound from './NoData.gif'
 
 import { Dropdown, Modal, Popover, message } from 'antd'
 // import CustomModal from '../../Global/CustomModal'
@@ -1002,7 +1002,7 @@ const DataNotFound = styled.div`
   position: absolute;
   padding: 1rem;
   left: 40%;
-  top: 0;
+  top: 3rem;
   font-size: 0.8rem;
   letter-spacing: 0.8px;
   display: flex;
