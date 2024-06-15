@@ -69,16 +69,6 @@ const ListFilterModel = () => {
     }))
   }
 
-  const ResetClick = () => {
-    ApplyNowClick()
-    setItemListFilters({
-      itemType: '',
-      status: '',
-      level: '',
-      searchTerm: '',
-    })
-  }
-
   const CookiesData = () => {
     const accessToken = localStorage.getItem('accessToken')
     const Cookie = {
@@ -118,6 +108,39 @@ const ListFilterModel = () => {
       console.error('Error fetching items:', err)
     }
   }
+
+  const ResetClick = async () => {
+    await setItemListFilters({
+      itemType: '',
+      status: '',
+      level: '',
+      searchTerm: '',
+    })
+    const Cookie = CookiesData()
+    const UserId = userDetails.roles.includes('L0') ? userDetails.id : ''
+    const isAdmin = userDetails?.roles?.includes('Admin') ? true : false
+    try {
+      const res = await axios.post(
+        ' https://mdm.p360.build/v1/mdm/purchase-item/filter',
+        {
+          itemType: '',
+          status: '',
+          level: '',
+          searchTerm: '',
+          creatorId: UserId,
+          pageNo: 0,
+          pageSize: 100,
+          isAdmin: isAdmin,
+        },
+        Cookie
+      )
+      setEndUserRequestList(res.data.data)
+      hide()
+    } catch (err) {
+      console.error('Error fetching items:', err)
+    }
+  }
+
   return (
     <FilterModelWrapper>
       <FilterModelHeaderConatiner>
