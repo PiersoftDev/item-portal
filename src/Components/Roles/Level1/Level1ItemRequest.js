@@ -803,6 +803,9 @@ const Level1ItemRequest = () => {
                   }}
                   // disabled
                 />
+                {errors.detailedDescription && (
+                  <ErrorMessage>{errors.detailedDescription}</ErrorMessage>
+                )}
               </Container>
             </GridContainer>
           </Section>
