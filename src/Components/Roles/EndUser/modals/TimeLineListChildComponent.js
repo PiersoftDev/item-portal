@@ -18,6 +18,16 @@ const actionColors = {
   },
 }
 
+function camelCaseToProperString(camelCaseStr) {
+  // Replace camel case with space and lowercase
+  let properStr = camelCaseStr.replace(/([A-Z])/g, ' $1').toLowerCase()
+
+  // Capitalize the first letter of the string
+  properStr = properStr.charAt(0).toUpperCase() + properStr.slice(1)
+
+  return properStr
+}
+
 const TimeLineListChildComponent = ({
   actions,
   author,
@@ -56,6 +66,12 @@ const TimeLineListChildComponent = ({
 
           right = typeof right === 'boolean' ? right.toString() : right
 
+          let field = camelCaseToProperString(statusField)
+
+          if (statusField.includes('id')) {
+            return
+          }
+
           if (!left && !right) {
             return
           }
@@ -64,7 +80,7 @@ const TimeLineListChildComponent = ({
             return (
               <li key={index} className="updated-event-action">
                 <span> Updated </span>
-                <span className="updated-property">{statusField} </span>
+                <span className="updated-property">{field} </span>
                 <span>from</span>{' '}
                 <Tag style={actionColors['deleted']}>{left}</Tag>
                 <span>to</span>{' '}
@@ -78,7 +94,7 @@ const TimeLineListChildComponent = ({
             return (
               <li key={index} className="updated-event-action">
                 <span> Added value for </span>
-                <span className="updated-property">{statusField} </span>
+                <span className="updated-property">{field} </span>
                 {/* <span>from</span>{' '}
                 <Tag style={actionColors['deleted']}>{left}</Tag> */}
                 <span>is</span>{' '}
