@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 import { useNavigate } from 'react-router-dom'
@@ -24,10 +24,12 @@ const SharedLayout = () => {
   //   }
   // }
 
-  const idToken = localStorage.getItem('idToken')
-  if (!idToken) {
-    navigate('/login')
-  }
+  useEffect(() => {
+    const idToken = localStorage.getItem('idToken')
+    if (!idToken) {
+      navigate('/login')
+    }
+  }, [])
 
   return (
     <Wrapper>

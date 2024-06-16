@@ -231,14 +231,18 @@ const NewRequest = () => {
         UOMs: UOM,
       })
 
-      setUOMOptions(
-        UOM.map((record) => ({
-          Description: `${record.unit} - ${record.unitDescription}`,
-          uomId: record.uomId,
-          value: record.unitDescription,
-          id: record.unit,
-        }))
-      )
+      const uniqueOptions = new Map()
+      UOM.forEach((record) => {
+        if (!uniqueOptions.has(record.unitDescription)) {
+          uniqueOptions.set(record.unitDescription, {
+            Description: `${record.unit} - ${record.unitDescription}`,
+            uomId: record.uomId,
+            value: record.unitDescription,
+            id: record.unit,
+          })
+        }
+      })
+      setUOMOptions([...uniqueOptions.values()])
     }
     fetchDependencies()
   }, [newItem.uomDesc])

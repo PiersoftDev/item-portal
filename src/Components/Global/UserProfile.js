@@ -58,7 +58,7 @@ const UserProfile = () => {
           <FaMobileAlt size={12} />
           <Value>{userDetails.mobileNumber}</Value>
         </InfoContent>
-        {userDetails.projects?.length === 0 ? (
+        {/* {userDetails.projects?.length === 0 ? (
           <InfoContent>
             <FaSearchLocation size={12} />
             {userDetails.projects.map((project) => {
@@ -67,7 +67,7 @@ const UserProfile = () => {
           </InfoContent>
         ) : (
           ''
-        )}
+        )} */}
       </DetailesContainer>
       <Button onClick={logoutClick}>Logout</Button>
     </Wrapper>
