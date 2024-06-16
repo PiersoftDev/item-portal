@@ -23,6 +23,7 @@ const TimeLineListChildComponent = ({
   author,
   commitId,
   commitDate,
+  action,
 }) => {
   let date = dayjs(commitDate).format('MMMM D, YYYY')
   let time = dayjs(commitDate).format('HH:mm')
@@ -32,21 +33,60 @@ const TimeLineListChildComponent = ({
   return (
     <Wrapper>
       <div className="event-header">
-        <div className="event-author">
-          <span>{author}</span> updated the record
-        </div>
+        {action === 'IS_CREATED' ? (
+          <div className="event-author">
+            <span>{author}</span> created the record
+          </div>
+        ) : (
+          <div className="event-author">
+            <span>{author}</span> updated the record
+          </div>
+        )}
+
         <div className="event-time">
           <span>{dateOfCommit}</span>
         </div>
       </div>
 
       <ul className="event-body-container">
-        {actions.map((action, index) => {
-          let { propertyName, left, right } = action
+        {actions.map((act, index) => {
+          let { previousValue: left, currentValue: right, statusField } = act
 
           left = typeof left === 'boolean' ? left.toString() : left
 
           right = typeof right === 'boolean' ? right.toString() : right
+
+          if (!left && !right) {
+            return
+          }
+
+          if (left && right) {
+            return (
+              <li key={index} className="updated-event-action">
+                <span> Updated </span>
+                <span className="updated-property">{statusField} </span>
+                <span>from</span>{' '}
+                <Tag style={actionColors['deleted']}>{left}</Tag>
+                <span>to</span>{' '}
+                <Tag style={actionColors['created']}>{right}</Tag>
+                {/* {`Updated the  ${propertyName}  from  ${left} to ${right} `} */}
+              </li>
+            )
+          }
+
+          if (!left && right) {
+            return (
+              <li key={index} className="updated-event-action">
+                <span> Added value for </span>
+                <span className="updated-property">{statusField} </span>
+                {/* <span>from</span>{' '}
+                <Tag style={actionColors['deleted']}>{left}</Tag> */}
+                <span>is</span>{' '}
+                <Tag style={actionColors['created']}>{right}</Tag>
+                {/* {`Updated the  ${propertyName}  from  ${left} to ${right} `} */}
+              </li>
+            )
+          }
 
           //   if (propertyName === 'isDeleted') {
           //     return (
@@ -108,5 +148,9 @@ const Wrapper = styled.div`
 
   .event-body-container {
     margin-left: -0.5rem;
+  }
+
+  .updated-property {
+    font-weight: 500;
   }
 `
