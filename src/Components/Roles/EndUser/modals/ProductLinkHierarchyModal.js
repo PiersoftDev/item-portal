@@ -1,5 +1,6 @@
 import { Modal } from 'antd'
 import React from 'react'
+import HierachyComponentsContainer from './HierachyComponentsContainer'
 
 function ProductLinkHierarchyModal({
   openProductLinkHierarchy,
@@ -19,10 +20,10 @@ function ProductLinkHierarchyModal({
       onCancel={handleCancel}
       footer={null}
       destroyOnClose={true}
+      centered={true}
+      width="80vw"
     >
-      <p>Some contents...</p>
-      <p>Some contents...</p>
-      <p>Some contents...</p>
+      <HierachyComponentsContainer />
     </Modal>
   )
 }

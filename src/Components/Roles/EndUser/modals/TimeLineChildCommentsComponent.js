@@ -3,24 +3,31 @@ import dayjs from 'dayjs'
 import styled from 'styled-components'
 
 function TimeLineChildCommentsComponent({
-  commentId,
-  comment,
   author,
-  commitDate,
+  commentType,
+  date,
+  field,
+  txt,
+  level,
 }) {
-  let date = dayjs(commitDate).format('MMMM D, YYYY')
-  let time = dayjs(commitDate).format('HH:mm')
+  let dateFormatValue = dayjs(date).format('MMMM D, YYYY')
+  let timeFormatValue = dayjs(date).format('HH:mm')
 
-  const dateOfCommit = `${date} at ${time}`
+  const dateOfCommit = `${dateFormatValue} at ${timeFormatValue}`
+
+  let authorMsg = `${author} ${commentType} at level ${level}`
 
   return (
     <Wrapper>
       <div className="event-header">
-        <span className="event-author">{author}</span>
-        <span className="event-time">{dateOfCommit}</span>
+        <div className="event-author-header">
+          <span className="event-author">{authorMsg} </span>
+        </div>
+
+        <div className="event-time">{dateOfCommit}</div>
       </div>
 
-      <div className="cmt-msg">{comment}</div>
+      <div className="cmt-msg">{txt}</div>
 
       {/* <ul className="event-body-container">
         {actions.map((action, index) => {
@@ -34,10 +41,13 @@ function TimeLineChildCommentsComponent({
 export default TimeLineChildCommentsComponent
 
 const Wrapper = styled.div`
-  .event-header {
+  /* .event-header {
     display: flex;
     align-items: baseline;
     gap: 0.2rem;
+  } */
+
+  .event-author-header {
   }
 
   .event-author {
@@ -50,6 +60,7 @@ const Wrapper = styled.div`
     color: #627d98;
     font-size: 0.7rem;
     font-weight: 500;
+    margin-top: -0.3rem;
   }
 
   .event-body-container {
@@ -60,5 +71,6 @@ const Wrapper = styled.div`
     font-weight: 500;
     color: #102a43;
     font-size: 0.9rem;
+    margin-top: 0.2rem;
   }
 `

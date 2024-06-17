@@ -16,15 +16,6 @@ function CommentsModal({
 
   let { comments } = selectedRecord || []
 
-  comments = comments.map((comment, index) => {
-    return {
-      commentId: index,
-      comment: comment,
-      author: 'Ramesh Ramathota',
-      commitDate: '2024-06-15 11:21:36',
-    }
-  })
-
   const recordIdComponent = (
     <div>
       Comments for the record : <Tag color="green"> {selectedRecord?.id}</Tag>

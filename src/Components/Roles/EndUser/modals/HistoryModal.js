@@ -51,24 +51,39 @@ function HistoryModal({
         let formattedCommitHistory = {}
 
         if (commitData?.length > 0) {
-          let { commitId, author, commitDate } = commitData[0]
+          let { commitId, author, commitDate, action } = commitData[0]
           formattedCommitHistory.commitId = commitId
           formattedCommitHistory.author = author
           formattedCommitHistory.commitDate = commitDate
+          formattedCommitHistory.action = action
         }
-        let actions = commitData
-          .filter(
-            ({ statusField }) =>
-              !getFirstStringInSingleQuotes(statusField)?.includes('Id')
-          )
-          .map(({ statusField }) => statusField)
 
-        console.log(actions)
+        let isCreated = false
+        let actions = commitData
+          .filter(({ statusField }) => !statusField?.includes('Id'))
+          .map(({ statusField, previousValue, currentValue }) => {
+            if (!previousValue && !currentValue) {
+              isCreated = true
+            }
+
+            return {
+              statusField,
+              previousValue,
+              currentValue,
+            }
+          })
+
+        if (isCreated) {
+          formattedCommitHistory.action = 'IS_CREATED'
+        }
+
         formattedCommitHistory.actions = actions
         acc.push(formattedCommitHistory)
         return acc
       }, [])
       .sort((a, b) => dayjs(a.commitDate).isBefore(dayjs(b.commitDate)))
+
+    console.log(changeLogList)
 
     return changeLogList
   }
@@ -92,8 +107,7 @@ function HistoryModal({
       footer={null}
       centered={true}
       destroyOnClose={true}
-
-      //   width={'800px'}
+      width={'800px'}
     >
       <Wrapper>
         <Timeline
