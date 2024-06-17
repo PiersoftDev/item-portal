@@ -375,7 +375,7 @@ const ItemsList = () => {
                   endUserRequestList.map((record) => (
                     <TableRow
                       key={record.id}
-                      // onClick={() => Level1RequestModalOpen(record)}
+                      onClick={() => Level1RequestModalOpen(record)}
                     >
                       {/* {columns.map((data) => (
                       <>
@@ -493,23 +493,23 @@ const ItemsList = () => {
                           placement='left'
                           menu={{
                             items: [
+                              // {
+                              //   key: '1',
+                              //   label: (
+                              //     <Actions
+                              //       onClick={() =>
+                              //         Level1RequestModalOpen(record)
+                              //       }
+                              //     >
+                              //       <span>
+                              //         <FaEye />
+                              //       </span>
+                              //       <ActionsTitles>View Record</ActionsTitles>
+                              //     </Actions>
+                              //   ),
+                              // },
                               {
                                 key: '1',
-                                label: (
-                                  <Actions
-                                    onClick={() =>
-                                      Level1RequestModalOpen(record)
-                                    }
-                                  >
-                                    <span>
-                                      <FaEye />
-                                    </span>
-                                    <ActionsTitles>View Record</ActionsTitles>
-                                  </Actions>
-                                ),
-                              },
-                              {
-                                key: '2',
                                 label: (
                                   <Actions
                                     onClick={() => {
@@ -524,7 +524,7 @@ const ItemsList = () => {
                                 ),
                               },
                               {
-                                key: '3',
+                                key: '2',
                                 label: (
                                   <Actions
                                     onClick={() => {
@@ -539,7 +539,7 @@ const ItemsList = () => {
                                 ),
                               },
                               {
-                                key: '4',
+                                key: '3',
                                 label: (
                                   <Actions
                                     onClick={() => openHistoryModal(record)}
@@ -552,7 +552,7 @@ const ItemsList = () => {
                                 ),
                               },
                               {
-                                key: '5',
+                                key: '4',
                                 label: (
                                   <Actions
                                     onClick={() =>
