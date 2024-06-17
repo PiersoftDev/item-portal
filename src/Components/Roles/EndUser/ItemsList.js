@@ -504,7 +504,7 @@ const ItemsList = () => {
                                     <span>
                                       <FaEye />
                                     </span>
-                                    <span>View Record</span>
+                                    <ActionsTitles>View Record</ActionsTitles>
                                   </Actions>
                                 ),
                               },
@@ -519,7 +519,7 @@ const ItemsList = () => {
                                     <span>
                                       <HiTemplate />
                                     </span>
-                                    <span>Similar Items</span>
+                                    <ActionsTitles>Similar Items</ActionsTitles>
                                   </Actions>
                                 ),
                               },
@@ -534,7 +534,7 @@ const ItemsList = () => {
                                     <span>
                                       <LiaComments />
                                     </span>
-                                    <span>Comments</span>
+                                    <ActionsTitles>Comments</ActionsTitles>
                                   </Actions>
                                 ),
                               },
@@ -547,7 +547,7 @@ const ItemsList = () => {
                                     <span>
                                       <FaHistory />
                                     </span>
-                                    <span>History</span>
+                                    <ActionsTitles>History</ActionsTitles>
                                   </Actions>
                                 ),
                               },
@@ -562,7 +562,9 @@ const ItemsList = () => {
                                     <span>
                                       <TbHierarchy2 />
                                     </span>
-                                    <span>Product Link Hierarchy</span>
+                                    <ActionsTitles>
+                                      Product Link Hierarchy
+                                    </ActionsTitles>
                                   </Actions>
                                 ),
                               },
@@ -1199,4 +1201,10 @@ const Actions = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+`
+
+const ActionsTitles = styled.div`
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+  color: #333;
 `
