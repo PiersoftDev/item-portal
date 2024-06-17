@@ -57,13 +57,17 @@ const NewRequest = () => {
         projects: project,
       })
 
-      setProjectOptions(
-        project.map((record) => ({
-          Description: `${record.id} - ${record.description}`,
-          value: record.description,
-          id: record.id,
-        }))
-      )
+      const uniqueOptions = new Map()
+      project.forEach((record) => {
+        if (!uniqueOptions.has(record.description)) {
+          uniqueOptions.set(record.description, {
+            Description: `${record.id} - ${record.description}`,
+            value: record.description,
+            id: record.id,
+          })
+        }
+      })
+      setProjectOptions([...uniqueOptions.values()])
     }
     fetchDependencies()
   }, [newItem.site])
