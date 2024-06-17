@@ -8,29 +8,6 @@ import axios from 'axios'
 
 const { Option } = Select
 
-const options = [
-  {
-    label: 'L0(End User)',
-    value: 'L0',
-    color: 'green',
-  },
-  {
-    label: 'L1(Purchase)',
-    value: 'L1',
-  },
-  {
-    label: 'L2(Taxation)',
-    value: 'L2',
-  },
-  {
-    label: 'L3(PMD)',
-    value: 'L3',
-  },
-  {
-    label: 'L4(ERP)',
-    value: 'L4',
-  },
-]
 const tagRender = (props) => {
   const { color, label, value, closable, onClose } = props
   const onPreventMouseDown = (event) => {
@@ -185,8 +162,8 @@ const ListFilterModel = () => {
           className='fields'
           // mode='multiple'
           tagRender={tagRender}
-          color={options.color}
-          options={options}
+          // color={options.color}
+          // options={options}
           value={itemListFilters.level}
           onChange={(value) => ValueChange('level', value)}
         >
@@ -217,6 +194,7 @@ const FilterModelWrapper = styled.div`
   flex-direction: column;
   gap: 5px;
   width: 20vw;
+  min-width: 200px;
   max-width: 250px;
   box-sizing: border-box;
   padding: 0rem !important;

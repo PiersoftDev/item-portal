@@ -129,6 +129,41 @@ const StateProvider = ({ children }) => {
   const [errors, setErrors] = useState(InitialErrors)
   const [newItem, setNewItem] = useState(InitialItem)
 
+  const IntialSubConItem = {
+    siteId: '',
+    site: '',
+    requesterId: '',
+    requester: '',
+    phoneNumber: '',
+    requirementDesc: '',
+    description: '',
+    itemType: 'subcontracting',
+    itemGroup: '',
+    projectOrderSystem: 'mnl',
+    pricePolicy: 'purchasePrice',
+    groupCode: '',
+    currency: 'INR',
+    controlCode: '',
+    controlFunction: 'costObject/controlCode',
+    costComponent: '',
+    commodityCode: '',
+    costDetermination: 'quantity',
+    inventoryUnit: '',
+    timeUnit: '',
+    purchasePrice: '',
+    purchasePriceGroup: '',
+    purchaseStatisticsGroup: '',
+    salesPrice: '',
+    salesPriceGroup: '',
+    salesStatisticsGroup: '',
+    registerProgress: 'yes',
+    usedInSchedule: 'yes',
+    billabale: 'yes',
+    detailDescription: '',
+  }
+
+  const [subConItem, setSubConItem] = useState(IntialSubConItem)
+
   const [endUserRequestList, setEndUserRequestList] = useState([])
 
   //Level1 States :
@@ -193,6 +228,9 @@ const StateProvider = ({ children }) => {
   })
 
   const [itemListFilterModalopen, setItemListFilterModalopen] = useState(false)
+
+  const [subConItemRequestModalopen, setSubConItemRequestModalopen] =
+    useState(false)
 
   return (
     <States.Provider
@@ -275,6 +313,11 @@ const StateProvider = ({ children }) => {
         setItemListFilters,
         itemListFilterModalopen,
         setItemListFilterModalopen,
+        subConItemRequestModalopen,
+        setSubConItemRequestModalopen,
+        subConItem,
+        setSubConItem,
+        IntialSubConItem,
       }}
     >
       {children}

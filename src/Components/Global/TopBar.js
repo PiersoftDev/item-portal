@@ -15,6 +15,7 @@ import { BiSolidPurchaseTag } from 'react-icons/bi'
 import { FaFileContract } from 'react-icons/fa6'
 import UserCreationModal from './UserCreationModal'
 import UserProfile from './UserProfile'
+import SubConItemRequest from '../SubConItem/SubConItemRequest'
 
 const TopBar = () => {
   // const navigate = useNavigate()
@@ -29,6 +30,8 @@ const TopBar = () => {
     createUserModal,
     setCreateUserModal,
     userDetails,
+    subConItemRequestModalopen,
+    setSubConItemRequestModalopen,
   } = useStates()
 
   // const [endUserRequestModalOpen, setEndUserRequestModalOpen] = useState(false)
@@ -44,6 +47,11 @@ const TopBar = () => {
 
   const CreateUserClick = () => {
     setCreateUserModal(!createUserModal)
+    hide()
+  }
+
+  const SubconItemModalClick = () => {
+    setSubConItemRequestModalopen(!subConItemRequestModalopen)
     hide()
   }
 
@@ -78,18 +86,14 @@ const TopBar = () => {
             <Text>User</Text>
           </CreateButton>
         )}
-        {userDetails.roles?.some((role) =>
-          ['Admin', 'L0'].includes(role)
-        ) && (
+        {userDetails.roles?.some((role) => ['Admin', 'L0'].includes(role)) && (
           <CreateButton onClick={RequestButtonClick}>
             <BiSolidPurchaseTag size={10} />
             <Text>Purchase Item</Text>
           </CreateButton>
         )}
-        {userDetails.roles?.some((role) =>
-          ['Admin', 'L0'].includes(role)
-        ) && (
-          <CreateButton>
+        {userDetails.roles?.some((role) => ['Admin', 'L0'].includes(role)) && (
+          <CreateButton onClick={SubconItemModalClick}>
             <FaFileContract size={10} />
             <Text>SubCon Item</Text>
           </CreateButton>
@@ -166,6 +170,14 @@ const TopBar = () => {
           footer={false}
         >
           <NewRequest />
+        </ItemRequestCustomModal>
+        <ItemRequestCustomModal
+          title='ITEM REQUEST'
+          open={subConItemRequestModalopen}
+          closable={false}
+          footer={false}
+        >
+          <SubConItemRequest />
         </ItemRequestCustomModal>
       </Container>
       <ProductCombinationCustomModal

@@ -6,15 +6,15 @@ import axios from 'axios'
 
 const { Option } = Select
 
-const NewRequest = () => {
+const SubConItemRequest = () => {
   const {
     errors,
     setErrors,
-    newItem,
-    setNewItem,
+    subConItem,
+    setSubConItem,
     InitialErrors,
-    InitialItem,
-    setEndUserRequestOpen,
+    IntialSubConItem,
+    setSubConItemRequestModalopen,
     endUserRequestList,
     setEndUserRequestList,
     Requestdependencies,
@@ -26,9 +26,6 @@ const NewRequest = () => {
   const [projectoptions, setProjectOptions] = useState([])
   const [employeeOptions, setEmployeeOptions] = useState([])
   const [itemgroupoptions, setItemGroupOptions] = useState([])
-  const [productTypeoptions, setProductTypeOptions] = useState([])
-  const [productClassoptions, setProductClassOptions] = useState([])
-  const [productLineoptions, setProductLineOptions] = useState([])
   const [costComponentoptions, setCostComponentOptions] = useState([])
   const [uomOptions, setUOMOptions] = useState([])
   const [groupCodeOptions, setGroupCodeOptions] = useState([])
@@ -48,7 +45,7 @@ const NewRequest = () => {
       const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/project/search`,
-        { searchTerm: newItem.site ? newItem.site : '' },
+        { searchTerm: subConItem.site ? subConItem.site : '' },
         Cookie
       )
       let project = response?.data?.data || []
@@ -66,7 +63,7 @@ const NewRequest = () => {
       )
     }
     fetchDependencies()
-  }, [newItem.site])
+  }, [subConItem.site])
 
   useEffect(() => {
     const fetchDependencies = async () => {
@@ -74,7 +71,7 @@ const NewRequest = () => {
         const Cookie = CookiesData()
         const response = await axios.post(
           'https://mdm.p360.build/v1/mdm/employee/search/0/50',
-          { searchTerm: newItem.requester || '' },
+          { searchTerm: subConItem.requester || '' },
           Cookie
         )
         const empData = response?.data?.data || []
@@ -103,15 +100,15 @@ const NewRequest = () => {
     }
 
     fetchDependencies()
-  }, [newItem.requester])
+  }, [subConItem.requester])
 
   useEffect(() => {
     const fetchDependencies = async () => {
-      if (newItem.itemType) {
+      if (subConItem.itemType) {
         const Cookie = CookiesData()
         const response = await axios.post(
-          `https://mdm.p360.build/v1/mdm/product-link/item-group/${newItem.itemType}`,
-          { searchTerm: newItem.itemGroup ? newItem.itemGroup : '' },
+          `https://mdm.p360.build/v1/mdm/product-link/item-group/${subConItem.itemType}`,
+          { searchTerm: subConItem.itemGroup ? subConItem.itemGroup : '' },
           Cookie
         )
         let itemGroup = response?.data?.data || []
@@ -131,98 +128,14 @@ const NewRequest = () => {
     }
 
     fetchDependencies()
-  }, [newItem.itemGroup])
-
-  useEffect(() => {
-    const fetchDependencies = async () => {
-      if (newItem.itemGroupId) {
-        const Cookie = CookiesData()
-        const response = await axios.post(
-          `https://mdm.p360.build/v1/mdm/product-link/product-type/${newItem.itemGroupId}`,
-          { searchTerm: newItem.productType ? newItem.productType : '' },
-          Cookie
-        )
-        let productType = response?.data?.data || []
-        setRequestDependencies({
-          ...Requestdependencies,
-          productTypes: productType,
-        })
-
-        setProductTypeOptions(
-          productType.map((record) => ({
-            Description: `${record.id} - ${record.description}`,
-            value: record.description,
-            id: record.id,
-          }))
-        )
-      }
-    }
-
-    fetchDependencies()
-  }, [newItem.productType, newItem.itemGroup, newItem.itemGroupId])
-
-  useEffect(() => {
-    const fetchDependencies = async () => {
-      if (newItem.productTypeId) {
-        const Cookie = CookiesData()
-        const response = await axios.post(
-          `https://mdm.p360.build/v1/mdm/product-link/product-class/${newItem.productTypeId}`,
-          { searchTerm: newItem.productClass ? newItem.productClass : '' },
-          Cookie
-        )
-        let productClass = response?.data?.data || []
-        setRequestDependencies({
-          ...Requestdependencies,
-          productClasses: productClass,
-        })
-
-        setProductClassOptions(
-          productClass.map((record) => ({
-            Description: `${record.id} - ${record.description}`,
-            value: record.description,
-            id: record.id,
-          }))
-        )
-      }
-    }
-
-    fetchDependencies()
-  }, [newItem.productClass, newItem.productTypeId, newItem.productType])
-
-  useEffect(() => {
-    const fetchDependencies = async () => {
-      if (newItem.productClassId) {
-        const Cookie = CookiesData()
-        const response = await axios.post(
-          `https://mdm.p360.build/v1/mdm/product-link/product-line/${newItem.productClassId}`,
-          { searchTerm: newItem.productLine ? newItem.productLine : '' },
-          Cookie
-        )
-        let productLine = response?.data?.data || []
-        setRequestDependencies({
-          ...Requestdependencies,
-          productLines: productLine,
-        })
-
-        setProductLineOptions(
-          productLine.map((record) => ({
-            Description: `${record.id} - ${record.description}`,
-            value: record.description,
-            id: record.id,
-          }))
-        )
-      }
-    }
-
-    fetchDependencies()
-  }, [newItem.productLine, newItem.productClassId, newItem.productClass])
+  }, [subConItem.itemGroup])
 
   useEffect(() => {
     const fetchDependencies = async () => {
       const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/uom/search`,
-        { searchTerm: newItem.uomDesc ? newItem.uomDesc : '' },
+        { searchTerm: subConItem.uomDesc ? subConItem.uomDesc : '' },
         Cookie
       )
       let UOM = response?.data?.data || []
@@ -245,7 +158,7 @@ const NewRequest = () => {
       setUOMOptions([...uniqueOptions.values()])
     }
     fetchDependencies()
-  }, [newItem.uomDesc])
+  }, [subConItem.uomDesc])
 
   useEffect(() => {
     const fetchDependencies = async () => {
@@ -253,8 +166,8 @@ const NewRequest = () => {
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/cost-component/fetch-by-cost-component-type/material`,
         {
-          searchTerm: newItem.materialCostComponent
-            ? newItem.materialCostComponent
+          searchTerm: subConItem.materialCostComponent
+            ? subConItem.materialCostComponent
             : '',
         },
         Cookie
@@ -274,14 +187,14 @@ const NewRequest = () => {
       )
     }
     fetchDependencies()
-  }, [newItem.materialCostComponent])
+  }, [subConItem.materialCostComponent])
 
   useEffect(() => {
     const fetchDependencies = async () => {
       const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/group-code/search`,
-        { searchTerm: newItem.groupCode ? newItem.groupCode : '' },
+        { searchTerm: subConItem.groupCode ? subConItem.groupCode : '' },
         Cookie
       )
       let groupCode = response?.data?.data || []
@@ -299,10 +212,10 @@ const NewRequest = () => {
       )
     }
     fetchDependencies()
-  }, [newItem.groupCode])
+  }, [subConItem.groupCode])
 
   const ValueChange = (field, value) => {
-    setNewItem((prevItem) => ({
+    setSubConItem((prevItem) => ({
       ...prevItem,
       [field]: value,
       generatedDescription: `${prevItem?.productClass} ${prevItem?.productLine} ${prevItem.specifications}`,
@@ -311,23 +224,23 @@ const NewRequest = () => {
   }
 
   const CancelRequest = () => {
-    setEndUserRequestOpen(false)
-    setNewItem(InitialItem)
+    setSubConItemRequestModalopen(false)
+    setSubConItem(IntialSubConItem)
     setErrors(InitialErrors)
   }
 
   const SubmitItem = async () => {
     const fieldErrors = {}
-    if (!newItem.site) {
+    if (!subConItem.site) {
       fieldErrors.site = 'Site required'
     }
-    if (!newItem.requester) {
+    if (!subConItem.requester) {
       fieldErrors.requester = 'Requester required'
     }
-    if (!newItem.phoneNumber) {
+    if (!subConItem.phoneNumber) {
       fieldErrors.phoneNumber = 'Phone Number required'
     }
-    if (!newItem.requirementDesc) {
+    if (!subConItem.requirementDesc) {
       fieldErrors.requirementDesc = 'Requirement Description required'
     }
     if (Object.keys(fieldErrors).length > 0) {
@@ -335,22 +248,22 @@ const NewRequest = () => {
       return false
     }
     if (
-      newItem.site &&
-      newItem.requester &&
-      newItem.phoneNumber &&
-      newItem.requirementDesc
+      subConItem.site &&
+      subConItem.requester &&
+      subConItem.phoneNumber &&
+      subConItem.requirementDesc
     ) {
       try {
         const Cookie = CookiesData()
         setLoading(true)
         const response = await axios.post(
           'https://mdm.p360.build/v1/mdm/purchase-item/create',
-          newItem,
+          subConItem,
           Cookie
         )
         console.log(response.data)
-        setNewItem(InitialItem)
-        setEndUserRequestOpen(false)
+        setSubConItem(IntialSubConItem)
+        setSubConItemRequestModalopen(false)
         setEndUserRequestList([response.data.data, ...endUserRequestList])
         message.success('Your Item has been Successfully Submitted')
       } catch (err) {
@@ -378,7 +291,7 @@ const NewRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={newItem.site}
+                  value={subConItem.site}
                   // readOnly={true}
                   placeholder='Select Project'
                   options={projectoptions.map((option) => ({
@@ -391,7 +304,7 @@ const NewRequest = () => {
                   }}
                   onBlur={() => {
                     const OptionValue = projectoptions.find(
-                      (option) => option.value === newItem.site
+                      (option) => option.value === subConItem.site
                     )
                     if (OptionValue) {
                       ValueChange('siteId', OptionValue.id)
@@ -412,7 +325,7 @@ const NewRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={newItem.requester}
+                  value={subConItem.requester}
                   // readOnly={true}
                   placeholder='Select Employee'
                   options={employeeOptions.map((option) => ({
@@ -426,7 +339,7 @@ const NewRequest = () => {
                   }}
                   onBlur={() => {
                     const OptionValue = employeeOptions.find(
-                      (option) => option.value === newItem.requester
+                      (option) => option.value === subConItem.requester
                     )
                     if (OptionValue) {
                       ValueChange('requesterId', OptionValue.id)
@@ -450,7 +363,7 @@ const NewRequest = () => {
                   type='tel'
                   allowClear
                   placeholder='Enter Phone Number'
-                  value={newItem.phoneNumber}
+                  value={subConItem.phoneNumber}
                   maxLength={10}
                   onChange={(e) => {
                     if (
@@ -476,7 +389,7 @@ const NewRequest = () => {
               <textarea
                 type='textarea'
                 placeholder='Enter Your Information about material'
-                value={newItem.requirementDesc}
+                value={subConItem.requirementDesc}
                 rows={3}
                 allowClear
                 onChange={(e) => {
@@ -501,16 +414,28 @@ const NewRequest = () => {
             <SectionTitle>Item Information</SectionTitle>
             <GridContainer>
               <Container>
+                <label>Description</label>
+                <INPUT
+                  placeholder='Description'
+                  type='text'
+                  maxLength={32}
+                  value={subConItem.description}
+                  onChange={(e) => {
+                    ValueChange('description', e.target.value)
+                  }}
+                />
+              </Container>
+              <Container>
                 <label>Item Type *</label>
                 <Select
-                  value={newItem.itemType}
+                  value={subConItem.itemType}
                   onChange={(value) => ValueChange('itemType', value)}
                   placeholder='Select Item Type'
                 >
                   {/* <option value='' selected disabled>
                     Select Item Type
                   </option> */}
-                  <Option value='purchase'>Purchase</Option>
+                  <Option value='subcontracting'>Sub-Contracting</Option>
                 </Select>
               </Container>
               <Container>
@@ -518,20 +443,20 @@ const NewRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={newItem.itemGroup}
+                  value={subConItem.itemGroup}
                   // readOnly={true}
                   placeholder='Enter Item Group'
                   options={itemgroupoptions.map((option) => ({
                     label: option.Description,
                     value: option.value,
                   }))}
-                  disabled={newItem.productType}
+                  disabled={subConItem.productType}
                   onChange={(value) => {
                     ValueChange('itemGroup', value)
                   }}
                   onBlur={() => {
                     const OptionValue = itemgroupoptions.find(
-                      (option) => option.value === newItem.itemGroup
+                      (option) => option.value === subConItem.itemGroup
                     )
                     if (OptionValue) {
                       ValueChange('itemGroupId', OptionValue.id)
@@ -546,70 +471,55 @@ const NewRequest = () => {
                   // onFocus={(e) => FieldFocas('Item Group', 'item-group')}
                 />
               </Container>
-              <Container>
-                <label>Product Type</label>
-                <StyledDependencies
-                  type='text'
-                  allowClear
-                  value={newItem.productType}
-                  // readOnly={true}
-                  placeholder='Enter Product Type'
-                  options={productTypeoptions.map((option) => ({
-                    label: option.Description,
-                    value: option.value,
-                  }))}
-                  disabled={newItem.productClass || !newItem.itemGroup}
-                  onChange={(value) => {
-                    ValueChange('productType', value)
-                  }}
-                  onBlur={() => {
-                    const OptionValue = productTypeoptions.find(
-                      (option) => option.value === newItem.productType
-                    )
-                    if (OptionValue) {
-                      ValueChange('productTypeId', OptionValue.id)
-                      console.log(OptionValue)
-                    } else {
-                      ValueChange('productType', '')
-                      ValueChange('productTypeId', '')
-                    }
-                  }}
-                  popupMatchSelectWidth={true}
-                  popupClassName='auto-complete-dropdown'
-                  maxTagCount={10}
-                />
-              </Container>
 
               <Container>
-                <label>Product Class</label>
+                <label>Project Order System *</label>
+                <Select
+                  value={subConItem.projectOrderSystem}
+                  onChange={(value) => ValueChange('projectOrderSystem', value)}
+                  placeholder='Select Project Order System'
+                >
+                  <Option value='mnl'>Manual</Option>
+                  <Option value='prp'>PRP</Option>
+                  <Option value='prp.purchase'>PRP Warehouse Order</Option>
+                  <Option value='prp.warehouse'>PRP Warehouse Order</Option>
+                </Select>
+              </Container>
+              <Container>
+                <label>Price Policy *</label>
+                <Select
+                  value={subConItem.pricePolicy}
+                  onChange={(value) => ValueChange('pricePolicy', value)}
+                  placeholder='Select Price Policy'
+                >
+                  <Option value='purchasePrice'>Purchase Price</Option>
+                  <Option value='costPrice'>Cost Price</Option>
+                </Select>
+              </Container>
+              <Container>
+                <label>Group Code</label>
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={newItem.productClass}
+                  value={subConItem.groupCode}
                   // readOnly={true}
-                  placeholder='Enter Product Class'
-                  options={productClassoptions.map((option) => ({
+                  placeholder='Group Code'
+                  options={groupCodeOptions.map((option) => ({
                     label: option.Description,
                     value: option.value,
                   }))}
-                  disabled={newItem.productLine || !newItem.productType}
                   onChange={(value) => {
-                    ValueChange('productClass', value)
-                    ValueChange(
-                      'detailedDescription',
-                      `${value} ${newItem.productLine}  ${newItem.specifications}`
-                    )
+                    ValueChange('groupCode', value)
                   }}
                   onBlur={() => {
-                    const OptionValue = productClassoptions.find(
-                      (option) => option.value === newItem.productClass
+                    const OptionValue = groupCodeOptions.find(
+                      (option) => option.value === subConItem.groupCode
                     )
                     if (OptionValue) {
-                      ValueChange('productClassId', OptionValue.id)
-                      console.log(OptionValue)
+                      ValueChange('groupCodeId', OptionValue.id)
                     } else {
-                      ValueChange('productClass', '')
-                      ValueChange('productClassId', '')
+                      ValueChange('groupCodeId', '')
+                      ValueChange('groupCode', '')
                     }
                   }}
                   popupMatchSelectWidth={true}
@@ -618,35 +528,66 @@ const NewRequest = () => {
                 />
               </Container>
               <Container>
-                <label>Product Line</label>
+                <label>Currency</label>
+                <INPUT
+                  placeholder='Currency'
+                  type='text'
+                  value={subConItem.currency}
+                  disabled
+                  onChange={(e) => {
+                    ValueChange('currency', e.target.value)
+                  }}
+                />
+              </Container>
+              <Container>
+                <label>Control Code</label>
+                <INPUT
+                  placeholder='Control Code'
+                  type='text'
+                  value={subConItem.controlCode}
+                  onChange={(e) => {
+                    ValueChange('controlCode', e.target.value)
+                  }}
+                />
+              </Container>
+              <Container>
+                <label>Control Function *</label>
+                <Select
+                  value={subConItem.controlFunction}
+                  onChange={(value) => ValueChange('controlFunction', value)}
+                  placeholder='Select Control Function'
+                >
+                  <Option value='costObject/controlCode'>
+                    Cost Object/Control Code
+                  </Option>
+                  <Option value='controlCode'>Control Code</Option>
+                </Select>
+              </Container>
+              <Container>
+                <label>Cost Component</label>
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={newItem.productLine}
+                  value={subConItem.costComponent}
                   // readOnly={true}
-                  placeholder='Enter Product Line'
-                  options={productLineoptions.map((option) => ({
+                  placeholder='Cost Component'
+                  options={costComponentoptions.map((option) => ({
                     label: option.Description,
                     value: option.value,
                   }))}
-                  disabled={!newItem.productClass}
                   onChange={(value) => {
-                    ValueChange('productLine', value)
-                    ValueChange(
-                      'detailedDescription',
-                      `${newItem.productClass} ${value} ${newItem.specifications}`
-                    )
+                    ValueChange('materialCostComponent', value)
                   }}
                   onBlur={() => {
-                    const OptionValue = productLineoptions.find(
-                      (option) => option.value === newItem.productLine
+                    const OptionValue = costComponentoptions?.find(
+                      (option) => option.value === subConItem.costComponent
                     )
                     if (OptionValue) {
-                      ValueChange('productLineId', OptionValue.id)
+                      ValueChange('materialCostComponentId', OptionValue.id)
                       console.log(OptionValue)
                     } else {
-                      ValueChange('productLine', '')
-                      ValueChange('productLineId', '')
+                      ValueChange('costComponent', '')
+                      ValueChange('materialCostComponentId', '')
                     }
                   }}
                   popupMatchSelectWidth={true}
@@ -654,39 +595,36 @@ const NewRequest = () => {
                   maxTagCount={10}
                 />
               </Container>
-
               <Container>
-                <label>Specifications</label>
+                <label>Commodity Code</label>
                 <INPUT
                   type='text'
                   allowClear
-                  placeholder='Enter specifications'
-                  value={newItem.specifications}
+                  maxLength={8}
+                  placeholder='Enter Commodity Code'
+                  value={subConItem.commodityCode}
                   onChange={(e) => {
-                    ValueChange('specifications', e.target.value)
-                    ValueChange(
-                      'detailedDescription',
-                      `${newItem.productClass} ${newItem.productLine} ${e.target.value}`
-                    )
+                    ValueChange('commodityCode', e.target.value)
                   }}
                 />
               </Container>
               <Container>
-                <label>Generated Description</label>
-                <StyledDependencies
-                  type='text'
-                  placeholder='Generated Description'
-                  value={newItem.generatedDescription}
-                  disabled
-                />
+                <label>Cost Determination *</label>
+                <Select
+                  value={subConItem.costDetermination}
+                  onChange={(value) => ValueChange('costDetermination', value)}
+                  placeholder='Select Cost Determination'
+                >
+                  <Option value='quantity'>quantity</Option>
+                  <Option value='amountOfTime'>Amount of Time</Option>
+                </Select>
               </Container>
-
               <Container>
                 <label>Unit Of Measurement</label>
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={newItem.uomDesc}
+                  value={subConItem.uomDesc}
                   // readOnly={true}
                   placeholder='Enter Unit of Measurement'
                   options={uomOptions.map((option) => ({
@@ -698,7 +636,7 @@ const NewRequest = () => {
                   }}
                   onBlur={() => {
                     const OptionValue = uomOptions.find(
-                      (option) => option.value === newItem.uomDesc
+                      (option) => option.value === subConItem.uomDesc
                     )
                     if (OptionValue) {
                       ValueChange('uomId', OptionValue.uomId)
@@ -721,18 +659,14 @@ const NewRequest = () => {
                 />
               </Container>
               <Container>
-                <label>Purchase Price</label>
+                <label>Time Unit</label>
                 <INPUT
-                  // readOnly={true}
+                  placeholder='timeUnit'
                   type='text'
-                  allowClear
-                  placeholder='Enter Purchase Price'
-                  // onFocus={() => FieldFocas('Units')}
-                  value={newItem.purchasePrice}
+                  value={subConItem.timeUnit}
+                  disabled
                   onChange={(e) => {
-                    if (!isNaN(e.target.value)) {
-                      ValueChange('purchasePrice', e.target.value)
-                    }
+                    ValueChange('timeUnit', e.target.value)
                   }}
                 />
               </Container>
@@ -740,11 +674,11 @@ const NewRequest = () => {
             <GridContainer>
               <Container>
                 <label>Detailed Description</label>
-                <div className='textCount'>{`${newItem.detailedDescription.length} / 150`}</div>
+                {/* <div className='textCount'>{`${subConItem.detailedDescription?.length} / 150`}</div> */}
                 <INPUT
                   type='text'
                   placeholder='Detailed Description'
-                  value={newItem.detailedDescription}
+                  value={subConItem.detailedDescription}
                   maxLength={150}
                   onChange={(e) => {
                     ValueChange('detailedDescription', e.target.value)
@@ -759,80 +693,105 @@ const NewRequest = () => {
             <SectionTitle>Additional Information</SectionTitle>
             <GridContainer>
               <Container>
-                <label>HSN Code</label>
+                <label>Purchase Price</label>
                 <INPUT
+                  // readOnly={true}
                   type='text'
                   allowClear
-                  maxLength={8}
-                  placeholder='Enter HSN Code'
-                  value={newItem.hsnCode}
+                  placeholder='Enter Purchase Price'
+                  // onFocus={() => FieldFocas('Units')}
+                  value={subConItem.purchasePrice}
                   onChange={(e) => {
-                    ValueChange('hsnCode', e.target.value)
+                    if (!isNaN(e.target.value)) {
+                      ValueChange('purchasePrice', e.target.value)
+                    }
                   }}
                 />
               </Container>
               <Container>
-                <label>Cost Component</label>
-                <StyledDependencies
+                <label>Purchase Price Group</label>
+                <INPUT
+                  placeholder='Purchase Price Group'
                   type='text'
-                  allowClear
-                  value={newItem.materialCostComponent}
-                  // readOnly={true}
-                  placeholder='Material Cost Component'
-                  options={costComponentoptions.map((option) => ({
-                    label: option.Description,
-                    value: option.value,
-                  }))}
-                  onChange={(value) => {
-                    ValueChange('materialCostComponent', value)
-                  }}
-                  onBlur={() => {
-                    const OptionValue = costComponentoptions?.find(
-                      (option) => option.value === newItem.materialCostComponent
-                    )
-                    if (OptionValue) {
-                      ValueChange('materialCostComponentId', OptionValue.id)
-                      console.log(OptionValue)
-                    } else {
-                      ValueChange('materialCostComponent', '')
-                      ValueChange('materialCostComponentId', '')
-                    }
-                  }}
-                  popupMatchSelectWidth={true}
-                  popupClassName='auto-complete-dropdown'
-                  maxTagCount={10}
+                  value={subConItem.purchasePriceGroup}
+                  disabled
                 />
               </Container>
               <Container>
-                <label>Group Code</label>
-                <StyledDependencies
+                <label>Purchase Statistical Group</label>
+                <INPUT
+                  placeholder='Purchase Statistical Group'
+                  value={subConItem.purchaseStatisticalGroup}
+                  disabled
+                  type='text'
+                />
+              </Container>
+              <Container>
+                <label>Sales Price</label>
+                <INPUT
+                  // readOnly={true}
                   type='text'
                   allowClear
-                  value={newItem.groupCode}
-                  // readOnly={true}
-                  placeholder='Group Code'
-                  options={groupCodeOptions.map((option) => ({
-                    label: option.Description,
-                    value: option.value,
-                  }))}
-                  onChange={(value) => {
-                    ValueChange('groupCode', value)
-                  }}
-                  onBlur={() => {
-                    const OptionValue = groupCodeOptions.find(
-                      (option) => option.value === newItem.groupCode
-                    )
-                    if (OptionValue) {
-                      ValueChange('groupCodeId', OptionValue.id)
-                    } else {
-                      ValueChange('groupCodeId', '')
-                      ValueChange('groupCode', '')
+                  placeholder='Enter Sales Price'
+                  // onFocus={() => FieldFocas('Units')}
+                  value={subConItem.salesPrice}
+                  onChange={(e) => {
+                    if (!isNaN(e.target.value)) {
+                      ValueChange('salesPrice', e.target.value)
                     }
                   }}
-                  popupMatchSelectWidth={true}
-                  popupClassName='auto-complete-dropdown'
-                  maxTagCount={10}
                 />
+              </Container>
+              <Container>
+                <label>Sales Price Group</label>
+                <INPUT
+                  placeholder='Sales Price Group'
+                  type='text'
+                  value={subConItem.salesPriceGroup}
+                  disabled
+                />
+              </Container>
+              <Container>
+                <label>Sales Statistical Group</label>
+                <INPUT
+                  placeholder='Sales Statistical Group'
+                  value={subConItem.salesStatisticsGroup}
+                  disabled
+                  type='text'
+                />
+              </Container>
+              <Container>
+                <label>Register Process *</label>
+                <Select
+                  value={subConItem.registerProgress}
+                  onChange={(value) => ValueChange('registerProgress', value)}
+                  placeholder='Select Register Process'
+                >
+                  <Option value='yes'>Yes</Option>
+                  <Option value='no'>No</Option>
+                </Select>
+              </Container>
+              <Container>
+                <label>Used In Schedule *</label>
+                <Select
+                  value={subConItem.usedInSchedule}
+                  onChange={(value) => ValueChange('usedInSchedule', value)}
+                  placeholder='Select Used In Schedule'
+                >
+                  <Option value='yes'>Yes</Option>
+                  <Option value='no'>No</Option>
+                </Select>
+              </Container>
+              <Container>
+                <label>Billabale *</label>
+                <Select
+                  value={subConItem.billabale}
+                  onChange={(value) => ValueChange('billabale', value)}
+                  placeholder='Select Billabale'
+                >
+                  <Option value='yes'>Yes</Option>
+                  <Option value='no'>No</Option>
+                </Select>
               </Container>
             </GridContainer>
           </Section>
@@ -842,16 +801,16 @@ const NewRequest = () => {
             Cancel
           </button>
           {/* <button className='save'>Save As Draft</button> */}
-          <button className='submit' onClick={SubmitItem}>
+          {/* <button className='submit' disabled onClick={SubmitItem}>
             Submit
-          </button>
+          </button> */}
         </ButtonContainer>
       </Styles>
     </>
   )
 }
 
-export default NewRequest
+export default SubConItemRequest
 
 const Styles = styled.div`
   padding: 1rem 2rem;
@@ -922,6 +881,10 @@ const Container = styled.div`
     right: 10px;
     font-size: 10px;
     letter-spacing: 0.5px;
+  }
+  .ant-select-selection-item {
+    font-size: 12px;
+    color: #333;
   }
 `
 const ButtonContainer = styled.div`
@@ -1063,11 +1026,11 @@ const LoadingContainer = styled.div`
 `
 
 const INPUT = styled(Input)`
-  border-radius: 0.5rem;
-  border: 1px solid #ccc;
+  border-radius: 8px;
+  border: 0.5px solid #ccc;
   font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
     Helvetica, Arial, sans-serif;
-  padding: 0.3rem 0.5rem;
+  padding: 0.4rem 0.5rem;
   font-size: 0.7rem;
   letter-spacing: 0.5px;
 `
