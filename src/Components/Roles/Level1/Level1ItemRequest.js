@@ -635,6 +635,13 @@ const Level1ItemRequest = () => {
                     )
                   }}
                   onBlur={() => {
+                    if (
+                      !PendingRequest.productClass &&
+                      !PendingRequest.productLine &&
+                      !PendingRequest.specifications
+                    ) {
+                      ValueChange('detailedDescription', '')
+                    }
                     const OptionValue = productClassoptions.find(
                       (option) => option.value === PendingRequest.productClass
                     )
@@ -676,6 +683,13 @@ const Level1ItemRequest = () => {
                     )
                   }}
                   onBlur={() => {
+                    if (
+                      !PendingRequest.productClass &&
+                      !PendingRequest.productLine &&
+                      !PendingRequest.specifications
+                    ) {
+                      ValueChange('detailedDescription', '')
+                    }
                     const OptionValue = productLineoptions.find(
                       (option) => option.value === PendingRequest.productLine
                     )
@@ -709,6 +723,15 @@ const Level1ItemRequest = () => {
                       'detailedDescription',
                       `${PendingRequest.productClass} ${PendingRequest.productLine} ${e.target.value}`
                     )
+                  }}
+                  onBlur={() => {
+                    if (
+                      !PendingRequest.productClass &&
+                      !PendingRequest.productLine &&
+                      !PendingRequest.specifications
+                    ) {
+                      ValueChange('detailedDescription', '')
+                    }
                   }}
                 />
                 {errors.specifications && (
