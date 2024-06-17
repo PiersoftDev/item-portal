@@ -123,7 +123,7 @@ const ListFilterModel = () => {
       <FilterModelHeaderConatiner>
         <FilterModelFilterICon />
         <FilterModelHeaderText>Filter</FilterModelHeaderText>
-        <FilterModelCloseIcon />
+        <FilterModelCloseIcon onClick={() => hide()} />
       </FilterModelHeaderConatiner>
       {/* <FilterLine/> */}
       <FilterFieldConatiner>
