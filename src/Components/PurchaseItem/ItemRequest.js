@@ -19,6 +19,7 @@ const NewRequest = () => {
     setEndUserRequestList,
     Requestdependencies,
     setRequestDependencies,
+    userDetails,
   } = useStates()
 
   const [loading, setLoading] = useState(false)
@@ -345,11 +346,12 @@ const NewRequest = () => {
       newItem.requirementDesc
     ) {
       try {
+        const reqbody = { ...newItem, creatorId: userDetails.id }
         const Cookie = CookiesData()
         setLoading(true)
         const response = await axios.post(
           'https://mdm.p360.build/v1/mdm/purchase-item/create',
-          newItem,
+          reqbody,
           Cookie
         )
         console.log(response.data)

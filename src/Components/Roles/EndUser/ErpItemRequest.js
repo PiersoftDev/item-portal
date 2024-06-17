@@ -10,8 +10,8 @@ const { Option } = Select
 const ErpItemRequest = () => {
   const {
     errors,
-    level1PendingRequest,
-    setLevel1PendingRequest,
+    PendingRequest,
+    setPendingRequest,
     Requestdependencies,
     setRequestDependencies,
     setErpRequestModal,
@@ -53,8 +53,8 @@ const ErpItemRequest = () => {
       const response = await axios.post(
         'https://mdm.p360.build/v1/mdm/warehouse/search',
         {
-          searchTerm: level1PendingRequest.warehouseName
-            ? level1PendingRequest.warehouseName
+          searchTerm: PendingRequest.warehouseName
+            ? PendingRequest.warehouseName
             : '',
         },
         Cookie
@@ -80,10 +80,10 @@ const ErpItemRequest = () => {
       setWarehouseOptions([...uniqueOptions.values()])
     }
     fetchDependencies()
-  }, [level1PendingRequest.warehouseName])
+  }, [PendingRequest.warehouseName])
 
   const ValueChange = (field, value) => {
-    setLevel1PendingRequest((prevItem) => ({
+    setPendingRequest((prevItem) => ({
       ...prevItem,
       [field]: value,
       generatedDescription: `${prevItem?.productClass} ${prevItem?.productLine} ${prevItem.specifications}`,
@@ -93,7 +93,7 @@ const ErpItemRequest = () => {
 
   const showApprovalConfirmation = () => {
     const fieldErrors = {}
-    if (!level1PendingRequest.warehouseName) {
+    if (!PendingRequest.warehouseName) {
       fieldErrors.warehouseName = 'Warehouse required'
     }
     if (Object.keys(fieldErrors).length > 0) {
@@ -123,7 +123,7 @@ const ErpItemRequest = () => {
   const ApproveItemRequest = async () => {
     try {
       const reqbody = {
-        ...level1PendingRequest,
+        ...PendingRequest,
         currentLevel: 'Live',
         status: 'Draft',
       }
@@ -137,7 +137,7 @@ const ErpItemRequest = () => {
       )
       console.log(response.data)
 
-      setLevel1PendingRequest({})
+      setPendingRequest({})
       setErpRequestModal(false)
       setEndUserRequestList(
         endUserRequestList.map((record) =>
@@ -161,9 +161,9 @@ const ErpItemRequest = () => {
     if (rejectReason) {
       try {
         const reqbody = {
-          ...level1PendingRequest,
+          ...PendingRequest,
           status: 'Declined',
-          comments: [...level1PendingRequest.comments, rejectReason],
+          comments: [...PendingRequest.comments, rejectReason],
         }
         setLoading(true)
         const Cookie = CookiesData()
@@ -173,7 +173,7 @@ const ErpItemRequest = () => {
           Cookie
         )
         console.log(response.data)
-        setLevel1PendingRequest({})
+        setPendingRequest({})
         setErpRequestModal(false)
         setEndUserRequestList(
           endUserRequestList.map((record) =>
@@ -214,7 +214,7 @@ const ErpItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.site}
+                  value={PendingRequest.site}
                   placeholder='Select Project'
                   disabled
                   popupMatchSelectWidth={true}
@@ -230,7 +230,7 @@ const ErpItemRequest = () => {
                   allowClear
                   placeholder='Enter Your Name'
                   disabled
-                  value={level1PendingRequest.requester}
+                  value={PendingRequest.requester}
                   onChange={(e) => {
                     ValueChange('requester', e.target.value)
                   }}
@@ -245,7 +245,7 @@ const ErpItemRequest = () => {
                   type='tel'
                   allowClear
                   placeholder='Enter Phone Number'
-                  value={level1PendingRequest.phoneNumber}
+                  value={PendingRequest.phoneNumber}
                   maxLength={10}
                   disabled
                   onChange={(e) => {
@@ -269,7 +269,7 @@ const ErpItemRequest = () => {
               <textarea
                 type='textarea'
                 placeholder='Enter Your Information about material'
-                value={level1PendingRequest.requirementDesc}
+                value={PendingRequest.requirementDesc}
                 rows={3}
                 allowClear
                 disabled
@@ -295,7 +295,7 @@ const ErpItemRequest = () => {
               <Container>
                 <label>Item Type *</label>
                 <Select
-                  value={level1PendingRequest.itemType}
+                  value={PendingRequest.itemType}
                   onChange={(value) => ValueChange('itemType', value)}
                   placeholder='Select Item Type'
                   disabled
@@ -308,7 +308,7 @@ const ErpItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.itemGroup}
+                  value={PendingRequest.itemGroup}
                   placeholder='Enter Item Group'
                   disabled
                   popupClassName='auto-complete-dropdown'
@@ -320,7 +320,7 @@ const ErpItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.productType}
+                  value={PendingRequest.productType}
                   placeholder='Enter Product Type'
                   disabled
                   popupMatchSelectWidth={true}
@@ -334,7 +334,7 @@ const ErpItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.productClass}
+                  value={PendingRequest.productClass}
                   // readOnly={true}
                   placeholder='Enter Product Class'
                   // options={productClassoptions}
@@ -350,7 +350,7 @@ const ErpItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.productLine}
+                  value={PendingRequest.productLine}
                   // readOnly={true}
                   placeholder='Enter Product Line'
                   // options={productLineoptions}
@@ -367,7 +367,7 @@ const ErpItemRequest = () => {
                   type='text'
                   allowClear
                   placeholder='Enter specifications'
-                  value={level1PendingRequest.specifications}
+                  value={PendingRequest.specifications}
                   disabled
                 />
               </Container>
@@ -376,7 +376,7 @@ const ErpItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   placeholder='Generated Description'
-                  value={level1PendingRequest.generatedDescription}
+                  value={PendingRequest.generatedDescription}
                   disabled
                 />
               </Container>
@@ -386,7 +386,7 @@ const ErpItemRequest = () => {
                 <Input
                   type='text'
                   placeholder='Standard Description'
-                  // value={level1PendingRequest.shortdesc}
+                  // value={PendingRequest.shortdesc}
                 />
               </Container> */}
               <Container>
@@ -394,7 +394,7 @@ const ErpItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.uom}
+                  value={PendingRequest.uom}
                   // readOnly={true}
                   placeholder='Enter Item Group'
                   disabled
@@ -410,7 +410,7 @@ const ErpItemRequest = () => {
                   type='text'
                   allowClear
                   placeholder='Enter Purchase Price'
-                  value={level1PendingRequest.purchasePrice}
+                  value={PendingRequest.purchasePrice}
                   disabled
                   onChange={(e) => {
                     if (!isNaN(e.target.value)) {
@@ -423,11 +423,11 @@ const ErpItemRequest = () => {
             <GridContainer>
               <Container>
                 <label>Detailed Description</label>
-                <div className='textCount'>{`${level1PendingRequest.detailedDescription?.length} / 150`}</div>
+                <div className='textCount'>{`${PendingRequest.detailedDescription?.length} / 150`}</div>
                 <INPUT
                   type='text'
                   placeholder='Detailed Description'
-                  value={level1PendingRequest.detailedDescription}
+                  value={PendingRequest.detailedDescription}
                   maxLength={150}
                   onChange={(e) => {
                     ValueChange('detailedDescription', e.target.value)
@@ -449,7 +449,7 @@ const ErpItemRequest = () => {
                   maxLength={8}
                   disabled
                   placeholder='Enter HSN Code'
-                  value={level1PendingRequest.hsnCode}
+                  value={PendingRequest.hsnCode}
                   onChange={(e) => {
                     ValueChange('hsnCode', e.target.value)
                   }}
@@ -460,7 +460,7 @@ const ErpItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.materialCostComponent}
+                  value={PendingRequest.materialCostComponent}
                   // readOnly={true}
                   placeholder='Material Cost Component'
                   disabled
@@ -474,7 +474,7 @@ const ErpItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.groupCode}
+                  value={PendingRequest.groupCode}
                   // readOnly={true}
                   placeholder='Group Code'
                   disabled
@@ -488,7 +488,7 @@ const ErpItemRequest = () => {
                 <INPUT
                   placeholder='Currency'
                   type='text'
-                  value={level1PendingRequest.currency}
+                  value={PendingRequest.currency}
                   disabled
                   onChange={(e) => {
                     ValueChange('currency', e.target.value)
@@ -500,7 +500,7 @@ const ErpItemRequest = () => {
                 <INPUT
                   placeholder='Purchase Unit'
                   type='text'
-                  value={level1PendingRequest.purchaseUnit}
+                  value={PendingRequest.purchaseUnit}
                   disabled
                 />
               </Container>
@@ -509,7 +509,7 @@ const ErpItemRequest = () => {
                 <INPUT
                   placeholder='Purchase Price Unit'
                   type='text'
-                  value={level1PendingRequest.purchasePriceUnit}
+                  value={PendingRequest.purchasePriceUnit}
                   disabled
                 />
               </Container>
@@ -518,7 +518,7 @@ const ErpItemRequest = () => {
                 <INPUT
                   placeholder='Purchase Price Group'
                   type='text'
-                  value={level1PendingRequest.purchasePriceGroup}
+                  value={PendingRequest.purchasePriceGroup}
                   disabled
                 />
               </Container>
@@ -526,7 +526,7 @@ const ErpItemRequest = () => {
                 <label>Purchase Statistical Group</label>
                 <INPUT
                   placeholder='Purchase Statistical Group'
-                  value={level1PendingRequest.purchaseStatisticalGroup}
+                  value={PendingRequest.purchaseStatisticalGroup}
                   disabled
                   type='text'
                 />
@@ -534,7 +534,7 @@ const ErpItemRequest = () => {
               <Container>
                 <label>Item Valuation Group</label>
                 <Select
-                  value={level1PendingRequest.itemValuationGroup}
+                  value={PendingRequest.itemValuationGroup}
                   onChange={(value) => {
                     ValueChange('itemValuationGroup', value)
                     ValueChange('itemValuationGroupId', value)
@@ -549,7 +549,7 @@ const ErpItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.warehouseName}
+                  value={PendingRequest.warehouseName}
                   // readOnly={true}
                   placeholder='Select Warehouse'
                   options={warehouseOptions.map((option) => ({
@@ -563,7 +563,7 @@ const ErpItemRequest = () => {
                   onBlur={() => {
                     const OptionValue = warehouseOptions.find(
                       (option) =>
-                        option.value === level1PendingRequest.warehouseName
+                        option.value === PendingRequest.warehouseName
                     )
                     if (OptionValue) {
                       ValueChange('warehouseId', OptionValue.id)
@@ -586,7 +586,7 @@ const ErpItemRequest = () => {
                 <INPUT
                   placeholder='Order Horizon'
                   type='text'
-                  value={level1PendingRequest.orderHorizon}
+                  value={PendingRequest.orderHorizon}
                   onChange={(e) => {
                     ValueChange('orderHorizon', e.target.value)
                   }}
@@ -595,7 +595,7 @@ const ErpItemRequest = () => {
               <Container>
                 <label>Inherit Project Peg *</label>
                 <Select
-                  value={level1PendingRequest.inheritProjectPeg}
+                  value={PendingRequest.inheritProjectPeg}
                   onChange={(value) => ValueChange('inheritProjectPeg', value)}
                   placeholder='Select Inherit Project Peg'
                 >
@@ -606,7 +606,7 @@ const ErpItemRequest = () => {
               <Container>
                 <label>Project Order System *</label>
                 <Select
-                  value={level1PendingRequest.projectOrderSystem}
+                  value={PendingRequest.projectOrderSystem}
                   onChange={(value) => ValueChange('projectOrderSystem', value)}
                   placeholder='Select Project Order System'
                 >
@@ -619,7 +619,7 @@ const ErpItemRequest = () => {
               <Container>
                 <label>Peg PRP Warehouse Order *</label>
                 <Select
-                  value={level1PendingRequest.pegPRPWarehouseOrder}
+                  value={PendingRequest.pegPRPWarehouseOrder}
                   onChange={(value) =>
                     ValueChange('pegPRPWarehouseOrder', value)
                   }
@@ -633,7 +633,7 @@ const ErpItemRequest = () => {
                 <label>Operation Cost Component</label>
                 <INPUT
                   placeholder='Operation Cost Component'
-                  value={level1PendingRequest.operationalCostComponentId}
+                  value={PendingRequest.operationalCostComponentId}
                   disabled
                   type='text'
                 />
@@ -642,7 +642,7 @@ const ErpItemRequest = () => {
                 <label>Surcharge Cost Component</label>
                 <INPUT
                   placeholder='Surcharge Cost Component'
-                  value={level1PendingRequest.surchargeCostComponentId}
+                  value={PendingRequest.surchargeCostComponentId}
                   disabled
                   type='text'
                 />

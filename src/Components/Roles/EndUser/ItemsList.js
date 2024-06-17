@@ -50,8 +50,8 @@ const ItemsList = () => {
     setSimilarItem,
     level1requestModal,
     setLevel1RequestModal,
-    setLevel1PendingRequest,
-    level1PendingRequest,
+    setPendingRequest,
+    PendingRequest,
     level2requestModal,
     setLevel2RequestModal,
     level3requestModal,
@@ -152,57 +152,57 @@ const ItemsList = () => {
       userDetails.roles?.some((role) => ['Admin', 'L1'].includes(role))
     ) {
       setLevel1RequestModal(!level1requestModal)
-      setLevel1PendingRequest(record)
+      setPendingRequest(record)
     } else if (
       record.currentLevel === 'L2' &&
       userDetails.roles?.some((role) => ['Admin', 'L2'].includes(role))
     ) {
       setLevel2RequestModal(!level2requestModal)
-      setLevel1PendingRequest(record)
+      setPendingRequest(record)
     } else if (
       record.currentLevel === 'L3' &&
       userDetails.roles?.some((role) => ['Admin', 'L3'].includes(role))
     ) {
       setLevel3RequestModal(!level3requestModal)
-      setLevel1PendingRequest(record)
+      setPendingRequest(record)
     } else if (
       record.currentLevel === 'L4' &&
       userDetails.roles?.some((role) => ['Admin', 'L4'].includes(role))
     ) {
       setErpRequestModal(!erprequestModal)
-      setLevel1PendingRequest(record)
+      setPendingRequest(record)
     } else if (
       record.currentLevel === 'Live' ||
       userDetails.roles?.some((role) => ['L0'].includes(role))
     ) {
       setLiveRequestModal(!liverequestModal)
-      setLevel1PendingRequest(record)
+      setPendingRequest(record)
     }
   }
 
   const CancelRequest = () => {
     setLevel1RequestModal(false)
-    setLevel1PendingRequest({})
+    setPendingRequest({})
     setErrors(InitialErrors)
   }
   const Level2ModalCancelRequest = () => {
     setLevel2RequestModal(false)
-    setLevel1PendingRequest({})
+    setPendingRequest({})
     setErrors(InitialErrors)
   }
   const Level3ModalCancelRequest = () => {
     setLevel3RequestModal(false)
-    setLevel1PendingRequest({})
+    setPendingRequest({})
     setErrors(InitialErrors)
   }
   const ErpModalCancelRequest = () => {
     setErpRequestModal(false)
-    setLevel1PendingRequest({})
+    setPendingRequest({})
     setErrors(InitialErrors)
   }
   const LiveModalCancelRequest = () => {
     setLiveRequestModal(false)
-    setLevel1PendingRequest({})
+    setPendingRequest({})
     setErrors(InitialErrors)
   }
 
@@ -698,8 +698,8 @@ const ItemsList = () => {
             }}
           >
             <span>
-              {level1PendingRequest.currentLevel === 'Live'
-                ? `Live Item (${level1PendingRequest.extId})`
+              {PendingRequest.currentLevel === 'Live'
+                ? `Live Item (${PendingRequest.extId})`
                 : 'Your Item Request'}
             </span>
             <CloseIcon onClick={LiveModalCancelRequest}>
@@ -848,10 +848,18 @@ const MiddleContainer = styled.div`
 const TableContainer = styled.div`
   position: relative;
   width: 100% !important;
-  max-height: 65vh;
+  max-height: 67vh;
   min-height: 300px !important;
   overflow: auto;
   padding: 0 0rem;
+
+  @media only screen and (min-height: 650px) and (max-height: 650px) {
+    max-height: 75vh !important;
+  }
+
+  @media only screen and (min-height: 900px) {
+    max-height: 80vh !important;
+  }
 `
 
 const Table = styled.table`
@@ -896,10 +904,10 @@ const TableRow = styled.tr`
       'Helvetica Neue', sans-serif;
     font-weight: 600;
     &:first-child {
-      max-width: 300px !important;
+      max-width: 250px !important;
     }
     &:nth-child(3) {
-      max-width: 300px !important;
+      max-width: 200px !important;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -926,10 +934,10 @@ const TableRow = styled.tr`
       'Helvetica Neue', sans-serif;
     title: ${(props) => props.children};
     &:first-child {
-      max-width: 300px !important;
+      max-width: 250px !important;
     }
     &:nth-child(3) {
-      max-width: 300px !important;
+      max-width: 200px !important;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -1065,7 +1073,7 @@ const DataContainer = styled.div`
 
 const DataValue = styled.div`
   position: relative;
-  max-width: 250px;
+  max-width: 200px;
   width: 90%;
   font-size: 0.7rem;
   letter-spacing: 0.5px;

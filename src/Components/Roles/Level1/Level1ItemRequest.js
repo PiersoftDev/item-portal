@@ -12,8 +12,8 @@ const Level1ItemRequest = () => {
     errors,
     endUserRequestList,
     // setEndUserRequestList,
-    level1PendingRequest,
-    setLevel1PendingRequest,
+    PendingRequest,
+    setPendingRequest,
     Requestdependencies,
     setRequestDependencies,
     setLevel1RequestModal,
@@ -48,13 +48,13 @@ const Level1ItemRequest = () => {
 
   useEffect(() => {
     const fetchDependencies = async () => {
-      if (level1PendingRequest.itemType) {
+      if (PendingRequest.itemType) {
         const Cookie = CookiesData()
         const response = await axios.post(
-          `https://mdm.p360.build/v1/mdm/product-link/item-group/${level1PendingRequest.itemType}`,
+          `https://mdm.p360.build/v1/mdm/product-link/item-group/${PendingRequest.itemType}`,
           {
-            searchTerm: level1PendingRequest.itemGroup
-              ? level1PendingRequest.itemGroup
+            searchTerm: PendingRequest.itemGroup
+              ? PendingRequest.itemGroup
               : '',
           },
           Cookie
@@ -76,17 +76,17 @@ const Level1ItemRequest = () => {
     }
 
     fetchDependencies()
-  }, [level1PendingRequest.itemGroup])
+  }, [PendingRequest.itemGroup])
 
   useEffect(() => {
     const fetchDependencies = async () => {
-      if (level1PendingRequest.itemGroupId) {
+      if (PendingRequest.itemGroupId) {
         const Cookie = CookiesData()
         const response = await axios.post(
-          `https://mdm.p360.build/v1/mdm/product-link/product-type/${level1PendingRequest.itemGroupId}`,
+          `https://mdm.p360.build/v1/mdm/product-link/product-type/${PendingRequest.itemGroupId}`,
           {
-            searchTerm: level1PendingRequest.productType
-              ? level1PendingRequest.productType
+            searchTerm: PendingRequest.productType
+              ? PendingRequest.productType
               : '',
           },
           Cookie
@@ -109,20 +109,20 @@ const Level1ItemRequest = () => {
 
     fetchDependencies()
   }, [
-    level1PendingRequest.productType,
-    level1PendingRequest.itemGroup,
-    level1PendingRequest.itemGroupId,
+    PendingRequest.productType,
+    PendingRequest.itemGroup,
+    PendingRequest.itemGroupId,
   ])
 
   useEffect(() => {
     const fetchDependencies = async () => {
-      if (level1PendingRequest.productTypeId) {
+      if (PendingRequest.productTypeId) {
         const Cookie = CookiesData()
         const response = await axios.post(
-          `https://mdm.p360.build/v1/mdm/product-link/product-class/${level1PendingRequest.productTypeId}`,
+          `https://mdm.p360.build/v1/mdm/product-link/product-class/${PendingRequest.productTypeId}`,
           {
-            searchTerm: level1PendingRequest.productClass
-              ? level1PendingRequest.productClass
+            searchTerm: PendingRequest.productClass
+              ? PendingRequest.productClass
               : '',
           },
           Cookie
@@ -145,20 +145,20 @@ const Level1ItemRequest = () => {
 
     fetchDependencies()
   }, [
-    level1PendingRequest.productClass,
-    level1PendingRequest.productTypeId,
-    level1PendingRequest.productType,
+    PendingRequest.productClass,
+    PendingRequest.productTypeId,
+    PendingRequest.productType,
   ])
 
   useEffect(() => {
     const fetchDependencies = async () => {
-      if (level1PendingRequest.productClassId) {
+      if (PendingRequest.productClassId) {
         const Cookie = CookiesData()
         const response = await axios.post(
-          `https://mdm.p360.build/v1/mdm/product-link/product-line/${level1PendingRequest.productClassId}`,
+          `https://mdm.p360.build/v1/mdm/product-link/product-line/${PendingRequest.productClassId}`,
           {
-            searchTerm: level1PendingRequest.productLine
-              ? level1PendingRequest.productLine
+            searchTerm: PendingRequest.productLine
+              ? PendingRequest.productLine
               : '',
           },
           Cookie
@@ -181,9 +181,9 @@ const Level1ItemRequest = () => {
 
     fetchDependencies()
   }, [
-    level1PendingRequest.productLine,
-    level1PendingRequest.productClassId,
-    level1PendingRequest.productClass,
+    PendingRequest.productLine,
+    PendingRequest.productClassId,
+    PendingRequest.productClass,
   ])
 
   useEffect(() => {
@@ -192,9 +192,7 @@ const Level1ItemRequest = () => {
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/uom/search`,
         {
-          searchTerm: level1PendingRequest.uomDesc
-            ? level1PendingRequest.uomDesc
-            : '',
+          searchTerm: PendingRequest.uomDesc ? PendingRequest.uomDesc : '',
         },
         Cookie
       )
@@ -218,7 +216,7 @@ const Level1ItemRequest = () => {
       setUOMOptions([...uniqueOptions.values()])
     }
     fetchDependencies()
-  }, [level1PendingRequest.uomDesc])
+  }, [PendingRequest.uomDesc])
 
   useEffect(() => {
     const fetchDependencies = async () => {
@@ -226,8 +224,8 @@ const Level1ItemRequest = () => {
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/cost-component/fetch-by-cost-component-type/material`,
         {
-          searchTerm: level1PendingRequest.materialCostComponent
-            ? level1PendingRequest.materialCostComponent
+          searchTerm: PendingRequest.materialCostComponent
+            ? PendingRequest.materialCostComponent
             : '',
         },
         Cookie
@@ -247,7 +245,7 @@ const Level1ItemRequest = () => {
       )
     }
     fetchDependencies()
-  }, [level1PendingRequest.materialCostComponent])
+  }, [PendingRequest.materialCostComponent])
 
   useEffect(() => {
     const fetchDependencies = async () => {
@@ -255,9 +253,7 @@ const Level1ItemRequest = () => {
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/group-code/search`,
         {
-          searchTerm: level1PendingRequest.groupCode
-            ? level1PendingRequest.groupCode
-            : '',
+          searchTerm: PendingRequest.groupCode ? PendingRequest.groupCode : '',
         },
         Cookie
       )
@@ -276,10 +272,10 @@ const Level1ItemRequest = () => {
       )
     }
     fetchDependencies()
-  }, [level1PendingRequest.groupCode])
+  }, [PendingRequest.groupCode])
 
   const ValueChange = (field, value) => {
-    setLevel1PendingRequest((prevItem) => ({
+    setPendingRequest((prevItem) => ({
       ...prevItem,
       [field]: value,
       generatedDescription: `${prevItem?.productClass} ${prevItem?.productLine} ${prevItem.specifications}`,
@@ -289,28 +285,32 @@ const Level1ItemRequest = () => {
 
   const showApprovalConfirmation = () => {
     const fieldErrors = {}
-    if (!level1PendingRequest.itemGroup) {
+    if (!PendingRequest.itemGroup) {
       fieldErrors.itemGroup = 'Item Group required'
     }
-    if (!level1PendingRequest.productType) {
+    if (!PendingRequest.productType) {
       fieldErrors.productType = 'Product Type required'
     }
-    if (!level1PendingRequest.productClass) {
+    if (!PendingRequest.productClass) {
       fieldErrors.productClass = 'Product Class required'
     }
-    if (!level1PendingRequest.productLine) {
+    if (!PendingRequest.productLine) {
       fieldErrors.productLine = 'Product Line required'
     }
-    if (!level1PendingRequest.specifications) {
+    if (!PendingRequest.specifications) {
       fieldErrors.specifications = 'Specifications required'
     }
-    if (!level1PendingRequest.detailedDescription) {
+    if (!PendingRequest.detailedDescription) {
       fieldErrors.detailedDescription = 'Detailed Description required'
     }
-    if (!level1PendingRequest.uomDesc) {
+    if (PendingRequest.detailedDescription?.length > 150) {
+      fieldErrors.detailedDescription =
+        'Detailed Description length should be less than 150'
+    }
+    if (!PendingRequest.uomDesc) {
       fieldErrors.uomDesc = 'Unit of Measurement required'
     }
-    if (!level1PendingRequest.purchasePrice) {
+    if (!PendingRequest.purchasePrice) {
       fieldErrors.purchasePrice = 'Purchase Price required'
     }
 
@@ -341,17 +341,17 @@ const Level1ItemRequest = () => {
 
   const ApproveItemRequest = async () => {
     if (
-      level1PendingRequest.itemGroup &&
-      level1PendingRequest.productType &&
-      level1PendingRequest.productClass &&
-      level1PendingRequest.productLine &&
-      level1PendingRequest.specifications &&
-      level1PendingRequest.detailedDescription &&
-      level1PendingRequest.uomDesc &&
-      level1PendingRequest.purchasePrice
+      PendingRequest.itemGroup &&
+      PendingRequest.productType &&
+      PendingRequest.productClass &&
+      PendingRequest.productLine &&
+      PendingRequest.specifications &&
+      PendingRequest.detailedDescription &&
+      PendingRequest.uomDesc &&
+      PendingRequest.purchasePrice
     ) {
       try {
-        const reqbody = { ...level1PendingRequest, currentLevel: 'L2' }
+        const reqbody = { ...PendingRequest, currentLevel: 'L2' }
         console.log(reqbody)
         setLoading(true)
         const Cookie = CookiesData()
@@ -369,7 +369,7 @@ const Level1ItemRequest = () => {
         // console.log(updatedList)
         // setEndUserRequestList(updatedList)
         window.location.reload()
-        setLevel1PendingRequest({})
+        setPendingRequest({})
         setLevel1RequestModal(false)
         // setEndUserRequestList(
         //   endUserRequestList.map((record) =>
@@ -398,9 +398,9 @@ const Level1ItemRequest = () => {
     if (rejectReason) {
       try {
         const reqbody = {
-          ...level1PendingRequest,
+          ...PendingRequest,
           status: 'Declined',
-          comments: [...level1PendingRequest.comments, rejectReason],
+          comments: [...PendingRequest.comments, rejectReason],
         }
         setLoading(true)
         const Cookie = CookiesData()
@@ -410,7 +410,7 @@ const Level1ItemRequest = () => {
           Cookie
         )
         console.log(response.data)
-        setLevel1PendingRequest({})
+        setPendingRequest({})
         setLevel1RequestModal(false)
         window.location.reload()
         cancelRejectConfirmation()
@@ -445,7 +445,7 @@ const Level1ItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.site}
+                  value={PendingRequest.site}
                   // readOnly={true}
                   placeholder='Select Project'
                   // options={projectoptions}
@@ -466,7 +466,7 @@ const Level1ItemRequest = () => {
                   allowClear
                   placeholder='Enter Your Name'
                   disabled
-                  value={level1PendingRequest.requester}
+                  value={PendingRequest.requester}
                   onChange={(e) => {
                     ValueChange('requester', e.target.value)
                   }}
@@ -478,7 +478,7 @@ const Level1ItemRequest = () => {
                   type='tel'
                   allowClear
                   placeholder='Enter Phone Number'
-                  value={level1PendingRequest.phoneNumber}
+                  value={PendingRequest.phoneNumber}
                   maxLength={10}
                   disabled
                   onChange={(e) => {
@@ -502,7 +502,7 @@ const Level1ItemRequest = () => {
               <textarea
                 type='textarea'
                 placeholder='Enter Your Information about material'
-                value={level1PendingRequest.requirementDesc}
+                value={PendingRequest.requirementDesc}
                 rows={3}
                 allowClear
                 disabled
@@ -525,7 +525,7 @@ const Level1ItemRequest = () => {
               <Container>
                 <label>Item Type *</label>
                 <Select
-                  value={level1PendingRequest.itemType}
+                  value={PendingRequest.itemType}
                   onChange={(value) => ValueChange('itemType', value)}
                   placeholder='Select Item Type'
                 >
@@ -543,21 +543,20 @@ const Level1ItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.itemGroup}
+                  value={PendingRequest.itemGroup}
                   // readOnly={true}
                   placeholder='Enter Item Group'
                   options={itemgroupoptions.map((option) => ({
                     label: option.Description,
                     value: option.value,
                   }))}
-                  disabled={level1PendingRequest.productType}
+                  disabled={PendingRequest.productType}
                   onChange={(value) => {
                     ValueChange('itemGroup', value)
                   }}
                   onBlur={() => {
                     const OptionValue = itemgroupoptions.find(
-                      (option) =>
-                        option.value === level1PendingRequest.itemGroup
+                      (option) => option.value === PendingRequest.itemGroup
                     )
                     if (OptionValue) {
                       ValueChange('itemGroupId', OptionValue.id)
@@ -580,7 +579,7 @@ const Level1ItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.productType}
+                  value={PendingRequest.productType}
                   // readOnly={true}
                   placeholder='Enter Product Type'
                   options={productTypeoptions.map((option) => ({
@@ -588,16 +587,14 @@ const Level1ItemRequest = () => {
                     value: option.value,
                   }))}
                   disabled={
-                    level1PendingRequest.productClass ||
-                    !level1PendingRequest.itemGroup
+                    PendingRequest.productClass || !PendingRequest.itemGroup
                   }
                   onChange={(value) => {
                     ValueChange('productType', value)
                   }}
                   onBlur={() => {
                     const OptionValue = productTypeoptions.find(
-                      (option) =>
-                        option.value === level1PendingRequest.productType
+                      (option) => option.value === PendingRequest.productType
                     )
                     if (OptionValue) {
                       ValueChange('productTypeId', OptionValue.id)
@@ -620,7 +617,7 @@ const Level1ItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.productClass}
+                  value={PendingRequest.productClass}
                   // readOnly={true}
                   placeholder='Enter Product Class'
                   options={productClassoptions.map((option) => ({
@@ -628,20 +625,18 @@ const Level1ItemRequest = () => {
                     value: option.value,
                   }))}
                   disabled={
-                    level1PendingRequest.productLine ||
-                    !level1PendingRequest.productType
+                    PendingRequest.productLine || !PendingRequest.productType
                   }
                   onChange={(value) => {
                     ValueChange('productClass', value)
                     ValueChange(
                       'detailedDescription',
-                      `${value} ${level1PendingRequest.productLine}  ${level1PendingRequest.specifications}`
+                      `${value} ${PendingRequest.productLine}  ${PendingRequest.specifications}`
                     )
                   }}
                   onBlur={() => {
                     const OptionValue = productClassoptions.find(
-                      (option) =>
-                        option.value === level1PendingRequest.productClass
+                      (option) => option.value === PendingRequest.productClass
                     )
                     if (OptionValue) {
                       ValueChange('productClassId', OptionValue.id)
@@ -665,25 +660,24 @@ const Level1ItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.productLine}
+                  value={PendingRequest.productLine}
                   // readOnly={true}
                   placeholder='Enter Product Line'
                   options={productLineoptions.map((option) => ({
                     label: option.Description,
                     value: option.value,
                   }))}
-                  disabled={!level1PendingRequest.productClass}
+                  disabled={!PendingRequest.productClass}
                   onChange={(value) => {
                     ValueChange('productLine', value)
                     ValueChange(
                       'detailedDescription',
-                      `${level1PendingRequest.productClass} ${value} ${level1PendingRequest.specifications}`
+                      `${PendingRequest.productClass} ${value} ${PendingRequest.specifications}`
                     )
                   }}
                   onBlur={() => {
                     const OptionValue = productLineoptions.find(
-                      (option) =>
-                        option.value === level1PendingRequest.productLine
+                      (option) => option.value === PendingRequest.productLine
                     )
                     if (OptionValue) {
                       ValueChange('productLineId', OptionValue.id)
@@ -708,12 +702,12 @@ const Level1ItemRequest = () => {
                   type='text'
                   allowClear
                   placeholder='Enter specifications'
-                  value={level1PendingRequest.specifications}
+                  value={PendingRequest.specifications}
                   onChange={(e) => {
                     ValueChange('specifications', e.target.value)
                     ValueChange(
                       'detailedDescription',
-                      `${level1PendingRequest.productClass} ${level1PendingRequest.productLine} ${e.target.value}`
+                      `${PendingRequest.productClass} ${PendingRequest.productLine} ${e.target.value}`
                     )
                   }}
                 />
@@ -727,7 +721,7 @@ const Level1ItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   placeholder='Generated Description'
-                  value={level1PendingRequest.generatedDescription}
+                  value={PendingRequest.generatedDescription}
                   disabled
                 />
               </Container>
@@ -736,7 +730,7 @@ const Level1ItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.uomDesc}
+                  value={PendingRequest.uomDesc}
                   // readOnly={true}
                   placeholder='Enter Unit of Measurement'
                   options={uomOptions.map((option) => ({
@@ -748,7 +742,7 @@ const Level1ItemRequest = () => {
                   }}
                   onBlur={() => {
                     const OptionValue = uomOptions.find(
-                      (option) => option.value === level1PendingRequest.uomDesc
+                      (option) => option.value === PendingRequest.uomDesc
                     )
                     if (OptionValue) {
                       ValueChange('uomId', OptionValue.uomId)
@@ -781,7 +775,7 @@ const Level1ItemRequest = () => {
                   allowClear
                   placeholder='Enter Purchase Price'
                   // onFocus={() => FieldFocas('Units')}
-                  value={level1PendingRequest.purchasePrice}
+                  value={PendingRequest.purchasePrice}
                   onChange={(e) => {
                     if (!isNaN(e.target.value)) {
                       ValueChange('purchasePrice', e.target.value)
@@ -796,11 +790,11 @@ const Level1ItemRequest = () => {
             <GridContainer>
               <Container>
                 <label>Detailed Description</label>
-                <div className='textCount'>{`${level1PendingRequest.detailedDescription?.length} / 150`}</div>
+                <div className='textCount'>{`${PendingRequest.detailedDescription?.length} / 150`}</div>
                 <INPUT
                   type='text'
                   placeholder='Detailed Description'
-                  value={level1PendingRequest.detailedDescription}
+                  value={PendingRequest.detailedDescription}
                   maxLength={150}
                   onChange={(e) => {
                     ValueChange('detailedDescription', e.target.value)
@@ -824,7 +818,7 @@ const Level1ItemRequest = () => {
                   allowClear
                   maxLength={8}
                   placeholder='Enter HSN Code'
-                  value={level1PendingRequest.hsnCode}
+                  value={PendingRequest.hsnCode}
                   onChange={(e) => {
                     ValueChange('hsnCode', e.target.value)
                   }}
@@ -835,7 +829,7 @@ const Level1ItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.materialCostComponent}
+                  value={PendingRequest.materialCostComponent}
                   // readOnly={true}
                   placeholder='Material Cost Component'
                   options={costComponentoptions.map((option) => ({
@@ -848,8 +842,7 @@ const Level1ItemRequest = () => {
                   onBlur={() => {
                     const OptionValue = costComponentoptions?.find(
                       (option) =>
-                        option.value ===
-                        level1PendingRequest.materialCostComponent
+                        option.value === PendingRequest.materialCostComponent
                     )
                     if (OptionValue) {
                       ValueChange('materialCostComponentId', OptionValue.id)
@@ -869,7 +862,7 @@ const Level1ItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.groupCode}
+                  value={PendingRequest.groupCode}
                   // readOnly={true}
                   placeholder='Group Code'
                   options={groupCodeOptions.map((option) => ({
@@ -881,8 +874,7 @@ const Level1ItemRequest = () => {
                   }}
                   onBlur={() => {
                     const OptionValue = groupCodeOptions.find(
-                      (option) =>
-                        option.value === level1PendingRequest.groupCode
+                      (option) => option.value === PendingRequest.groupCode
                     )
                     if (OptionValue) {
                       ValueChange('groupCodeId', OptionValue.id)

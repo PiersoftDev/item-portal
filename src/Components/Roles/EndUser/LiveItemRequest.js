@@ -10,8 +10,8 @@ const { Option } = Select
 const LiveItemRequest = () => {
   const {
     errors,
-    level1PendingRequest,
-    setLevel1PendingRequest,
+    PendingRequest,
+    setPendingRequest,
     Requestdependencies,
     setRequestDependencies,
     setErpRequestModal,
@@ -34,7 +34,7 @@ const LiveItemRequest = () => {
   }
 
   const ValueChange = (field, value) => {
-    setLevel1PendingRequest((prevItem) => ({
+    setPendingRequest((prevItem) => ({
       ...prevItem,
       [field]: value,
       generatedDescription: `${prevItem?.productClass} ${prevItem?.productLine} ${prevItem.specifications}`,
@@ -54,7 +54,7 @@ const LiveItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.site}
+                  value={PendingRequest.site}
                   placeholder='Select Project'
                   disabled
                   popupMatchSelectWidth={true}
@@ -70,7 +70,7 @@ const LiveItemRequest = () => {
                   allowClear
                   placeholder='Enter Your Name'
                   disabled
-                  value={level1PendingRequest.requester}
+                  value={PendingRequest.requester}
                   onChange={(e) => {
                     ValueChange('requester', e.target.value)
                   }}
@@ -85,7 +85,7 @@ const LiveItemRequest = () => {
                   type='tel'
                   allowClear
                   placeholder='Enter Phone Number'
-                  value={level1PendingRequest.phoneNumber}
+                  value={PendingRequest.phoneNumber}
                   maxLength={10}
                   disabled
                   onChange={(e) => {
@@ -109,7 +109,7 @@ const LiveItemRequest = () => {
               <textarea
                 type='textarea'
                 placeholder='Enter Your Information about material'
-                value={level1PendingRequest.requirementDesc}
+                value={PendingRequest.requirementDesc}
                 rows={3}
                 disabled
                 style={{
@@ -128,7 +128,7 @@ const LiveItemRequest = () => {
               <Container>
                 <label>Item Type *</label>
                 <Select
-                  value={level1PendingRequest.itemType}
+                  value={PendingRequest.itemType}
                   onChange={(value) => ValueChange('itemType', value)}
                   placeholder='Select Item Type'
                   disabled
@@ -141,7 +141,7 @@ const LiveItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.itemGroup}
+                  value={PendingRequest.itemGroup}
                   placeholder='Enter Item Group'
                   disabled
                   popupClassName='auto-complete-dropdown'
@@ -153,7 +153,7 @@ const LiveItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.productType}
+                  value={PendingRequest.productType}
                   placeholder='Enter Product Type'
                   disabled
                   popupMatchSelectWidth={true}
@@ -167,7 +167,7 @@ const LiveItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.productClass}
+                  value={PendingRequest.productClass}
                   // readOnly={true}
                   placeholder='Enter Product Class'
                   // options={productClassoptions}
@@ -183,7 +183,7 @@ const LiveItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.productLine}
+                  value={PendingRequest.productLine}
                   // readOnly={true}
                   placeholder='Enter Product Line'
                   // options={productLineoptions}
@@ -200,7 +200,7 @@ const LiveItemRequest = () => {
                   type='text'
                   allowClear
                   placeholder='Enter specifications'
-                  value={level1PendingRequest.specifications}
+                  value={PendingRequest.specifications}
                   disabled
                 />
               </Container>
@@ -209,7 +209,7 @@ const LiveItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   placeholder='Generated Description'
-                  value={level1PendingRequest.generatedDescription}
+                  value={PendingRequest.generatedDescription}
                   disabled
                 />
               </Container>
@@ -219,7 +219,7 @@ const LiveItemRequest = () => {
                 <Input
                   type='text'
                   placeholder='Standard Description'
-                  // value={level1PendingRequest.shortdesc}
+                  // value={PendingRequest.shortdesc}
                 />
               </Container> */}
               <Container>
@@ -227,7 +227,7 @@ const LiveItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.uom}
+                  value={PendingRequest.uom}
                   // readOnly={true}
                   placeholder='Enter Item Group'
                   disabled
@@ -243,7 +243,7 @@ const LiveItemRequest = () => {
                   type='text'
                   allowClear
                   placeholder='Enter Purchase Price'
-                  value={level1PendingRequest.purchasePrice}
+                  value={PendingRequest.purchasePrice}
                   disabled
                   onChange={(e) => {
                     if (!isNaN(e.target.value)) {
@@ -256,11 +256,11 @@ const LiveItemRequest = () => {
             <GridContainer>
               <Container>
                 <label>Detailed Description</label>
-                <div className='textCount'>{`${level1PendingRequest.detailedDescription?.length} / 150`}</div>
+                <div className='textCount'>{`${PendingRequest.detailedDescription?.length} / 150`}</div>
                 <INPUT
                   type='text'
                   placeholder='Detailed Description'
-                  value={level1PendingRequest.detailedDescription}
+                  value={PendingRequest.detailedDescription}
                   maxLength={150}
                   onChange={(e) => {
                     ValueChange('detailedDescription', e.target.value)
@@ -282,7 +282,7 @@ const LiveItemRequest = () => {
                   maxLength={8}
                   disabled
                   placeholder='Enter HSN Code'
-                  value={level1PendingRequest.hsnCode}
+                  value={PendingRequest.hsnCode}
                   onChange={(e) => {
                     ValueChange('hsnCode', e.target.value)
                   }}
@@ -293,7 +293,7 @@ const LiveItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.materialCostComponent}
+                  value={PendingRequest.materialCostComponent}
                   // readOnly={true}
                   placeholder='Material Cost Component'
                   disabled
@@ -307,7 +307,7 @@ const LiveItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.groupCode}
+                  value={PendingRequest.groupCode}
                   // readOnly={true}
                   placeholder='Group Code'
                   disabled
@@ -321,7 +321,7 @@ const LiveItemRequest = () => {
                 <INPUT
                   placeholder='Currency'
                   type='text'
-                  value={level1PendingRequest.currency}
+                  value={PendingRequest.currency}
                   disabled
                   onChange={(e) => {
                     ValueChange('currency', e.target.value)
@@ -333,7 +333,7 @@ const LiveItemRequest = () => {
                 <INPUT
                   placeholder='Purchase Unit'
                   type='text'
-                  value={level1PendingRequest.purchaseUnit}
+                  value={PendingRequest.purchaseUnit}
                   disabled
                 />
               </Container>
@@ -342,7 +342,7 @@ const LiveItemRequest = () => {
                 <INPUT
                   placeholder='Purchase Price Unit'
                   type='text'
-                  value={level1PendingRequest.purchasePriceUnit}
+                  value={PendingRequest.purchasePriceUnit}
                   disabled
                 />
               </Container>
@@ -351,7 +351,7 @@ const LiveItemRequest = () => {
                 <INPUT
                   placeholder='Purchase Price Group'
                   type='text'
-                  value={level1PendingRequest.purchasePriceGroup}
+                  value={PendingRequest.purchasePriceGroup}
                   disabled
                 />
               </Container>
@@ -359,7 +359,7 @@ const LiveItemRequest = () => {
                 <label>Purchase Statistical Group</label>
                 <INPUT
                   placeholder='Purchase Statistical Group'
-                  value={level1PendingRequest.purchaseStatisticalGroup}
+                  value={PendingRequest.purchaseStatisticalGroup}
                   disabled
                   type='text'
                 />
@@ -367,7 +367,7 @@ const LiveItemRequest = () => {
               <Container>
                 <label>Item Valuation Group</label>
                 <Select
-                  value={level1PendingRequest.itemValuationGroup}
+                  value={PendingRequest.itemValuationGroup}
                   onChange={(value) => {
                     ValueChange('itemValuationGroup', value)
                     ValueChange('itemValuationGroupId', value)
@@ -383,7 +383,7 @@ const LiveItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={level1PendingRequest.warehouseName}
+                  value={PendingRequest.warehouseName}
                   // readOnly={true}
                   disabled
                   placeholder='Select Warehouse'
@@ -397,8 +397,7 @@ const LiveItemRequest = () => {
                   }}
                   onBlur={() => {
                     const OptionValue = warehouseOptions.find(
-                      (option) =>
-                        option.value === level1PendingRequest.warehouseName
+                      (option) => option.value === PendingRequest.warehouseName
                     )
                     if (OptionValue) {
                       ValueChange('warehouseId', OptionValue.id)
@@ -422,7 +421,7 @@ const LiveItemRequest = () => {
                   placeholder='Order Horizon'
                   type='text'
                   disabled
-                  value={level1PendingRequest.orderHorizon}
+                  value={PendingRequest.orderHorizon}
                   onChange={(e) => {
                     ValueChange('orderHorizon', e.target.value)
                   }}
@@ -431,7 +430,7 @@ const LiveItemRequest = () => {
               <Container>
                 <label>Inherit Project Peg *</label>
                 <Select
-                  value={level1PendingRequest.inheritProjectPeg}
+                  value={PendingRequest.inheritProjectPeg}
                   disabled
                   onChange={(value) => ValueChange('inheritProjectPeg', value)}
                   placeholder='Select Inherit Project Peg'
@@ -443,7 +442,7 @@ const LiveItemRequest = () => {
               <Container>
                 <label>Project Order System *</label>
                 <Select
-                  value={level1PendingRequest.projectOrderSystem}
+                  value={PendingRequest.projectOrderSystem}
                   onChange={(value) => ValueChange('projectOrderSystem', value)}
                   disabled
                   placeholder='Select Project Order System'
@@ -457,7 +456,7 @@ const LiveItemRequest = () => {
               <Container>
                 <label>Peg PRP Warehouse Order *</label>
                 <Select
-                  value={level1PendingRequest.pegPRPWarehouseOrder}
+                  value={PendingRequest.pegPRPWarehouseOrder}
                   onChange={(value) =>
                     ValueChange('pegPRPWarehouseOrder', value)
                   }
@@ -472,7 +471,7 @@ const LiveItemRequest = () => {
                 <label>Operation Cost Component</label>
                 <INPUT
                   placeholder='Operation Cost Component'
-                  value={level1PendingRequest.operationalCostComponentId}
+                  value={PendingRequest.operationalCostComponentId}
                   disabled
                   type='text'
                 />
@@ -481,7 +480,7 @@ const LiveItemRequest = () => {
                 <label>Surcharge Cost Component</label>
                 <INPUT
                   placeholder='Surcharge Cost Component'
-                  value={level1PendingRequest.surchargeCostComponentId}
+                  value={PendingRequest.surchargeCostComponentId}
                   disabled
                   type='text'
                 />

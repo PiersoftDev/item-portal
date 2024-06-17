@@ -150,10 +150,10 @@ const StateProvider = ({ children }) => {
     costDetermination: 'quantity',
     inventoryUnit: '',
     timeUnit: '',
-    purchasePrice: '',
-    purchasePriceGroup: '',
-    purchaseStatisticsGroup: '',
-    salesPrice: '',
+    purchasePrice: '1',
+    purchasePriceGroup: 'NA',
+    purchaseStatisticsGroup: 'NA',
+    salesPrice: '1',
     salesPriceGroup: '',
     salesStatisticsGroup: '',
     registerProgress: 'yes',
@@ -170,7 +170,7 @@ const StateProvider = ({ children }) => {
 
   const [level1requestModal, setLevel1RequestModal] = useState(false)
   const [Level1PendingList, setLevel1PendingList] = useState([])
-  const [level1PendingRequest, setLevel1PendingRequest] = useState({})
+  const [PendingRequest, setPendingRequest] = useState({})
 
   //Level2 States :
 
@@ -287,8 +287,8 @@ const StateProvider = ({ children }) => {
         setNewCombinationOpen,
         Level1PendingList,
         setLevel1PendingList,
-        level1PendingRequest,
-        setLevel1PendingRequest,
+        PendingRequest,
+        setPendingRequest,
         productlinkList,
         setProductLinkList,
         newProductLink,
