@@ -68,6 +68,8 @@ const ItemsList = () => {
     setuserDeails,
     itemListFilterModalopen,
     setItemListFilterModalopen,
+    itemListLoading,
+    setItemListLoading,
   } = useStates()
 
   const navigate = useNavigate()
@@ -107,6 +109,7 @@ const ItemsList = () => {
       const isAdmin = userDetails?.roles?.includes('Admin') ? true : false
 
       try {
+        setItemListLoading(true)
         const res = await axios.post(
           'https://mdm.p360.build/v1/mdm/purchase-item/filter',
           {
@@ -127,7 +130,13 @@ const ItemsList = () => {
         if (err.message === 'Network Error') {
           // message.warning('Access Expired, please re-login')
           navigate('/login')
+          localStorage.removeItem('accessToken')
+          localStorage.removeItem('idToken')
+          localStorage.removeItem('refreshToken')
+          localStorage.removeItem('userDetails')
         }
+      } finally {
+        setItemListLoading(false)
       }
     }
 
@@ -378,7 +387,11 @@ const ItemsList = () => {
                 </TableRow>
               </thead>
               <tbody>
-                {endUserRequestList.length > 0 ? (
+                {itemListLoading ? (
+                  <LoadingContainer>
+                    <div className='loader' />
+                  </LoadingContainer>
+                ) : endUserRequestList.length > 0 ? (
                   endUserRequestList.map((record) => (
                     <TableRow
                       key={record.id}
@@ -866,6 +879,108 @@ const TableContainer = styled.div`
 
   @media only screen and (min-height: 900px) {
     max-height: 80vh !important;
+  }
+`
+
+const LoadingContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 50vh;
+  // background: rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .loader {
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 8px solid #514b82;
+    animation: l20-1 0.8s infinite linear alternate, l20-2 1.6s infinite linear;
+  }
+  @keyframes l20-1 {
+    0% {
+      clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
+    }
+    12.5% {
+      clip-path: polygon(
+        50% 50%,
+        0 0,
+        50% 0%,
+        100% 0%,
+        100% 0%,
+        100% 0%,
+        100% 0%
+      );
+    }
+    25% {
+      clip-path: polygon(
+        50% 50%,
+        0 0,
+        50% 0%,
+        100% 0%,
+        100% 100%,
+        100% 100%,
+        100% 100%
+      );
+    }
+    50% {
+      clip-path: polygon(
+        50% 50%,
+        0 0,
+        50% 0%,
+        100% 0%,
+        100% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
+    62.5% {
+      clip-path: polygon(
+        50% 50%,
+        100% 0,
+        100% 0%,
+        100% 0%,
+        100% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
+    75% {
+      clip-path: polygon(
+        50% 50%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
+    100% {
+      clip-path: polygon(
+        50% 50%,
+        50% 100%,
+        50% 100%,
+        50% 100%,
+        50% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
+  }
+  @keyframes l20-2 {
+    0% {
+      transform: scaleY(1) rotate(0deg);
+    }
+    49.99% {
+      transform: scaleY(1) rotate(135deg);
+    }
+    50% {
+      transform: scaleY(-1) rotate(0deg);
+    }
+    100% {
+      transform: scaleY(-1) rotate(-135deg);
+    }
   }
 `
 

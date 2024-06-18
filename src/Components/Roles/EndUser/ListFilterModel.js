@@ -37,6 +37,8 @@ const ListFilterModel = () => {
     setEndUserRequestList,
     itemListFilterModalopen,
     setItemListFilterModalopen,
+    itemListLoading,
+    setItemListLoading,
   } = useStates()
 
   const ValueChange = (field, value) => {
@@ -65,6 +67,7 @@ const ListFilterModel = () => {
     const UserId = userDetails.roles.includes('L0') ? userDetails.id : ''
     const isAdmin = userDetails?.roles?.includes('Admin') ? true : false
     try {
+      setItemListLoading(true)
       const res = await axios.post(
         ' https://mdm.p360.build/v1/mdm/purchase-item/filter',
         {
@@ -83,6 +86,8 @@ const ListFilterModel = () => {
       hide()
     } catch (err) {
       console.error('Error fetching items:', err)
+    } finally {
+      setItemListLoading(false)
     }
   }
 
@@ -97,6 +102,7 @@ const ListFilterModel = () => {
     const UserId = userDetails.roles.includes('L0') ? userDetails.id : ''
     const isAdmin = userDetails?.roles?.includes('Admin') ? true : false
     try {
+      setItemListLoading(true)
       const res = await axios.post(
         ' https://mdm.p360.build/v1/mdm/purchase-item/filter',
         {
@@ -115,6 +121,8 @@ const ListFilterModel = () => {
       hide()
     } catch (err) {
       console.error('Error fetching items:', err)
+    } finally {
+      setItemListLoading(false)
     }
   }
 

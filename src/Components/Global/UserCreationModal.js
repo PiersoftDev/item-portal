@@ -69,6 +69,10 @@ const UserCreationModal = () => {
       } catch (err) {
         if (err.message === 'Network Error') {
           navigate('/login')
+          localStorage.removeItem('accessToken')
+          localStorage.removeItem('idToken')
+          localStorage.removeItem('refreshToken')
+          localStorage.removeItem('userDetails')
         }
       }
     }

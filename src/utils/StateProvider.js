@@ -232,6 +232,8 @@ const StateProvider = ({ children }) => {
   const [subConItemRequestModalopen, setSubConItemRequestModalopen] =
     useState(false)
 
+    const [itemListLoading, setItemListLoading] = useState(false)
+
   return (
     <States.Provider
       value={{
@@ -318,6 +320,8 @@ const StateProvider = ({ children }) => {
         subConItem,
         setSubConItem,
         IntialSubConItem,
+        itemListLoading,
+        setItemListLoading,
       }}
     >
       {children}
