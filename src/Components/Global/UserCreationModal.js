@@ -5,6 +5,7 @@ import { useStates } from '../../utils/StateProvider'
 import { FaWindowClose } from 'react-icons/fa'
 import axios from 'axios'
 import { AutoComplete, Checkbox, Spin, Tag, message } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 const UserCreationModal = () => {
   const {
@@ -16,6 +17,8 @@ const UserCreationModal = () => {
     Requestdependencies,
     setRequestDependencies,
   } = useStates()
+
+  const navigate = useNavigate()
 
   const [loading, setLoading] = useState(false)
   const [projectoptions, setProjectOptions] = useState([])
@@ -39,26 +42,37 @@ const UserCreationModal = () => {
 
   useEffect(() => {
     const fetchDependencies = async () => {
-      const Cookie = CookiesData()
-      const response = await axios.post(
-        `https://mdm.p360.build/v1/mdm/project/search`,
-        { searchTerm: inputValue ? inputValue : '' },
-        Cookie
-      )
-      let Project = response?.data?.data || []
-      setRequestDependencies({
-        ...Requestdependencies,
-        projects: Project,
-      })
+      try {
+        const Cookie = CookiesData()
+        const response = await axios.post(
+          `https://mdm.p360.build/v1/mdm/project/search`,
+          { searchTerm: inputValue ? inputValue : '' },
+          Cookie
+        )
+        let Project = response?.data?.data || []
+        setRequestDependencies({
+          ...Requestdependencies,
+          projects: Project,
+        })
 
-      setProjectOptions(
-        Project.map((record) => ({
-          Description: `${record.id} - ${record.description}`,
-          value: record.description,
-          id: record.id,
-        }))
-      )
+        const uniqueOptions = new Map()
+        Project.forEach((record) => {
+          if (!uniqueOptions.has(record.description)) {
+            uniqueOptions.set(record.description, {
+              Description: `${record.id} - ${record.description}`,
+              value: record.description,
+              id: record.id,
+            })
+          }
+        })
+        setProjectOptions([...uniqueOptions.values()])
+      } catch (err) {
+        if (err.message === 'Network Error') {
+          navigate('/login')
+        }
+      }
     }
+
     fetchDependencies()
   }, [inputValue])
 

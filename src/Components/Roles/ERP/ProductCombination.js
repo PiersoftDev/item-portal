@@ -100,7 +100,9 @@ const ProductCombination = () => {
           <Button className='cancel' onClick={CancelClick}>
             Cancel
           </Button>
-          <Button onClick={NewCombinationClick}>Add Combination</Button>
+          <Button onClick={NewCombinationClick} disabled>
+            Add Combination
+          </Button>
         </ButtonContainer>
       </Top>
       <TableContainer>

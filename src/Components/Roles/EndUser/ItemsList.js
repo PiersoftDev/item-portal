@@ -40,6 +40,7 @@ import { FaEye } from 'react-icons/fa'
 import ProductLinkHierarchyModal from './modals/ProductLinkHierarchyModal'
 
 import { TbHierarchy2 } from 'react-icons/tb'
+import { useNavigate } from 'react-router-dom'
 
 const ItemsList = () => {
   const {
@@ -68,6 +69,8 @@ const ItemsList = () => {
     itemListFilterModalopen,
     setItemListFilterModalopen,
   } = useStates()
+
+  const navigate = useNavigate()
 
   const [openHistory, setOpenHistory] = useState(false)
   const [openComments, setOpenComments] = useState(false)
@@ -120,7 +123,11 @@ const ItemsList = () => {
         )
         setEndUserRequestList(res.data.data)
       } catch (err) {
-        console.error('Error fetching items:', err)
+        console.log('Error fetching items:', err)
+        if (err.message === 'Network Error') {
+          // message.warning('Access Expired, please re-login')
+          navigate('/login')
+        }
       }
     }
 
@@ -1098,6 +1105,7 @@ const Container = styled.div`
   flex-direction: column;
   gap: 10px;
   padding: 10px;
+  max-width: 450px;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f9f9f9;

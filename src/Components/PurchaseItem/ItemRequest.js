@@ -486,7 +486,9 @@ const NewRequest = () => {
                 rows={3}
                 allowClear
                 onChange={(e) => {
-                  ValueChange('requirementDesc', e.target.value)
+                  if (!e.target.value.startsWith(' ')) {
+                    ValueChange('requirementDesc', e.target.value)
+                  }
                 }}
                 style={{
                   margin: '0 4rem 0 1rem',
