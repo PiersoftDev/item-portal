@@ -232,7 +232,10 @@ const StateProvider = ({ children }) => {
   const [subConItemRequestModalopen, setSubConItemRequestModalopen] =
     useState(false)
 
-    const [itemListLoading, setItemListLoading] = useState(false)
+  const [itemListLoading, setItemListLoading] = useState(false)
+
+  const [itemListPage, setItemListPage] = useState(0)
+  const [totalItemsCount, setTotalItemsCount] = useState(0)
 
   return (
     <States.Provider
@@ -322,6 +325,10 @@ const StateProvider = ({ children }) => {
         IntialSubConItem,
         itemListLoading,
         setItemListLoading,
+        itemListPage,
+        setItemListPage,
+        totalItemsCount,
+        setTotalItemsCount,
       }}
     >
       {children}

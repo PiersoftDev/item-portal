@@ -49,7 +49,10 @@ const NewRequest = () => {
       const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/project/search`,
-        { searchTerm: newItem.site ? newItem.site : '' },
+        {
+          idSearchTerm: newItem.siteId ? newItem.siteId : '',
+          descSearchTerm: newItem.site ? newItem.site : '',
+        },
         Cookie
       )
       let project = response?.data?.data || []
@@ -62,7 +65,6 @@ const NewRequest = () => {
       project.forEach((record) => {
         if (!uniqueOptions.has(record.description)) {
           uniqueOptions.set(record.description, {
-            Description: `${record.id} - ${record.description}`,
             value: record.description,
             id: record.id,
           })
@@ -71,7 +73,7 @@ const NewRequest = () => {
       setProjectOptions([...uniqueOptions.values()])
     }
     fetchDependencies()
-  }, [newItem.site])
+  }, [newItem.site, newItem.siteId])
 
   useEffect(() => {
     const fetchDependencies = async () => {
@@ -380,6 +382,56 @@ const NewRequest = () => {
             <SectionTitle>Contact Information</SectionTitle>
             <GridContainer>
               <Container>
+                <label>Site Code *</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={newItem.siteId}
+                  // readOnly={true}
+                  placeholder='Select Project Code'
+                  options={projectoptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  // onSearch={ItemGroupDescriptionSearch}
+                  onChange={(value) => {
+                    if (value === undefined || value === '') {
+                      ValueChange('site', '')
+                      ValueChange('siteId', '')
+                    } else {
+                      ValueChange('siteId', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = projectoptions.find(
+                      (option) => option.id === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('site', selectedOption.value)
+                    } else {
+                      ValueChange('site', '')
+                      ValueChange('siteId', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = projectoptions.find(
+                      (option) => option.id === newItem.siteId
+                    )
+                    if (OptionValue) {
+                      ValueChange('site', OptionValue.value)
+                    } else {
+                      ValueChange('site', '')
+                      ValueChange('siteId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                  // onFocus={(e) => FieldFocas('Item Group', 'item-group')}
+                />
+                {errors.site && <ErrorMessage>{errors.site}</ErrorMessage>}
+              </Container>
+              <Container>
                 <label>Site Description *</label>
                 <StyledDependencies
                   type='text'
@@ -388,12 +440,28 @@ const NewRequest = () => {
                   // readOnly={true}
                   placeholder='Select Project'
                   options={projectoptions.map((option) => ({
-                    label: option.Description,
+                    label: option.value,
                     value: option.value,
                   }))}
                   // onSearch={ItemGroupDescriptionSearch}
                   onChange={(value) => {
-                    ValueChange('site', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('site', '')
+                      ValueChange('siteId', '')
+                    } else {
+                      ValueChange('site', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = projectoptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('siteId', selectedOption.id)
+                    } else {
+                      ValueChange('site', '')
+                      ValueChange('siteId', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = projectoptions.find(
@@ -413,6 +481,7 @@ const NewRequest = () => {
                 />
                 {errors.site && <ErrorMessage>{errors.site}</ErrorMessage>}
               </Container>
+
               <Container>
                 <label>Requester *</label>
                 <StyledDependencies

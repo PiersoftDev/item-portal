@@ -17,7 +17,7 @@ import { FaPerson, FaPhone } from 'react-icons/fa6'
 import { RxCross2 } from 'react-icons/rx'
 import NoDataFound from './NoData.gif'
 
-import { Dropdown, Modal, Popover, message } from 'antd'
+import { Dropdown, Modal, Pagination, Popover, message } from 'antd'
 // import CustomModal from '../../Global/CustomModal'
 
 import Level1ItemRequest from '../Level1/Level1ItemRequest'
@@ -70,6 +70,10 @@ const ItemsList = () => {
     setItemListFilterModalopen,
     itemListLoading,
     setItemListLoading,
+    itemListPage,
+    setItemListPage,
+    totalItemsCount,
+    setTotalItemsCount,
   } = useStates()
 
   const navigate = useNavigate()
@@ -118,13 +122,14 @@ const ItemsList = () => {
             level: itemListFilters.level,
             searchTerm: itemListFilters.searchTerm,
             creatorId: UserId,
-            pageNo: 0,
-            pageSize: 100,
+            pageNo: itemListPage,
+            pageSize: 20,
             isAdmin: isAdmin,
           },
           Cookie
         )
-        setEndUserRequestList(res.data.data)
+        setEndUserRequestList(res.data.data.content)
+        setTotalItemsCount(res.data.data.totalElements)
       } catch (err) {
         console.log('Error fetching items:', err)
         if (err.message === 'Network Error') {
@@ -143,7 +148,7 @@ const ItemsList = () => {
     if (userDetails && userDetails.roles) {
       fetchItem()
     }
-  }, [userDetails])
+  }, [userDetails, itemListPage])
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text).then(
@@ -257,6 +262,10 @@ const ItemsList = () => {
   //   // },
   // ]
 
+  const PageChange = (newPage) => {
+    setItemListPage(newPage - 1)
+  }
+
   const ProfileContent = (record) => {
     return (
       <Container>
@@ -316,8 +325,7 @@ const ItemsList = () => {
           <Top>
             <TopContainer>
               <Title>
-                Items List (
-                <Count>Total Records : {endUserRequestList.length}</Count>)
+                Items List (<Count>Total Records : {totalItemsCount}</Count>)
               </Title>
               <TopRightContainer>
                 {/* <Button>Progress Type : End User</Button> */}
@@ -608,8 +616,14 @@ const ItemsList = () => {
               </tbody>
             </Table>
           </TableContainer>
+          <PaginationContainer>
+            <Pagination
+              value={itemListPage + 1}
+              onChange={PageChange}
+              total={totalItemsCount}
+            />
+          </PaginationContainer>
         </BodyContainer>
-
         <SimilarValues />
       </Wrapper>
       <ItemRequestCustomModal
@@ -806,6 +820,7 @@ const BodyContainer = styled.div`
   margin-right: 0.6rem;
   width: 97%;
   height: 100%;
+  max-height: 89vh;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -1026,7 +1041,7 @@ const TableRow = styled.tr`
       'Helvetica Neue', sans-serif;
     font-weight: 600;
     &:first-child {
-      max-width: 250px !important;
+      max-width: 170px !important;
     }
     &:nth-child(3) {
       max-width: 200px !important;
@@ -1056,7 +1071,7 @@ const TableRow = styled.tr`
       'Helvetica Neue', sans-serif;
     title: ${(props) => props.children};
     &:first-child {
-      max-width: 250px !important;
+      max-width: 170px !important;
     }
     &:nth-child(3) {
       max-width: 200px !important;
@@ -1089,6 +1104,15 @@ const TableRow = styled.tr`
     background-color: rgba(0, 0, 0, 0.03);
   }
 `
+
+const PaginationContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+`
+
 const Button = styled.button`
   border: 1.2px solid #ccc;
   background: transparent;

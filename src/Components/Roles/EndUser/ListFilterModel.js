@@ -39,6 +39,8 @@ const ListFilterModel = () => {
     setItemListFilterModalopen,
     itemListLoading,
     setItemListLoading,
+    itemListPage,
+    setTotalItemsCount,
   } = useStates()
 
   const ValueChange = (field, value) => {
@@ -76,13 +78,14 @@ const ListFilterModel = () => {
           level: itemListFilters.level,
           searchTerm: itemListFilters.searchTerm,
           creatorId: UserId,
-          pageNo: 0,
-          pageSize: 100,
+          pageNo: itemListPage,
+          pageSize: 20,
           isAdmin: isAdmin,
         },
         Cookie
       )
-      setEndUserRequestList(res.data.data)
+      setEndUserRequestList(res.data.data.content)
+      setTotalItemsCount(res.data.data.totalElements)
       hide()
     } catch (err) {
       console.error('Error fetching items:', err)
@@ -111,13 +114,14 @@ const ListFilterModel = () => {
           level: '',
           searchTerm: '',
           creatorId: UserId,
-          pageNo: 0,
-          pageSize: 100,
+          pageNo: itemListPage,
+          pageSize: 20,
           isAdmin: isAdmin,
         },
         Cookie
       )
-      setEndUserRequestList(res.data.data)
+      setEndUserRequestList(res.data.data.content)
+      setTotalItemsCount(res.data.data.totalElements)
       hide()
     } catch (err) {
       console.error('Error fetching items:', err)
