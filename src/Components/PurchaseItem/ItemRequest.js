@@ -20,6 +20,7 @@ const NewRequest = () => {
     Requestdependencies,
     setRequestDependencies,
     userDetails,
+    testUrl,
   } = useStates()
 
   const [loading, setLoading] = useState(false)
@@ -48,7 +49,7 @@ const NewRequest = () => {
     const fetchDependencies = async () => {
       const Cookie = CookiesData()
       const response = await axios.post(
-        `https://mdm.p360.build/v1/mdm/project/search`,
+        `${testUrl}/v1/mdm/project/search`,
         {
           idSearchTerm: newItem.siteId ? newItem.siteId : '',
           descSearchTerm: newItem.site ? newItem.site : '',
@@ -80,7 +81,7 @@ const NewRequest = () => {
       try {
         const Cookie = CookiesData()
         const response = await axios.post(
-          'https://mdm.p360.build/v1/mdm/employee/search/0/50',
+          `${testUrl}/v1/mdm/employee/search/0/50`,
           {
             idSearchTerm: newItem.requesterId ? newItem.requesterId : '',
             descSearchTerm: newItem.requester ? newItem.requester : '',
@@ -119,7 +120,7 @@ const NewRequest = () => {
       if (newItem.itemType) {
         const Cookie = CookiesData()
         const response = await axios.post(
-          `https://mdm.p360.build/v1/mdm/product-link/item-group/${newItem.itemType}`,
+          `${testUrl}/v1/mdm/product-link/item-group/${newItem.itemType}`,
           {
             idSearchTerm: newItem.itemGroupId ? newItem.itemGroupId : '',
             descSearchTerm: newItem.itemGroup ? newItem.itemGroup : '',
@@ -153,7 +154,7 @@ const NewRequest = () => {
       if (newItem.itemGroupId) {
         const Cookie = CookiesData()
         const response = await axios.post(
-          `https://mdm.p360.build/v1/mdm/product-link/product-type/${newItem.itemGroupId}`,
+          `${testUrl}/v1/mdm/product-link/product-type/${newItem.itemGroupId}`,
           {
             idSearchTerm: newItem.productTypeId ? newItem.productTypeId : '',
             descSearchTerm: newItem.productType ? newItem.productType : '',
@@ -187,7 +188,7 @@ const NewRequest = () => {
       if (newItem.productTypeId) {
         const Cookie = CookiesData()
         const response = await axios.post(
-          `https://mdm.p360.build/v1/mdm/product-link/product-class/${newItem.productTypeId}`,
+          `${testUrl}/v1/mdm/product-link/product-class/${newItem.productTypeId}`,
           {
             idSearchTerm: newItem.productClassId ? newItem.productClassId : '',
             descSearchTerm: newItem.productClass ? newItem.productClass : '',
@@ -221,7 +222,7 @@ const NewRequest = () => {
       if (newItem.productClassId) {
         const Cookie = CookiesData()
         const response = await axios.post(
-          `https://mdm.p360.build/v1/mdm/product-link/product-line/${newItem.productClassId}`,
+          `${testUrl}/v1/mdm/product-link/product-line/${newItem.productClassId}`,
           {
             idSearchTerm: newItem.productLineId ? newItem.productLineId : '',
             descSearchTerm: newItem.productLine ? newItem.productLine : '',
@@ -254,7 +255,7 @@ const NewRequest = () => {
     const fetchDependencies = async () => {
       const Cookie = CookiesData()
       const response = await axios.post(
-        `https://mdm.p360.build/v1/mdm/uom/search`,
+        `${testUrl}/v1/mdm/uom/search`,
         {
           idSearchTerm: newItem.uom ? newItem.uom : '',
           descSearchTerm: newItem.uomDesc ? newItem.uomDesc : '',
@@ -287,7 +288,7 @@ const NewRequest = () => {
     const fetchDependencies = async () => {
       const Cookie = CookiesData()
       const response = await axios.post(
-        `https://mdm.p360.build/v1/mdm/cost-component/fetch-by-cost-component-type/material`,
+        `${testUrl}/v1/mdm/cost-component/fetch-by-cost-component-type/material`,
         {
           idSearchTerm: newItem.materialCostComponentId
             ? newItem.materialCostComponentId
@@ -322,7 +323,7 @@ const NewRequest = () => {
     const fetchDependencies = async () => {
       const Cookie = CookiesData()
       const response = await axios.post(
-        `https://mdm.p360.build/v1/mdm/group-code/search`,
+        `${testUrl}/v1/mdm/group-code/search`,
         {
           idSearchTerm: newItem.groupCodeId ? newItem.groupCodeId : '',
           descSearchTerm: newItem.groupCode ? newItem.groupCode : '',
@@ -404,7 +405,7 @@ const NewRequest = () => {
         const Cookie = CookiesData()
         setLoading(true)
         const response = await axios.post(
-          'https://mdm.p360.build/v1/mdm/purchase-item/create',
+          `${testUrl}/v1/mdm/purchase-item/create`,
           reqbody,
           Cookie
         )

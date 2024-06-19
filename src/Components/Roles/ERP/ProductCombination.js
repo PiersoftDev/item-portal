@@ -23,6 +23,7 @@ const ProductCombination = () => {
     setNewCombinationOpen,
     productlinkList,
     setProductLinkList,
+    testUrl,
   } = useStates()
 
   const [loading, setLoading] = useState(false)
@@ -55,7 +56,7 @@ const ProductCombination = () => {
         const Cookie = CookiesData()
         setLoading(true)
         const res = await axios.get(
-          'https://mdm.p360.build/v1/mdm/product-link/fetch-all',
+          `${testUrl}/v1/mdm/product-link/fetch-all`,
           Cookie
         )
         setProductLinkList(res.data.data)

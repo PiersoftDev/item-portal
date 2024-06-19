@@ -18,6 +18,7 @@ const Level3ItemRequest = () => {
     setEndUserRequestList,
     endUserRequestList,
     setErrors,
+    testUrl,
   } = useStates()
 
   const [loading, setLoading] = useState(false)
@@ -49,7 +50,7 @@ const Level3ItemRequest = () => {
     const fetchDependencies = async () => {
       const Cookie = CookiesData()
       const response = await axios.post(
-        `https://mdm.p360.build/v1/mdm/cost-component/fetch-by-cost-component-type/material`,
+        `${testUrl}/v1/mdm/cost-component/fetch-by-cost-component-type/material`,
         {
           idSearchTerm: PendingRequest.materialCostComponentId
             ? PendingRequest.materialCostComponentId
@@ -84,7 +85,7 @@ const Level3ItemRequest = () => {
     const fetchDependencies = async () => {
       const Cookie = CookiesData()
       const response = await axios.post(
-        `https://mdm.p360.build/v1/mdm/group-code/search`,
+        `${testUrl}/v1/mdm/group-code/search`,
         {
           idSearchTerm: PendingRequest.groupCodeId
             ? PendingRequest.groupCodeId
@@ -164,7 +165,7 @@ const Level3ItemRequest = () => {
         console.log(reqbody)
         setLoading(true)
         const response = await axios.put(
-          'https://mdm.p360.build/v1/mdm/purchase-item/update',
+          `${testUrl}/v1/mdm/purchase-item/update`,
           reqbody,
           Cookie
         )
@@ -211,7 +212,7 @@ const Level3ItemRequest = () => {
         const Cookie = CookiesData()
         setLoading(true)
         const response = await axios.put(
-          'https://mdm.p360.build/v1/mdm/purchase-item/update',
+          `${testUrl}/v1/mdm/purchase-item/update`,
           reqbody,
           Cookie
         )

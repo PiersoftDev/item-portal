@@ -12,6 +12,7 @@ const SimilarValues = () => {
     setSimilarItemsModal,
     setSimilarItem,
     similarItem,
+    testUrl,
   } = useStates()
 
   const [similarValues, setSimilarValues] = useState([])
@@ -34,7 +35,7 @@ const SimilarValues = () => {
         const Cookie = CookiesData()
         setLoading(true)
         const res = await axios.get(
-          `https://mdm.p360.build/v1/mdm/p360/item/fetch-similar/${similarItem?.id}`,
+          `${testUrl}/v1/mdm/p360/item/fetch-similar/${similarItem?.id}`,
           Cookie
         )
         console.log(res)

@@ -11,7 +11,7 @@ import {
   IoInformationCircleSharp,
   IoPersonCircleSharp,
 } from 'react-icons/io5'
-import { MdPlace } from 'react-icons/md'
+import { MdPlace, MdOutlineRemoveRedEye } from 'react-icons/md'
 import { FaPerson, FaPhone } from 'react-icons/fa6'
 // import { GoDotFill } from 'react-icons/go'
 import { RxCross2 } from 'react-icons/rx'
@@ -31,21 +31,25 @@ import HistoryModal from './modals/HistoryModal'
 import CommentsModal from './modals/CommentsModal'
 import SimilarItemsModal from './modals/SimilarItemsModal'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import { FaHistory } from 'react-icons/fa'
-import { LiaComments } from 'react-icons/lia'
+import { FaHistory, FaHourglassHalf, FaEye } from 'react-icons/fa'
+
 import { HiTemplate } from 'react-icons/hi'
 
 import { TbDatabase } from 'react-icons/tb'
-import { FaEye } from 'react-icons/fa'
+
 import ProductLinkHierarchyModal from './modals/ProductLinkHierarchyModal'
 
 import { TbHierarchy2 } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 import Level0PendingRequest from '../Level1/Level0PendingRequest'
 import Level0ItemRequest from '../Level1/Level0PendingRequest'
+import { MdOpenInNew } from 'react-icons/md'
+
+import { PiEyeglassesBold, PiGitBranchBold } from 'react-icons/pi'
 
 const ItemsList = () => {
   const {
+    testUrl,
     endUserRequestList,
     setEndUserRequestList,
     similarItemsModal,
@@ -116,14 +120,16 @@ const ItemsList = () => {
       const UserId = userDetails?.roles?.includes('L0') ? userDetails.id : ''
       const isAdmin = userDetails?.roles?.includes('Admin') ? true : false
 
+      const [level] = userDetails.roles
+
       try {
         setItemListLoading(true)
         const res = await axios.post(
-          'https://mdm.p360.build/v1/mdm/purchase-item/filter',
+          `${testUrl}/v1/mdm/purchase-item/filter`,
           {
             itemType: itemListFilters.itemType,
             status: itemListFilters.status,
-            level: itemListFilters.level,
+            level: isAdmin ? '' : level,
             searchTerm: itemListFilters.searchTerm,
             creatorId: UserId,
             pageNo: itemListPage,
@@ -157,17 +163,17 @@ const ItemsList = () => {
     }
   }, [userDetails, itemListPage])
 
-  // const copyToClipboard = (text) => {
-  //   navigator.clipboard.writeText(text).then(
-  //     () => {
-  //       message.success('Copied')
-  //       console.log('Copying to clipboard was successful!')
-  //     },
-  //     (err) => {
-  //       console.error('Could not copy text: ', err)
-  //     }
-  //   )
-  // }
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        message.success('Copied')
+        console.log('Copying to clipboard was successful!')
+      },
+      (err) => {
+        console.error('Could not copy text: ', err)
+      }
+    )
+  }
 
   // const SimilarItemModalOpen = (record) => {
   //   setSimilarItemsModal(!similarItemsModal)
@@ -420,6 +426,7 @@ const ItemsList = () => {
             <Table>
               <thead>
                 <TableRow className='header'>
+                  <th>Actions</th>
                   <th>Requirement Description</th>
                   <th>External Id</th>
                   <th>Item Group</th>
@@ -427,7 +434,7 @@ const ItemsList = () => {
                   <th>Unit</th>
                   <th className='task-progress'>Task Progress</th>
                   <th className='status'>Status</th>
-                  <th className='actions'>Actions</th>
+                  {/* <th className='actions'>Actions</th> */}
                 </TableRow>
               </thead>
               <tbody>
@@ -437,10 +444,25 @@ const ItemsList = () => {
                   </LoadingContainer>
                 ) : endUserRequestList.length > 0 ? (
                   endUserRequestList.map((record) => (
-                    <TableRow
-                      key={record.id}
-                      onClick={() => Level1RequestModalOpen(record)}
-                    >
+                    <TableRow key={record.id}>
+                      <td>
+                        <IconsContainer>
+                          <FaHourglassHalf
+                            className='icon'
+                            onClick={() => {
+                              openCommentsModal(record)
+                            }}
+                          />
+                          <FaHistory
+                            className='icon'
+                            onClick={() => openHistoryModal(record)}
+                          />
+                          <FaEye
+                            className='icon'
+                            onClick={() => Level1RequestModalOpen(record)}
+                          />
+                        </IconsContainer>
+                      </td>
                       {/* {columns.map((data) => (
                       <>
                         {data.dataIndex === 'itemDescription' && (
@@ -468,15 +490,15 @@ const ItemsList = () => {
                       </td>
                       <td key={record.extId}>
                         <DataContainer>
-                          {/* {record.extId && (
-                            <FaCopy
+                          {record.extId && (
+                            <PiGitBranchBold
                               onClick={() => {
                                 if (record.extId) {
                                   copyToClipboard(record.extId)
                                 }
                               }}
                             />
-                          )} */}
+                          )}
                           <DataValue title={record.extId}>
                             {record.extId}
                           </DataValue>
@@ -550,7 +572,7 @@ const ItemsList = () => {
                         </StatusBox>
                       </td>
 
-                      <td className='actions'>
+                      {/* <td className='actions'>
                         <Dropdown
                           trigger={['click']}
                           arrow={true}
@@ -639,7 +661,7 @@ const ItemsList = () => {
                             <BsThreeDotsVertical />
                           </Button>
                         </Dropdown>
-                      </td>
+                      </td> */}
                     </TableRow>
                   ))
                 ) : (
@@ -1092,7 +1114,6 @@ const TableRow = styled.tr`
     padding: 0.5rem 1rem;
     text-align: start;
     white-space: nowrap;
-    min-width: 140px;
     width: 100%;
     color: #1f2544;
     margin-top: -0.2rem;
@@ -1100,18 +1121,20 @@ const TableRow = styled.tr`
       'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
       'Helvetica Neue', sans-serif;
     font-weight: 600;
+    z-index: 1;
     &:first-child {
-      max-width: 170px !important;
+      width: 100px !important;
+      text-align: center;
+      position: sticky;
+      left: 0;
+      background: #fff;
+      z-index: 99;
     }
-    &:nth-child(3) {
-      max-width: 200px !important;
+    &:nth-child(2) {
+      max-width: 170px !important;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
-    &:last-child {
-      min-width: 80px !important;
-      max-width: 80px !important;
     }
   }
   td {
@@ -1130,18 +1153,19 @@ const TableRow = styled.tr`
       'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
       'Helvetica Neue', sans-serif;
     title: ${(props) => props.children};
+    z-index: 1;
     &:first-child {
-      max-width: 170px !important;
+      width: 100px !important;
+      position: sticky;
+      left: 0;
+      background: #fff;
+      z-index: 99;
     }
-    &:nth-child(3) {
+    &:nth-child(2) {
       max-width: 200px !important;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
-    &:last-child {
-      min-width: 80px !important;
-      max-width: 80px !important;
     }
   }
   /* .task-progress {
@@ -1272,14 +1296,14 @@ const DataNotFound = styled.div`
 `
 const DataContainer = styled.div`
   display: flex;
-  // justify-content: center;
   align-items: center;
   gap: 0.3rem;
 `
 
 const DataValue = styled.div`
   position: relative;
-  max-width: 200px;
+  max-width: 170px;
+  min-width: 170px;
   width: 90%;
   font-size: 0.7rem;
   letter-spacing: 0.5px;
@@ -1288,12 +1312,28 @@ const DataValue = styled.div`
   text-overflow: ellipsis;
 `
 
+const IconsContainer = styled.div`
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  .icon {
+    color: #596bb3;
+    font-size: 12px;
+  }
+`
+
 const PersonIcon = styled(IoPersonCircleSharp)`
   font-size: 15px;
   color: #596bb3;
 `
 const InfoIcon = styled(IoInformationCircleSharp)`
   font-size: 15px;
+  color: #596bb3;
+`
+
+const EditIcon = styled(PiEyeglassesBold)`
+  font-size: 20px;
   color: #596bb3;
 `
 

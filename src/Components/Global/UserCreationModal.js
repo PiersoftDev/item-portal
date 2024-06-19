@@ -16,6 +16,7 @@ const UserCreationModal = () => {
     IntialUser,
     Requestdependencies,
     setRequestDependencies,
+    testUrl,
   } = useStates()
 
   const navigate = useNavigate()
@@ -45,7 +46,7 @@ const UserCreationModal = () => {
       try {
         const Cookie = CookiesData()
         const response = await axios.post(
-          `https://mdm.p360.build/v1/mdm/project/search`,
+          `${testUrl}/v1/mdm/project/search`,
           { searchTerm: inputValue ? inputValue : '' },
           Cookie
         )
@@ -157,7 +158,7 @@ const UserCreationModal = () => {
     try {
       setLoading(true)
       const response = await axios.post(
-        'https://mdm.p360.build/v1/mdm/user/create',
+        `${testUrl}/v1/mdm/user/create`,
         updatedUser
       )
       console.log(response.data)

@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { message } from 'antd'
 
 const UserProfile = () => {
-  const { userDetails, setuserDeails } = useStates()
+  const { userDetails, setuserDeails, testUrl } = useStates()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const UserProfile = () => {
     try {
       if (userDetails.mobileNumber) {
         const res = await axios.get(
-          `https://mdm.p360.build/v1/mdm/user/logoutUser/+91${userDetails.mobileNumber}`
+          `${testUrl}/v1/mdm/user/logoutUser/+91${userDetails.mobileNumber}`
         )
         console.log('User logged Out', res.data)
         navigate('/login')

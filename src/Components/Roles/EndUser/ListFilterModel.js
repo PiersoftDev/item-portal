@@ -41,6 +41,7 @@ const ListFilterModel = () => {
     setItemListLoading,
     itemListPage,
     setTotalItemsCount,
+    testUrl,
   } = useStates()
 
   const ValueChange = (field, value) => {
@@ -71,7 +72,7 @@ const ListFilterModel = () => {
     try {
       setItemListLoading(true)
       const res = await axios.post(
-        ' https://mdm.p360.build/v1/mdm/purchase-item/filter',
+        `${testUrl}/v1/mdm/purchase-item/filter`,
         {
           itemType: itemListFilters.itemType,
           status: itemListFilters.status,
@@ -107,7 +108,7 @@ const ListFilterModel = () => {
     try {
       setItemListLoading(true)
       const res = await axios.post(
-        ' https://mdm.p360.build/v1/mdm/purchase-item/filter',
+        `${testUrl}/v1/mdm/purchase-item/filter`,
         {
           itemType: '',
           status: '',

@@ -4,6 +4,7 @@ import TimeLineListChildComponent from './TimeLineListChildComponent'
 import styled from 'styled-components'
 import dayjs from 'dayjs'
 import axios from 'axios'
+import { useStates } from '../../../../utils/StateProvider'
 
 function HistoryModal({
   openHistory,
@@ -12,6 +13,8 @@ function HistoryModal({
   setSelectedRecord,
 }) {
   const [changeLogData, setChangeLogData] = useState([])
+
+  const { testUrl } = useStates()
 
   const handleCancel = () => {
     setOpenHistory(false)
@@ -22,7 +25,7 @@ function HistoryModal({
     try {
       console.log(selectedRecord)
       const res = await axios.get(
-        `https://mdm.p360.build/v1/mdm/purchase-item/audit/${selectedRecord?.id}`,
+        `${testUrl}/v1/mdm/purchase-item/audit/${selectedRecord?.id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -95,7 +98,7 @@ function HistoryModal({
   const recordIdComponent = (
     <div>
       Commit history for the record :{' '}
-      <Tag color="green"> {selectedRecord?.id}</Tag>
+      <Tag color='green'> {selectedRecord?.id}</Tag>
     </div>
   )
 

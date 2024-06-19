@@ -18,6 +18,7 @@ const NewCombination = () => {
     productlinkList,
     setProductLinkList,
     userRole,
+    testUrl,
   } = useStates()
   const [itemgroupoptions, setItemGroupOptions] = useState([])
   const [productTypeoptions, setProductTypeOptions] = useState([])
@@ -41,22 +42,10 @@ const NewCombination = () => {
         const Cookie = CookiesData()
         const [itemGroup, productType, productClass, productLine] =
           await Promise.all([
-            axios.get(
-              'https://mdm.p360.build/v1/mdm/item-group/fetch-all',
-              Cookie
-            ),
-            axios.get(
-              'https://mdm.p360.build/v1/mdm/product-type/fetch-all',
-              Cookie
-            ),
-            axios.get(
-              'https://mdm.p360.build/v1/mdm/product-class/fetch-all',
-              Cookie
-            ),
-            axios.get(
-              'https://mdm.p360.build/v1/mdm/product-line/fetch-all',
-              Cookie
-            ),
+            axios.get(`${testUrl}/v1/mdm/item-group/fetch-all`, Cookie),
+            axios.get(`${testUrl}/v1/mdm/product-type/fetch-all`, Cookie),
+            axios.get(`${testUrl}/v1/mdm/product-class/fetch-all`, Cookie),
+            axios.get(`${testUrl}/v1/mdm/product-line/fetch-all`, Cookie),
           ])
 
         setDependencies({
@@ -99,7 +88,7 @@ const NewCombination = () => {
     try {
       const Cookie = CookiesData()
       const response = await axios.post(
-        'https://mdm.p360.build/v1/mdm/product-link/verify',
+        `${testUrl}/v1/mdm/product-link/verify`,
         newProductLink,
         Cookie
       )
@@ -282,7 +271,7 @@ const NewCombination = () => {
     ) {
       try {
         const response = await axios.post(
-          'https://mdm.p360.build/v1/mdm/product-link/create',
+          `${testUrl}/v1/mdm/product-link/create`,
           newProductLink
         )
         console.log(response.data)

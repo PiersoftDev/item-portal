@@ -10,8 +10,13 @@ import NoDataFound from './NodataFound.png'
 const { TabPane } = Tabs
 
 const ItemStatus = () => {
-  const { activeTab, setActiveTab, setEndUserRequestList, endUserRequestList } =
-    useStates()
+  const {
+    activeTab,
+    setActiveTab,
+    setEndUserRequestList,
+    endUserRequestList,
+    testUrl,
+  } = useStates()
   const handleTabChange = (key) => {
     setActiveTab(key)
   }
@@ -19,9 +24,7 @@ const ItemStatus = () => {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const res = await axios.get(
-          'https://mdm.p360.build/v1/mdm/p360/item/fetch-all'
-        )
+        const res = await axios.get(`${testUrl}/v1/mdm/p360/item/fetch-all`)
         setEndUserRequestList(res.data.data)
       } catch (err) {
         console.error('Error fetching items:', err)

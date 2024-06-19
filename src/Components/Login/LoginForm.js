@@ -15,6 +15,7 @@ const LoginForm = () => {
     setUserRole,
     userRole,
     setuserDeails,
+    testUrl,
   } = useStates()
   const [otploading, setOtpLoading] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -50,7 +51,7 @@ const LoginForm = () => {
       setOtpLoading(true)
       if (loginDetails.username.length === 10 && !otploading) {
         const res = await axios.post(
-          `https://mdm.p360.build/v1/mdm/user/login/+91${loginDetails.username}`
+          `${testUrl}/v1/mdm/user/login/+91${loginDetails.username}`
         )
         setLogingDetails({ ...loginDetails, session: res.data.data })
         console.log(res)
@@ -73,10 +74,7 @@ const LoginForm = () => {
             ...loginDetails,
             username: `+91${loginDetails.username}`,
           }
-          const res = await axios.post(
-            'https://mdm.p360.build/v1/mdm/user/verify',
-            data
-          )
+          const res = await axios.post(`${testUrl}/v1/mdm/user/verify`, data)
           console.log(res)
           setUserRole('End User')
           localStorage.setItem('userDetails', JSON.stringify(res.data.user))

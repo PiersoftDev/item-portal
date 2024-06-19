@@ -18,6 +18,7 @@ const ErpItemRequest = () => {
     setEndUserRequestList,
     endUserRequestList,
     setErrors,
+    testUrl,
   } = useStates()
 
   const [loading, setLoading] = useState(false)
@@ -51,7 +52,7 @@ const ErpItemRequest = () => {
     const fetchDependencies = async () => {
       const Cookie = CookiesData()
       const response = await axios.post(
-        'https://mdm.p360.build/v1/mdm/warehouse/search',
+        `${testUrl}/v1/mdm/warehouse/search`,
         {
           idSearchTerm: PendingRequest.warehouseId
             ? PendingRequest.warehouseId
@@ -68,7 +69,7 @@ const ErpItemRequest = () => {
       warehouse.forEach((record) => {
         if (!uniqueOptions.has(record.description)) {
           uniqueOptions.set(record.description, {
-            Description: `${record.id} - ${record.description}`,
+            // Description: `${record.id} - ${record.description}`,
             value: record.description,
             id: record.id,
           })
@@ -134,7 +135,7 @@ const ErpItemRequest = () => {
       setLoading(true)
       const Cookie = CookiesData()
       const response = await axios.put(
-        'https://mdm.p360.build/v1/mdm/purchase-item/update',
+        `${testUrl}/v1/mdm/purchase-item/update`,
         reqbody,
         Cookie
       )
@@ -178,7 +179,7 @@ const ErpItemRequest = () => {
         setLoading(true)
         const Cookie = CookiesData()
         const response = await axios.put(
-          'https://mdm.p360.build/v1/mdm/purchase-item/update',
+          `${testUrl}/v1/mdm/purchase-item/update`,
           reqbody,
           Cookie
         )
