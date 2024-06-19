@@ -432,7 +432,7 @@ const ItemsList = () => {
                       </td>
                       <td key={record.extId}>
                         <DataContainer>
-                          {record.extId && (
+                          {/* {record.extId && (
                             <FaCopy
                               onClick={() => {
                                 if (record.extId) {
@@ -440,7 +440,7 @@ const ItemsList = () => {
                                 }
                               }}
                             />
-                          )}
+                          )} */}
                           <DataValue title={record.extId}>
                             {record.extId}
                           </DataValue>
@@ -458,11 +458,11 @@ const ItemsList = () => {
                           </Popover>
                           <DataValue
                             title={record.detailedDescription}
-                            onClick={() => {
-                              if (record.detailedDescription) {
-                                copyToClipboard(record.detailedDescription)
-                              }
-                            }}
+                            // onClick={() => {
+                            //   if (record.detailedDescription) {
+                            //     copyToClipboard(record.detailedDescription)
+                            //   }
+                            // }}
                           >
                             {record.detailedDescription}
                           </DataValue>
