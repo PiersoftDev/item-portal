@@ -167,7 +167,7 @@ const StateProvider = ({ children }) => {
   const [endUserRequestList, setEndUserRequestList] = useState([])
 
   //Level1 States :
-
+  const [level0requestModal, setLevel0RequestModal] = useState(false)
   const [level1requestModal, setLevel1RequestModal] = useState(false)
   const [Level1PendingList, setLevel1PendingList] = useState([])
   const [PendingRequest, setPendingRequest] = useState({})
@@ -284,6 +284,8 @@ const StateProvider = ({ children }) => {
         setSimilarItem,
         dependencies,
         setDependencies,
+        level0requestModal,
+        setLevel0RequestModal,
         level1requestModal,
         setLevel1RequestModal,
         productCombinationModal,

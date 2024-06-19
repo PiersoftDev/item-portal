@@ -41,6 +41,8 @@ import ProductLinkHierarchyModal from './modals/ProductLinkHierarchyModal'
 
 import { TbHierarchy2 } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
+import Level0PendingRequest from '../Level1/Level0PendingRequest'
+import Level0ItemRequest from '../Level1/Level0PendingRequest'
 
 const ItemsList = () => {
   const {
@@ -49,6 +51,8 @@ const ItemsList = () => {
     similarItemsModal,
     setSimilarItemsModal,
     setSimilarItem,
+    level0requestModal,
+    setLevel0RequestModal,
     level1requestModal,
     setLevel1RequestModal,
     setPendingRequest,
@@ -172,6 +176,12 @@ const ItemsList = () => {
 
   const Level1RequestModalOpen = (record) => {
     if (
+      record.currentLevel === 'L0' &&
+      userDetails.roles?.some((role) => ['Admin', 'L0'].includes(role))
+    ) {
+      setLevel0RequestModal(!level0requestModal)
+      setPendingRequest(record)
+    } else if (
       record.currentLevel === 'L1' &&
       userDetails.roles?.some((role) => ['Admin', 'L1'].includes(role))
     ) {
@@ -219,6 +229,12 @@ const ItemsList = () => {
       setLiveRequestModal(!liverequestModal)
       setPendingRequest(record)
     }
+  }
+
+  const CancelL0Request = () => {
+    setLevel0RequestModal(false)
+    setPendingRequest({})
+    setErrors(InitialErrors)
   }
 
   const CancelRequest = () => {
@@ -646,6 +662,30 @@ const ItemsList = () => {
         </BodyContainer>
         <SimilarValues />
       </Wrapper>
+      <ItemRequestCustomModal
+        title={
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <span>ReClassify Request</span>
+            <CloseIcon onClick={CancelL0Request}>
+              <RxCross2 />
+            </CloseIcon>
+          </div>
+        }
+        // title='First Level Approval'
+        open={level0requestModal}
+        closable={false}
+        footer={false}
+        // width='80vw'
+        // height='80vh'
+      >
+        <Level0ItemRequest />
+      </ItemRequestCustomModal>
       <ItemRequestCustomModal
         title={
           <div

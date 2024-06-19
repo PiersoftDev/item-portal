@@ -194,6 +194,7 @@ const Level2ItemRequest = () => {
         const reqbody = {
           ...PendingRequest,
           status: 'Declined',
+          currentLevel: 'L0',
           comments: [
             ...PendingRequest.comments,
             {
@@ -247,36 +248,34 @@ const Level2ItemRequest = () => {
             <SectionTitle>Contact Information</SectionTitle>
             <GridContainer>
               <Container>
+                <label>Site Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.siteId}
+                  disabled
+                />
+              </Container>
+              <Container>
                 <label>Site Description</label>
                 <StyledDependencies
                   type='text'
                   allowClear
                   value={PendingRequest.site}
-                  // readOnly={true}
                   placeholder='Select Project'
-                  // options={projectoptions}
                   disabled
-                  // onSearch={ItemGroupDescriptionSearch}
-                  // onChange={(value) => {
-                  //   ValueChange('site', value)
-                  // }}
-                  // onBlur={() => {
-                  //   const OptionValue = projectoptions.find(
-                  //     (option) => option.value === PendingRequest.site
-                  //   )
-                  //   if (OptionValue) {
-                  //     ValueChange('itemGroupId', OptionValue.id)
-                  //   } else {
-                  //     ValueChange('site', '')
-                  //     ValueChange('siteId', '')
-                  //   }
-                  // }}
                   popupMatchSelectWidth={true}
                   popupClassName='auto-complete-dropdown'
                   maxTagCount={10}
-                  // onFocus={(e) => FieldFocas('Item Group', 'item-group')}
                 />
                 {errors.site && <ErrorMessage>{errors.site}</ErrorMessage>}
+              </Container>
+              <Container>
+                <label>Requester Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.requesterId}
+                  disabled
+                />
               </Container>
               <Container>
                 <label>Requester</label>
@@ -362,6 +361,14 @@ const Level2ItemRequest = () => {
                 </Select>
               </Container>
               <Container>
+                <label>Item Group Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.itemGroupId}
+                  disabled
+                />
+              </Container>
+              <Container>
                 <label>Item Group</label>
                 <StyledDependencies
                   type='text'
@@ -391,6 +398,14 @@ const Level2ItemRequest = () => {
                   popupClassName='auto-complete-dropdown'
                   maxTagCount={10}
                   // onFocus={(e) => FieldFocas('Item Group', 'item-group')}
+                />
+              </Container>
+              <Container>
+                <label>Product Type Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.productTypeId}
+                  disabled
                 />
               </Container>
               <Container>
@@ -438,7 +453,14 @@ const Level2ItemRequest = () => {
                   }}
                 />
               </Container> */}
-
+              <Container>
+                <label>Product Class Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.productClassId}
+                  disabled
+                />
+              </Container>
               <Container>
                 <label>Product Class</label>
                 <StyledDependencies
@@ -475,7 +497,14 @@ const Level2ItemRequest = () => {
                   maxTagCount={10}
                 />
               </Container>
-
+              <Container>
+                <label>Product Line Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.productLineId}
+                  disabled
+                />
+              </Container>
               <Container>
                 <label>Product Line</label>
                 <StyledDependencies
@@ -539,41 +568,21 @@ const Level2ItemRequest = () => {
                   disabled
                 />
               </Container>
-
-              {/* <Container>
-                <label>Standard Description</label>
-                <Input
+              <Container>
+                <label>Unit Code</label>
+                <StyledDependencies
                   type='text'
-                  placeholder='Standard Description'
-                  value={PendingRequest.shortdesc}
+                  value={PendingRequest.uom}
+                  disabled
                 />
-              </Container> */}
+              </Container>
               <Container>
                 <label>Unit Of Measurement</label>
                 <StyledDependencies
                   type='text'
                   allowClear
-                  value={PendingRequest.uom}
-                  // readOnly={true}
-                  placeholder='Enter Item Group'
+                  value={PendingRequest.uomDesc}
                   disabled
-                  // options={uomOptions}
-                  // onSearch={UOMDescriptionSearch}
-                  // onChange={(value) => {
-                  //   ValueChange('uom', value)
-                  // }}
-                  // onBlur={() => {
-                  //   const OptionValue = uomOptions.find(
-                  //     (option) => option.value === PendingRequest.uom
-                  //   )
-                  //   if (OptionValue) {
-                  //     ValueChange('uomId', OptionValue.id)
-                  //     console.log(OptionValue)
-                  //   } else {
-                  //     ValueChange('uom', '')
-                  //     ValueChange('uomId', '')
-                  //   }
-                  // }}
                   popupMatchSelectWidth={true}
                   popupClassName='auto-complete-dropdown'
                   maxTagCount={10}

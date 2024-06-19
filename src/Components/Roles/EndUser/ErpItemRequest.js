@@ -166,6 +166,7 @@ const ErpItemRequest = () => {
         const reqbody = {
           ...PendingRequest,
           status: 'Declined',
+          currentLevel: 'L0',
           comments: [
             ...PendingRequest.comments,
             {
@@ -219,6 +220,14 @@ const ErpItemRequest = () => {
             <SectionTitle>Contact Information</SectionTitle>
             <GridContainer>
               <Container>
+                <label>Site Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.siteId}
+                  disabled
+                />
+              </Container>
+              <Container>
                 <label>Site Description *</label>
                 <StyledDependencies
                   type='text'
@@ -247,6 +256,14 @@ const ErpItemRequest = () => {
                 {errors.requester && (
                   <ErrorMessage>{errors.requester}</ErrorMessage>
                 )}
+              </Container>
+              <Container>
+                <label>Requester Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.requesterId}
+                  disabled
+                />
               </Container>
               <Container>
                 <label>Phone Number *</label>
@@ -313,6 +330,14 @@ const ErpItemRequest = () => {
                 </Select>
               </Container>
               <Container>
+                <label>Item Group Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.itemGroupId}
+                  disabled
+                />
+              </Container>
+              <Container>
                 <label>Item Group</label>
                 <StyledDependencies
                   type='text'
@@ -322,6 +347,14 @@ const ErpItemRequest = () => {
                   disabled
                   popupClassName='auto-complete-dropdown'
                   maxTagCount={10}
+                />
+              </Container>
+              <Container>
+                <label>Product Type Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.productTypeId}
+                  disabled
                 />
               </Container>
               <Container>
@@ -337,7 +370,14 @@ const ErpItemRequest = () => {
                   maxTagCount={10}
                 />
               </Container>
-
+              <Container>
+                <label>Product Class Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.productClassId}
+                  disabled
+                />
+              </Container>
               <Container>
                 <label>Product Class</label>
                 <StyledDependencies
@@ -353,7 +393,14 @@ const ErpItemRequest = () => {
                   maxTagCount={10}
                 />
               </Container>
-
+              <Container>
+                <label>Product Line Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.productLineId}
+                  disabled
+                />
+              </Container>
               <Container>
                 <label>Product Line</label>
                 <StyledDependencies
@@ -398,6 +445,14 @@ const ErpItemRequest = () => {
                   // value={PendingRequest.shortdesc}
                 />
               </Container> */}
+              <Container>
+                <label>Unit Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.uom}
+                  disabled
+                />
+              </Container>
               <Container>
                 <label>Unit Of Measurement *</label>
                 <StyledDependencies
@@ -465,6 +520,14 @@ const ErpItemRequest = () => {
                 />
               </Container>
               <Container>
+                <label>Cost Component Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.materialCostComponentId}
+                  disabled
+                />
+              </Container>
+              <Container>
                 <label>Cost Component</label>
                 <StyledDependencies
                   type='text'
@@ -482,10 +545,18 @@ const ErpItemRequest = () => {
                 <label>Group Code</label>
                 <StyledDependencies
                   type='text'
+                  value={PendingRequest.groupCodeId}
+                  disabled
+                />
+              </Container>
+              <Container>
+                <label>Group Name</label>
+                <StyledDependencies
+                  type='text'
                   allowClear
                   value={PendingRequest.groupCode}
                   // readOnly={true}
-                  placeholder='Group Code'
+                  placeholder='Group Name'
                   disabled
                   popupMatchSelectWidth={true}
                   popupClassName='auto-complete-dropdown'

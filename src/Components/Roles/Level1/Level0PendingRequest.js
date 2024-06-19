@@ -7,7 +7,7 @@ import CustomModal from '../../Global/CustomModal'
 
 const { Option } = Select
 
-const Level1ItemRequest = () => {
+const Level0ItemRequest = () => {
   const {
     errors,
     endUserRequestList,
@@ -23,7 +23,8 @@ const Level1ItemRequest = () => {
   const [loading, setLoading] = useState(false)
   const [rejectReason, setRejectReason] = useState('')
   const [rejectReasonModal, setRejectReasonModal] = useState(false)
-  // const [projectoptions, setProjectOptions] = useState([])
+  const [projectoptions, setProjectOptions] = useState([])
+  const [employeeOptions, setEmployeeOptions] = useState([])
   const [itemgroupoptions, setItemGroupOptions] = useState([])
   const [productTypeoptions, setProductTypeOptions] = useState([])
   const [productClassoptions, setProductClassOptions] = useState([])
@@ -45,6 +46,80 @@ const Level1ItemRequest = () => {
     }
     return Cookie
   }
+
+  useEffect(() => {
+    const fetchDependencies = async () => {
+      const Cookie = CookiesData()
+      const response = await axios.post(
+        `https://mdm.p360.build/v1/mdm/project/search`,
+        {
+          idSearchTerm: PendingRequest.siteId ? PendingRequest.siteId : '',
+          descSearchTerm: PendingRequest.site ? PendingRequest.site : '',
+        },
+        Cookie
+      )
+      let project = response?.data?.data || []
+      setRequestDependencies({
+        ...Requestdependencies,
+        projects: project,
+      })
+
+      const uniqueOptions = new Map()
+      project.forEach((record) => {
+        if (!uniqueOptions.has(record.description)) {
+          uniqueOptions.set(record.description, {
+            value: record.description,
+            id: record.id,
+          })
+        }
+      })
+      setProjectOptions([...uniqueOptions.values()])
+    }
+    fetchDependencies()
+  }, [PendingRequest.site, PendingRequest.siteId])
+
+  useEffect(() => {
+    const fetchDependencies = async () => {
+      try {
+        const Cookie = CookiesData()
+        const response = await axios.post(
+          'https://mdm.p360.build/v1/mdm/employee/search/0/50',
+          {
+            idSearchTerm: PendingRequest.requesterId
+              ? PendingRequest.requesterId
+              : '',
+            descSearchTerm: PendingRequest.requester
+              ? PendingRequest.requester
+              : '',
+          },
+          Cookie
+        )
+        const empData = response?.data?.data || []
+
+        // Create a map to ensure unique entries
+        const uniqueOptions = new Map()
+        empData.forEach((record) => {
+          if (!uniqueOptions.has(record.description)) {
+            uniqueOptions.set(record.description, {
+              value: record.description,
+              id: record.id,
+            })
+          }
+        })
+
+        setRequestDependencies({
+          ...Requestdependencies,
+          employees: empData,
+        })
+
+        setEmployeeOptions([...uniqueOptions.values()])
+      } catch (error) {
+        console.error('Error fetching dependencies:', error)
+      }
+    }
+
+    fetchDependencies()
+  }, [PendingRequest.requester, PendingRequest.requesterId])
 
   useEffect(() => {
     const fetchDependencies = async () => {
@@ -319,40 +394,34 @@ const Level1ItemRequest = () => {
       [field]: value,
       generatedDescription: `${prevItem?.productClass} ${prevItem?.productLine} ${prevItem.specifications}`,
     }))
+    if (
+      !PendingRequest.productClass &&
+      !PendingRequest.productLine &&
+      !PendingRequest.specifications
+    ) {
+      setPendingRequest((prevItem) => ({
+        ...prevItem,
+        generatedDescription: '',
+        detailedDescription: '',
+      }))
+    }
     setErrors((prevErrors) => ({ ...prevErrors, [field]: '' }))
   }
 
   const showApprovalConfirmation = () => {
     const fieldErrors = {}
-    if (!PendingRequest.itemGroup) {
-      fieldErrors.itemGroup = 'Item Group required'
+    if (!PendingRequest.site) {
+      fieldErrors.site = 'Site required'
     }
-    if (!PendingRequest.productType) {
-      fieldErrors.productType = 'Product Type required'
+    if (!PendingRequest.requester) {
+      fieldErrors.requester = 'Requester required'
     }
-    if (!PendingRequest.productClass) {
-      fieldErrors.productClass = 'Product Class required'
+    if (!PendingRequest.phoneNumber) {
+      fieldErrors.phoneNumber = 'Phone Number required'
     }
-    if (!PendingRequest.productLine) {
-      fieldErrors.productLine = 'Product Line required'
+    if (!PendingRequest.requirementDesc) {
+      fieldErrors.requirementDesc = 'Requirement Description required'
     }
-    if (!PendingRequest.specifications) {
-      fieldErrors.specifications = 'Specifications required'
-    }
-    if (!PendingRequest.detailedDescription) {
-      fieldErrors.detailedDescription = 'Detailed Description required'
-    }
-    if (PendingRequest.detailedDescription?.length > 150) {
-      fieldErrors.detailedDescription =
-        'Detailed Description length should be less than 150'
-    }
-    if (!PendingRequest.uomDesc) {
-      fieldErrors.uomDesc = 'Unit of Measurement required'
-    }
-    if (!PendingRequest.purchasePrice) {
-      fieldErrors.purchasePrice = 'Purchase Price required'
-    }
-
     if (Object.keys(fieldErrors).length > 0) {
       setErrors(fieldErrors)
       return false
@@ -379,99 +448,90 @@ const Level1ItemRequest = () => {
   }
 
   const ApproveItemRequest = async () => {
-    if (
-      PendingRequest.itemGroup &&
-      PendingRequest.productType &&
-      PendingRequest.productClass &&
-      PendingRequest.productLine &&
-      PendingRequest.specifications &&
-      PendingRequest.detailedDescription &&
-      PendingRequest.uomDesc &&
-      PendingRequest.purchasePrice
-    ) {
-      try {
-        const reqbody = { ...PendingRequest, currentLevel: 'L2' }
-        console.log(reqbody)
-        setLoading(true)
-        const Cookie = CookiesData()
-        const response = await axios.put(
-          'https://mdm.p360.build/v1/mdm/purchase-item/update',
-          reqbody,
-          Cookie
-        )
-        console.log(response.data)
-        // const updatedList = endUserRequestList.map((record) =>
-        //   record.id === response.data.data.id
-        //     ? { ...record, ...response.data.data }
-        //     : record
-        // )
-        // console.log(updatedList)
-        // setEndUserRequestList(updatedList)
-        window.location.reload()
-        setPendingRequest({})
-        setLevel1RequestModal(false)
-        // setEndUserRequestList(
-        //   endUserRequestList.map((record) =>
-        //     record.id === response.data.data.id
-        //       ? { ...record, ...response.data.data }
-        //       : record
-        //   )
-        // )
-        console.log(endUserRequestList)
-        // setEndUserRequestList(updatedList)
-        // setEndUserRequestList([...endUserRequestList, response.data.data])
-        message.success('Your Item has been Successfully Submitted')
-      } catch (err) {
-        console.log(err)
-        message.error('Submission failed')
-        throw err
-      } finally {
-        setLoading(false)
+    try {
+      const reqbody = {
+        ...PendingRequest,
+        status: 'Pending',
+        currentLevel: 'L1',
       }
-    } else {
-      message.warning('Please fill all required fields')
+      console.log(reqbody)
+      setLoading(true)
+      const Cookie = CookiesData()
+      const response = await axios.put(
+        'https://mdm.p360.build/v1/mdm/purchase-item/update',
+        reqbody,
+        Cookie
+      )
+      console.log(response.data)
+      // const updatedList = endUserRequestList.map((record) =>
+      //   record.id === response.data.data.id
+      //     ? { ...record, ...response.data.data }
+      //     : record
+      // )
+      // console.log(updatedList)
+      // setEndUserRequestList(updatedList)
+      window.location.reload()
+      setPendingRequest({})
+      setLevel1RequestModal(false)
+      // setEndUserRequestList(
+      //   endUserRequestList.map((record) =>
+      //     record.id === response.data.data.id
+      //       ? { ...record, ...response.data.data }
+      //       : record
+      //   )
+      // )
+      console.log(endUserRequestList)
+      // setEndUserRequestList(updatedList)
+      // setEndUserRequestList([...endUserRequestList, response.data.data])
+      message.success('Your Item has been Successfully Submitted')
+    } catch (err) {
+      console.log(err)
+      message.error('Submission failed')
+      throw err
+    } finally {
+      setLoading(false)
     }
   }
 
-  const RejectItemRequest = async () => {
-    if (rejectReason) {
-      try {
-        const reqbody = {
-          ...PendingRequest,
-          status: 'Declined',
-          currentLevel: 'L0',
-          comments: [
-            ...PendingRequest.comments,
-            {
-              txt: rejectReason,
-              level: PendingRequest.currentLevel,
-            },
-          ],
-        }
-        setLoading(true)
-        const Cookie = CookiesData()
-        const response = await axios.put(
-          'https://mdm.p360.build/v1/mdm/purchase-item/update',
-          reqbody,
-          Cookie
-        )
-        console.log(response.data)
-        setPendingRequest({})
-        setLevel1RequestModal(false)
-        window.location.reload()
-        cancelRejectConfirmation()
-        // setEndUserRequestList([...endUserRequestList, response.data.data])
-      } catch (err) {
-        console.log(err)
-        message.error('Submission failed')
-        throw err
-      } finally {
-        setLoading(false)
-      }
-    } else {
-      message.warning('Please Enter Reject Reason')
-    }
-  }
+  //   const RejectItemRequest = async () => {
+  //     if (rejectReason) {
+  //       try {
+  //         const reqbody = {
+  //           ...PendingRequest,
+  //           status: 'Declined',
+  //           currentLevel: 'L0',
+  //           comments: [
+  //             ...PendingRequest.comments,
+  //             {
+  //               txt: rejectReason,
+  //               level: PendingRequest.currentLevel,
+  //             },
+  //           ],
+  //         }
+  //         setLoading(true)
+  //         const Cookie = CookiesData()
+  //         const response = await axios.put(
+  //           'https://mdm.p360.build/v1/mdm/purchase-item/update',
+  //           reqbody,
+  //           Cookie
+  //         )
+  //         console.log(response.data)
+  //         setPendingRequest({})
+  //         setLevel1RequestModal(false)
+  //         window.location.reload()
+  //         cancelRejectConfirmation()
+  //         // setEndUserRequestList([...endUserRequestList, response.data.data])
+  //       } catch (err) {
+  //         console.log(err)
+  //         message.error('Submission failed')
+  //         throw err
+  //       } finally {
+  //         setLoading(false)
+  //       }
+  //     } else {
+  //       message.warning('Please Enter Reject Reason')
+  //     }
+  //   }
 
   return (
     <>
@@ -487,64 +547,223 @@ const Level1ItemRequest = () => {
             <SectionTitle>Contact Information</SectionTitle>
             <GridContainer>
               <Container>
-                <label>Site Code</label>
+                <label>Site Code *</label>
                 <StyledDependencies
                   type='text'
+                  allowClear
                   value={PendingRequest.siteId}
-                  disabled
+                  // readOnly={true}
+                  placeholder='Select Project Code'
+                  options={projectoptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  // onSearch={ItemGroupDescriptionSearch}
+                  onChange={(value) => {
+                    if (value === undefined || value === '') {
+                      ValueChange('site', '')
+                      ValueChange('siteId', '')
+                    } else {
+                      ValueChange('siteId', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = projectoptions.find(
+                      (option) => option.id === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('site', selectedOption.value)
+                    } else {
+                      ValueChange('site', '')
+                      ValueChange('siteId', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = projectoptions.find(
+                      (option) => option.id === PendingRequest.siteId
+                    )
+                    if (OptionValue) {
+                      ValueChange('site', OptionValue.value)
+                    } else {
+                      ValueChange('site', '')
+                      ValueChange('siteId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                  // onFocus={(e) => FieldFocas('Item Group', 'item-group')}
                 />
+                {errors.site && <ErrorMessage>{errors.site}</ErrorMessage>}
               </Container>
               <Container>
-                <label>Site Description</label>
+                <label>Site Description *</label>
                 <StyledDependencies
                   type='text'
                   allowClear
                   value={PendingRequest.site}
                   // readOnly={true}
                   placeholder='Select Project'
-                  // options={projectoptions}
-                  disabled
+                  options={projectoptions.map((option) => ({
+                    label: option.value,
+                    value: option.value,
+                  }))}
                   // onSearch={ItemGroupDescriptionSearch}
                   onChange={(value) => {
-                    ValueChange('site', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('site', '')
+                      ValueChange('siteId', '')
+                    } else {
+                      ValueChange('site', value)
+                    }
                   }}
+                  onSelect={(value) => {
+                    const selectedOption = projectoptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('siteId', selectedOption.id)
+                    } else {
+                      ValueChange('site', '')
+                      ValueChange('siteId', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = projectoptions.find(
+                      (option) => option.value === PendingRequest.site
+                    )
+                    if (OptionValue) {
+                      ValueChange('siteId', OptionValue.id)
+                    } else {
+                      ValueChange('site', '')
+                      ValueChange('siteId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
                   popupClassName='auto-complete-dropdown'
                   maxTagCount={10}
                   // onFocus={(e) => FieldFocas('Item Group', 'item-group')}
                 />
+                {errors.site && <ErrorMessage>{errors.site}</ErrorMessage>}
               </Container>
               <Container>
-                <label>Requester Code</label>
+                <label>Requester Code *</label>
                 <StyledDependencies
                   type='text'
+                  allowClear
                   value={PendingRequest.requesterId}
+                  // readOnly={true}
+                  placeholder='Select Employee Code'
+                  options={employeeOptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
                   disabled
+                  onChange={(value) => {
+                    if (value === undefined || value === '') {
+                      ValueChange('requester', '')
+                      ValueChange('requesterId', '')
+                    } else {
+                      ValueChange('requesterId', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = employeeOptions.find(
+                      (option) => option.id === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('requester', selectedOption.value)
+                    } else {
+                      ValueChange('requester', '')
+                      ValueChange('requesterId', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = employeeOptions.find(
+                      (option) => option.id === PendingRequest.requesterId
+                    )
+                    if (OptionValue) {
+                      ValueChange('requester', OptionValue.value)
+                    } else {
+                      ValueChange('requester', '')
+                      ValueChange('requesterId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                  // onFocus={(e) => FieldFocas('Item Group', 'item-group')}
                 />
+                {errors.requester && (
+                  <ErrorMessage>{errors.requester}</ErrorMessage>
+                )}
               </Container>
+
               <Container>
-                <label>Requester</label>
-                <INPUT
+                <label>Requester *</label>
+                <StyledDependencies
                   type='text'
                   allowClear
-                  placeholder='Enter Your Name'
-                  disabled
                   value={PendingRequest.requester}
-                  onChange={(e) => {
-                    ValueChange('requester', e.target.value)
+                  // readOnly={true}
+                  placeholder='Select Employee'
+                  options={employeeOptions.map((option) => ({
+                    label: option.Description,
+                    value: option.value,
+                  }))}
+                  // disabled
+                  onChange={(value) => {
+                    if (value === undefined || value === '') {
+                      ValueChange('requester', '')
+                      ValueChange('requesterId', '')
+                    } else {
+                      ValueChange('requester', value)
+                    }
                   }}
+                  onSelect={(value) => {
+                    const selectedOption = employeeOptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('requesterId', selectedOption.id)
+                    } else {
+                      ValueChange('requester', '')
+                      ValueChange('requesterId', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = employeeOptions.find(
+                      (option) => option.value === PendingRequest.requester
+                    )
+                    if (OptionValue) {
+                      ValueChange('requesterId', OptionValue.id)
+                    } else {
+                      ValueChange('requester', '')
+                      ValueChange('requesterId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                  // onFocus={(e) => FieldFocas('Item Group', 'item-group')}
                 />
+                {errors.requester && (
+                  <ErrorMessage>{errors.requester}</ErrorMessage>
+                )}
               </Container>
               <Container>
-                <label>Phone Number</label>
+                <label>Phone Number *</label>
                 <INPUT
                   type='tel'
                   allowClear
                   placeholder='Enter Phone Number'
                   value={PendingRequest.phoneNumber}
                   maxLength={10}
-                  disabled
                   onChange={(e) => {
-                    if (!isNaN(e.target.value)) {
+                    if (
+                      !isNaN(e.target.value) &&
+                      !e.target.value.startsWith(' ')
+                    ) {
                       ValueChange('phoneNumber', e.target.value)
                     }
                   }}
@@ -567,9 +786,10 @@ const Level1ItemRequest = () => {
                 value={PendingRequest.requirementDesc}
                 rows={3}
                 allowClear
-                disabled
                 onChange={(e) => {
-                  ValueChange('requirementDesc', e.target.value)
+                  if (!e.target.value.startsWith(' ')) {
+                    ValueChange('requirementDesc', e.target.value)
+                  }
                 }}
                 style={{
                   margin: '0 4rem 0 1rem',
@@ -579,6 +799,11 @@ const Level1ItemRequest = () => {
                   maxWidth: '95%',
                 }}
               />
+              {errors.requirementDesc && (
+                <ErrorMessage style={{ marginLeft: '1rem' }}>
+                  {errors.requirementDesc}
+                </ErrorMessage>
+              )}
             </Container>
           </Section>
           <Section>
@@ -595,9 +820,6 @@ const Level1ItemRequest = () => {
                     Select Item Type
                   </option> */}
                   <Option value='purchase'>Purchase</Option>
-                  <Option value='subcontract-service' disabled>
-                    Sub-Contract Service
-                  </Option>
                 </Select>
               </Container>
               <Container>
@@ -697,9 +919,6 @@ const Level1ItemRequest = () => {
                   maxTagCount={10}
                   // onFocus={(e) => FieldFocas('Item Group', 'item-group')}
                 />
-                {errors.itemGroup && (
-                  <ErrorMessage>{errors.itemGroup}</ErrorMessage>
-                )}
               </Container>
               <Container>
                 <label>Product Type Code</label>
@@ -804,9 +1023,6 @@ const Level1ItemRequest = () => {
                   popupClassName='auto-complete-dropdown'
                   maxTagCount={10}
                 />
-                {errors.productType && (
-                  <ErrorMessage>{errors.productType}</ErrorMessage>
-                )}
               </Container>
               <Container>
                 <label>Product Class Code</label>
@@ -924,11 +1140,7 @@ const Level1ItemRequest = () => {
                   popupClassName='auto-complete-dropdown'
                   maxTagCount={10}
                 />
-                {errors.productClass && (
-                  <ErrorMessage>{errors.productClass}</ErrorMessage>
-                )}
               </Container>
-
               <Container>
                 <label>Product Line Code</label>
                 <StyledDependencies
@@ -1041,13 +1253,10 @@ const Level1ItemRequest = () => {
                   popupClassName='auto-complete-dropdown'
                   maxTagCount={10}
                 />
-                {errors.productLine && (
-                  <ErrorMessage>{errors.productLine}</ErrorMessage>
-                )}
               </Container>
 
               <Container>
-                <label>Specifications *</label>
+                <label>Specifications</label>
                 <INPUT
                   type='text'
                   allowClear
@@ -1060,21 +1269,8 @@ const Level1ItemRequest = () => {
                       `${PendingRequest.productClass} ${PendingRequest.productLine} ${e.target.value}`
                     )
                   }}
-                  onBlur={() => {
-                    if (
-                      !PendingRequest.productClass &&
-                      !PendingRequest.productLine &&
-                      !PendingRequest.specifications
-                    ) {
-                      ValueChange('detailedDescription', '')
-                    }
-                  }}
                 />
-                {errors.specifications && (
-                  <ErrorMessage>{errors.specifications}</ErrorMessage>
-                )}
               </Container>
-
               <Container>
                 <label>Generated Description</label>
                 <StyledDependencies
@@ -1216,12 +1412,9 @@ const Level1ItemRequest = () => {
                   popupClassName='auto-complete-dropdown'
                   maxTagCount={10}
                 />
-                {errors.uomDesc && (
-                  <ErrorMessage>{errors.uomDesc}</ErrorMessage>
-                )}
               </Container>
               <Container>
-                <label>Purchase Price *</label>
+                <label>Purchase Price</label>
                 <INPUT
                   // readOnly={true}
                   type='text'
@@ -1235,9 +1428,6 @@ const Level1ItemRequest = () => {
                     }
                   }}
                 />
-                {errors.purchasePrice && (
-                  <ErrorMessage>{errors.purchasePrice}</ErrorMessage>
-                )}
               </Container>
             </GridContainer>
             <GridContainer>
@@ -1254,9 +1444,6 @@ const Level1ItemRequest = () => {
                   }}
                   // disabled
                 />
-                {errors.detailedDescription && (
-                  <ErrorMessage>{errors.detailedDescription}</ErrorMessage>
-                )}
               </Container>
             </GridContainer>
           </Section>
@@ -1446,15 +1633,15 @@ const Level1ItemRequest = () => {
         </UserForm>
         <ButtonContainer>
           {/* <button className='save'>Save As Draft</button> */}
-          <button className='reject' onClick={showRejectConfirmation}>
+          {/* <button className='reject' onClick={showRejectConfirmation}>
             Reject
-          </button>
+          </button> */}
           <button className='submit' onClick={showApprovalConfirmation}>
-            Approve
+            Resubmit
           </button>
         </ButtonContainer>
       </Styles>
-      <CustomModal
+      {/* <CustomModal
         open={rejectReasonModal}
         width='400px'
         height='250px'
@@ -1476,21 +1663,21 @@ const Level1ItemRequest = () => {
               maxHeight: '200px',
             }}
           />
-        </Container>
-        <ConfirmationButton>
+        </Container> */}
+      {/* <ConfirmationButton>
           <button className='cancel' onClick={cancelRejectConfirmation}>
             Cancel
           </button>
           <button className='reject' onClick={RejectItemRequest}>
             Reject
           </button>
-        </ConfirmationButton>
-      </CustomModal>
+        </ConfirmationButton> */}
+      {/* </CustomModal> */}
     </>
   )
 }
 
-export default Level1ItemRequest
+export default Level0ItemRequest
 
 const Styles = styled.div`
   position: relative;

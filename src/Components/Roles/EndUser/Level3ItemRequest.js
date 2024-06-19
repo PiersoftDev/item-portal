@@ -199,6 +199,7 @@ const Level3ItemRequest = () => {
         const reqbody = {
           ...PendingRequest,
           status: 'Declined',
+          currentLevel: 'L0',
           comments: [
             ...PendingRequest.comments,
             {
@@ -252,6 +253,14 @@ const Level3ItemRequest = () => {
             <SectionTitle>Contact Information</SectionTitle>
             <GridContainer>
               <Container>
+                <label>Site Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.siteId}
+                  disabled
+                />
+              </Container>
+              <Container>
                 <label>Site Description</label>
                 <StyledDependencies
                   type='text'
@@ -282,6 +291,14 @@ const Level3ItemRequest = () => {
                   // onFocus={(e) => FieldFocas('Item Group', 'item-group')}
                 />
                 {errors.site && <ErrorMessage>{errors.site}</ErrorMessage>}
+              </Container>
+              <Container>
+                <label>Requester Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.requesterId}
+                  disabled
+                />
               </Container>
               <Container>
                 <label>Requester</label>
@@ -367,6 +384,14 @@ const Level3ItemRequest = () => {
                 </Select>
               </Container>
               <Container>
+                <label>Item Group Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.itemGroupId}
+                  disabled
+                />
+              </Container>
+              <Container>
                 <label>Item Group</label>
                 <StyledDependencies
                   type='text'
@@ -396,6 +421,14 @@ const Level3ItemRequest = () => {
                   popupClassName='auto-complete-dropdown'
                   maxTagCount={10}
                   // onFocus={(e) => FieldFocas('Item Group', 'item-group')}
+                />
+              </Container>
+              <Container>
+                <label>Product Type Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.productTypeId}
+                  disabled
                 />
               </Container>
               <Container>
@@ -443,7 +476,14 @@ const Level3ItemRequest = () => {
                   }}
                 />
               </Container> */}
-
+              <Container>
+                <label>Product Class Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.productClassId}
+                  disabled
+                />
+              </Container>
               <Container>
                 <label>Product Class</label>
                 <StyledDependencies
@@ -480,7 +520,14 @@ const Level3ItemRequest = () => {
                   maxTagCount={10}
                 />
               </Container>
-
+              <Container>
+                <label>Product Line Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.productLineId}
+                  disabled
+                />
+              </Container>
               <Container>
                 <label>Product Line</label>
                 <StyledDependencies
@@ -553,6 +600,14 @@ const Level3ItemRequest = () => {
                   value={PendingRequest.shortdesc}
                 />
               </Container> */}
+              <Container>
+                <label>Unit Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.uom}
+                  disabled
+                />
+              </Container>
               <Container>
                 <label>Unit Of Measurement</label>
                 <StyledDependencies

@@ -50,6 +50,14 @@ const LiveItemRequest = () => {
             <SectionTitle>Contact Information</SectionTitle>
             <GridContainer>
               <Container>
+                <label>Site Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.siteId}
+                  disabled
+                />
+              </Container>
+              <Container>
                 <label>Site Description *</label>
                 <StyledDependencies
                   type='text'
@@ -62,6 +70,14 @@ const LiveItemRequest = () => {
                   maxTagCount={10}
                 />
                 {errors.site && <ErrorMessage>{errors.site}</ErrorMessage>}
+              </Container>
+              <Container>
+                <label>Requester Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.requesterId}
+                  disabled
+                />
               </Container>
               <Container>
                 <label>Requester *</label>
@@ -137,6 +153,14 @@ const LiveItemRequest = () => {
                 </Select>
               </Container>
               <Container>
+                <label>Item Group Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.itemGroupId}
+                  disabled
+                />
+              </Container>
+              <Container>
                 <label>Item Group</label>
                 <StyledDependencies
                   type='text'
@@ -146,6 +170,14 @@ const LiveItemRequest = () => {
                   disabled
                   popupClassName='auto-complete-dropdown'
                   maxTagCount={10}
+                />
+              </Container>
+              <Container>
+                <label>Product Type Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.productTypeId}
+                  disabled
                 />
               </Container>
               <Container>
@@ -161,7 +193,14 @@ const LiveItemRequest = () => {
                   maxTagCount={10}
                 />
               </Container>
-
+              <Container>
+                <label>Product Class Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.productClassId}
+                  disabled
+                />
+              </Container>
               <Container>
                 <label>Product Class</label>
                 <StyledDependencies
@@ -177,7 +216,14 @@ const LiveItemRequest = () => {
                   maxTagCount={10}
                 />
               </Container>
-
+              <Container>
+                <label>Product Line Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.productLineId}
+                  disabled
+                />
+              </Container>
               <Container>
                 <label>Product Line</label>
                 <StyledDependencies
@@ -214,14 +260,14 @@ const LiveItemRequest = () => {
                 />
               </Container>
 
-              {/* <Container>
-                <label>Standard Description</label>
-                <Input
+              <Container>
+                <label>Unit Code</label>
+                <StyledDependencies
                   type='text'
-                  placeholder='Standard Description'
-                  // value={PendingRequest.shortdesc}
+                  value={PendingRequest.uom}
+                  disabled
                 />
-              </Container> */}
+              </Container>
               <Container>
                 <label>Unit Of Measurement *</label>
                 <StyledDependencies
@@ -289,6 +335,14 @@ const LiveItemRequest = () => {
                 />
               </Container>
               <Container>
+                <label>Cost Component Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.materialCostComponentId}
+                  disabled
+                />
+              </Container>
+              <Container>
                 <label>Cost Component</label>
                 <StyledDependencies
                   type='text'
@@ -300,6 +354,14 @@ const LiveItemRequest = () => {
                   popupMatchSelectWidth={true}
                   popupClassName='auto-complete-dropdown'
                   maxTagCount={10}
+                />
+              </Container>
+              <Container>
+                <label>Group Code</label>
+                <StyledDependencies
+                  type='text'
+                  value={PendingRequest.groupCodeId}
+                  disabled
                 />
               </Container>
               <Container>
@@ -377,6 +439,15 @@ const LiveItemRequest = () => {
                 >
                   <Option value='MAUC'>MAUC</Option>
                 </Select>
+              </Container>
+              <Container>
+                <label>Warehouse Code</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={PendingRequest.warehouseId}
+                  disabled
+                />
               </Container>
               <Container>
                 <label>Warehouse *</label>
