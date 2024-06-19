@@ -164,7 +164,7 @@ const TopBar = () => {
           <UserCard />
         </Modal>
         <ItemRequestCustomModal
-          title='ITEM REQUEST'
+          title='PURCHASE ITEM REQUEST'
           open={endUserRequestOpen}
           closable={false}
           footer={false}
@@ -172,7 +172,7 @@ const TopBar = () => {
           <NewRequest />
         </ItemRequestCustomModal>
         <ItemRequestCustomModal
-          title='ITEM REQUEST'
+          title='SUBCON ITEM REQUEST'
           open={subConItemRequestModalopen}
           closable={false}
           footer={false}

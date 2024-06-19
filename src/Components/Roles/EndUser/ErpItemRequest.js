@@ -171,7 +171,7 @@ const ErpItemRequest = () => {
             ...PendingRequest.comments,
             {
               txt: rejectReason,
-              level: PendingRequest.currentLevel,
+              level: 'L4',
             },
           ],
         }

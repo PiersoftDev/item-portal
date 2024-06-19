@@ -199,7 +199,7 @@ const Level2ItemRequest = () => {
             ...PendingRequest.comments,
             {
               txt: rejectReason,
-              level: PendingRequest.currentLevel,
+              level: 'L2',
             },
           ],
         }

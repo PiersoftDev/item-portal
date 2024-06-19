@@ -671,7 +671,7 @@ const ItemsList = () => {
               alignItems: 'center',
             }}
           >
-            <span>ReClassify Request</span>
+            <span>Edit Request</span>
             <CloseIcon onClick={CancelL0Request}>
               <RxCross2 />
             </CloseIcon>
@@ -1289,11 +1289,11 @@ const DataValue = styled.div`
 `
 
 const PersonIcon = styled(IoPersonCircleSharp)`
-  font-size: 13px;
+  font-size: 15px;
   color: #596bb3;
 `
 const InfoIcon = styled(IoInformationCircleSharp)`
-  font-size: 13px;
+  font-size: 15px;
   color: #596bb3;
 `
 

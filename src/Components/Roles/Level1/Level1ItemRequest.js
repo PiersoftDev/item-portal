@@ -444,7 +444,7 @@ const Level1ItemRequest = () => {
             ...PendingRequest.comments,
             {
               txt: rejectReason,
-              level: PendingRequest.currentLevel,
+              level: 'L1',
             },
           ],
         }

@@ -1624,7 +1624,7 @@ const Level0ItemRequest = () => {
             Reject
           </button> */}
           <button className='submit' onClick={showApprovalConfirmation}>
-            Resubmit
+            Submit
           </button>
         </ButtonContainer>
       </Styles>
