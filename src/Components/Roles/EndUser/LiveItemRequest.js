@@ -142,17 +142,6 @@ const LiveItemRequest = () => {
             <SectionTitle>Item Information</SectionTitle>
             <GridContainer>
               <Container>
-                <label>Item Type *</label>
-                <Select
-                  value={PendingRequest.itemType}
-                  onChange={(value) => ValueChange('itemType', value)}
-                  placeholder='Select Item Type'
-                  disabled
-                >
-                  <Option value='Purchase'>Purchase</Option>
-                </Select>
-              </Container>
-              <Container>
                 <label>Item Group Code</label>
                 <StyledDependencies
                   type='text'
@@ -603,14 +592,13 @@ const SectionTitle = styled.h2`
 
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
   margin: 0rem 1rem 1rem 1rem;
   @media screen and (min-width: 1550px) {
-    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(22%, 1fr));
   }
 `
-
 const Container = styled.div`
   position: relative;
   display: flex;

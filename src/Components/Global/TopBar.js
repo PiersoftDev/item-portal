@@ -257,11 +257,11 @@ const ItemRequestCustomModal = styled(Modal)`
 
   .ant-modal-content {
     padding: 1rem;
-    min-width: 900px;
-    max-width: 1000px;
+    min-width: 950px;
+    max-width: 1300px;
     overflow: hidden;
     position: relative;
-    @media screen and (max-width: 668px) {
+    @media screen and (max-width: 700px) {
       min-width: 600px;
     }
   }
