@@ -132,7 +132,10 @@ const ItemsList = () => {
         setTotalItemsCount(res.data.data.totalElements)
       } catch (err) {
         console.log('Error fetching items:', err)
-        if (err.message === 'Network Error') {
+        if (
+          err.message === 'Network Error' ||
+          err.message === 'Request failed with status code 500'
+        ) {
           // message.warning('Access Expired, please re-login')
           navigate('/login')
           localStorage.removeItem('accessToken')

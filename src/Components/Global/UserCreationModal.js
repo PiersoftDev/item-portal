@@ -67,7 +67,10 @@ const UserCreationModal = () => {
         })
         setProjectOptions([...uniqueOptions.values()])
       } catch (err) {
-        if (err.message === 'Network Error') {
+        if (
+          err.message === 'Network Error' ||
+          err.message === 'Request failed with status code 500'
+        ) {
           navigate('/login')
           localStorage.removeItem('accessToken')
           localStorage.removeItem('idToken')
