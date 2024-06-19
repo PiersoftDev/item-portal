@@ -356,6 +356,37 @@ const ItemsList = () => {
     )
   }
 
+  const CompanyLiveStatus = (record) => {
+    return (
+      <Container>
+        <InfoRow>
+          <Label>7777 :</Label>
+          <Text>
+            {record.companies.some(
+              (item) => item.name === '7777' && item.live
+            ) ? (
+              <div className='live'>Live</div>
+            ) : (
+              <div className='fail'>Failed</div>
+            )}
+          </Text>
+        </InfoRow>
+        <InfoRow>
+          <Label>9999 :</Label>
+          <Text>
+            {record.companies.some(
+              (item) => item.name === '9999' && item.live
+            ) ? (
+              <div className='live'>Live</div>
+            ) : (
+              <div className='fail'>Failed</div>
+            )}
+          </Text>
+        </InfoRow>
+      </Container>
+    )
+  }
+
   const handleOpenChange = (newOpen) => {
     setItemListFilterModalopen(newOpen)
   }
@@ -452,14 +483,17 @@ const ItemsList = () => {
                             onClick={() => {
                               openCommentsModal(record)
                             }}
+                            title='Comments'
                           />
                           <FaHistory
                             className='icon'
                             onClick={() => openHistoryModal(record)}
+                            title='History'
                           />
                           <FaEye
                             className='icon'
                             onClick={() => Level1RequestModalOpen(record)}
+                            title='Open Record'
                           />
                         </IconsContainer>
                       </td>
@@ -491,13 +525,25 @@ const ItemsList = () => {
                       <td key={record.extId}>
                         <DataContainer>
                           {record.extId && (
-                            <PiGitBranchBold
-                              onClick={() => {
-                                if (record.extId) {
-                                  copyToClipboard(record.extId)
-                                }
-                              }}
-                            />
+                            <Popover
+                              content={CompanyLiveStatus(record)}
+                              placement='right'
+                              title='Company Live Status'
+                            >
+                              <BranchIcon
+                                company9999Live={record.companies.some(
+                                  (item) => item.name === '9999' && item.live
+                                )}
+                                company7777Live={record.companies.some(
+                                  (item) => item.name === '7777' && item.live
+                                )}
+                                onClick={() => {
+                                  if (record.extId) {
+                                    copyToClipboard(record.extId)
+                                  }
+                                }}
+                              />
+                            </Popover>
                           )}
                           <DataValue title={record.extId}>
                             {record.extId}
@@ -1136,6 +1182,12 @@ const TableRow = styled.tr`
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    &:nth-child(6) {
+      max-width: 100px !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
   td {
     font-size: 0.7rem;
@@ -1162,7 +1214,13 @@ const TableRow = styled.tr`
       z-index: 99;
     }
     &:nth-child(2) {
-      max-width: 200px !important;
+      max-width: 170px !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    &:nth-child(6) {
+      max-width: 100px !important;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -1331,12 +1389,6 @@ const InfoIcon = styled(IoInformationCircleSharp)`
   font-size: 15px;
   color: #596bb3;
 `
-
-const EditIcon = styled(PiEyeglassesBold)`
-  font-size: 20px;
-  color: #596bb3;
-`
-
 //Popover Contain
 
 const Container = styled.div`
@@ -1370,6 +1422,24 @@ const Text = styled.span`
   font-size: 0.7rem;
   letter-spacing: 0.8px;
   color: #333;
+  .live {
+    color: green;
+    font-weight: 600;
+    border: 1px solid #00ff00;
+    background-color: #ddeddd;
+    padding: 2px 8px;
+    border-radius: 10%;
+    font-size: 0.6rem;
+  }
+  .fail {
+    color: #ff0000;
+    font-weight: 600;
+    border: 1px solid #ff0000;
+    background-color: #ffb2b2;
+    padding: 2px 8px;
+    border-radius: 10%;
+    font-size: 0.6rem;
+  }
 `
 const Tag = styled.div`
   border: 1.2px solid #ccc;
@@ -1452,14 +1522,27 @@ const Count = styled.span`
   color: #333;
 `
 
-const Actions = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`
+// const Actions = styled.div`
+//   display: flex;
+//   align-items: center;
+//   gap: 0.5rem;
+// `
 
-const ActionsTitles = styled.div`
-  font-size: 0.7rem;
-  letter-spacing: 0.5px;
-  color: #333;
+// const ActionsTitles = styled.div`
+//   font-size: 0.7rem;
+//   letter-spacing: 0.5px;
+//   color: #333;
+// `
+
+const BranchIcon = styled(PiGitBranchBold)`
+  font-size: 15px;
+  color: ${(props) => {
+    if (props.company7777Live && props.company9999Live) {
+      return 'green'
+    } else if (props.company7777Live || props.company9999Live) {
+      return 'orange'
+    } else {
+      return 'red'
+    }
+  }};
 `
