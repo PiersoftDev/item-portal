@@ -355,6 +355,17 @@ const NewRequest = () => {
       [field]: value,
       generatedDescription: `${prevItem?.productClass} ${prevItem?.productLine} ${prevItem.specifications}`,
     }))
+    if (
+      !newItem.productClass &&
+      !newItem.productLine &&
+      !newItem.specifications
+    ) {
+      setNewItem((prevItem) => ({
+        ...prevItem,
+        generatedDescription: '',
+        detailedDescription: '',
+      }))
+    }
     setErrors((prevErrors) => ({ ...prevErrors, [field]: '' }))
   }
 

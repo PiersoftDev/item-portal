@@ -150,17 +150,17 @@ const ItemsList = () => {
     }
   }, [userDetails, itemListPage])
 
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text).then(
-      () => {
-        message.success('Copied')
-        console.log('Copying to clipboard was successful!')
-      },
-      (err) => {
-        console.error('Could not copy text: ', err)
-      }
-    )
-  }
+  // const copyToClipboard = (text) => {
+  //   navigator.clipboard.writeText(text).then(
+  //     () => {
+  //       message.success('Copied')
+  //       console.log('Copying to clipboard was successful!')
+  //     },
+  //     (err) => {
+  //       console.error('Could not copy text: ', err)
+  //     }
+  //   )
+  // }
 
   // const SimilarItemModalOpen = (record) => {
   //   setSimilarItemsModal(!similarItemsModal)
@@ -191,7 +191,24 @@ const ItemsList = () => {
       userDetails.roles?.some((role) => ['Admin', 'L4'].includes(role))
     ) {
       setErpRequestModal(!erprequestModal)
-      setPendingRequest(record)
+      setPendingRequest({
+        ...record,
+        inheritProjectPeg: 'yes',
+        currency: 'INR',
+        purchasePriceGroupId: 'NA',
+        purchasePriceGroup: 'Not Applicable',
+        purchaseStatisticalGroupId: 'NA',
+        purchaseStatisticalGroup: 'Not Applicable',
+        orderHorizon: '1',
+        itemValuationGroupId: 'MAUC',
+        itemValuationGroup: 'MAUC',
+        operationalCostComponentId: 'OPR',
+        operationalCostComponent: 'Operation Cost',
+        surchargeCostComponentId: 'SUR',
+        surchargeCostComponent: 'Lumpsum Charges',
+        projectOrderSystem: 'mnl',
+        pegPRPWarehouseOrder: 'yes',
+      })
     } else if (
       record.currentLevel === 'Live' ||
       userDetails.roles?.some((role) => ['L0'].includes(role))

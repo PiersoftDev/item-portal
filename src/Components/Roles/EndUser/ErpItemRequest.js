@@ -600,8 +600,27 @@ const ErpItemRequest = () => {
                     value: option.value,
                   }))}
                   // onSearch={ItemGroupDescriptionSearch}
+                  // onChange={(value) => {
+                  //   ValueChange('warehouseName', value)
+                  // }}
                   onChange={(value) => {
-                    ValueChange('warehouseName', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('warehouseName', '')
+                      ValueChange('warehouseId', '')
+                    } else {
+                      ValueChange('warehouseName', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = warehouseOptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('warehouseId', selectedOption.id)
+                    } else {
+                      ValueChange('warehouseName', '')
+                      ValueChange('warehouseId', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = warehouseOptions.find(
