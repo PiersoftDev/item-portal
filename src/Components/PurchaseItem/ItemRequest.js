@@ -81,7 +81,10 @@ const NewRequest = () => {
         const Cookie = CookiesData()
         const response = await axios.post(
           'https://mdm.p360.build/v1/mdm/employee/search/0/50',
-          { searchTerm: newItem.requester || '' },
+          {
+            idSearchTerm: newItem.requesterId ? newItem.requesterId : '',
+            descSearchTerm: newItem.requester ? newItem.requester : '',
+          },
           Cookie
         )
         const empData = response?.data?.data || []
@@ -91,7 +94,6 @@ const NewRequest = () => {
         empData.forEach((record) => {
           if (!uniqueOptions.has(record.description)) {
             uniqueOptions.set(record.description, {
-              Description: `${record.id} - ${record.description}`,
               value: record.description,
               id: record.id,
             })
@@ -110,7 +112,7 @@ const NewRequest = () => {
     }
 
     fetchDependencies()
-  }, [newItem.requester])
+  }, [newItem.requester, newItem.requesterId])
 
   useEffect(() => {
     const fetchDependencies = async () => {
@@ -118,7 +120,10 @@ const NewRequest = () => {
         const Cookie = CookiesData()
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/item-group/${newItem.itemType}`,
-          { searchTerm: newItem.itemGroup ? newItem.itemGroup : '' },
+          {
+            idSearchTerm: newItem.itemGroupId ? newItem.itemGroupId : '',
+            descSearchTerm: newItem.itemGroup ? newItem.itemGroup : '',
+          },
           Cookie
         )
         let itemGroup = response?.data?.data || []
@@ -127,13 +132,16 @@ const NewRequest = () => {
           itemGroups: itemGroup,
         })
 
-        setItemGroupOptions(
-          itemGroup.map((record) => ({
-            Description: `${record.id} - ${record.description}`,
-            value: record.description,
-            id: record.id,
-          }))
-        )
+        const uniqueOptions = new Map()
+        itemGroup.forEach((record) => {
+          if (!uniqueOptions.has(record.description)) {
+            uniqueOptions.set(record.description, {
+              value: record.description,
+              id: record.id,
+            })
+          }
+        })
+        setItemGroupOptions([...uniqueOptions.values()])
       }
     }
 
@@ -146,7 +154,10 @@ const NewRequest = () => {
         const Cookie = CookiesData()
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/product-type/${newItem.itemGroupId}`,
-          { searchTerm: newItem.productType ? newItem.productType : '' },
+          {
+            idSearchTerm: newItem.productTypeId ? newItem.productTypeId : '',
+            descSearchTerm: newItem.productType ? newItem.productType : '',
+          },
           Cookie
         )
         let productType = response?.data?.data || []
@@ -155,13 +166,16 @@ const NewRequest = () => {
           productTypes: productType,
         })
 
-        setProductTypeOptions(
-          productType.map((record) => ({
-            Description: `${record.id} - ${record.description}`,
-            value: record.description,
-            id: record.id,
-          }))
-        )
+        const uniqueOptions = new Map()
+        productType.forEach((record) => {
+          if (!uniqueOptions.has(record.description)) {
+            uniqueOptions.set(record.description, {
+              value: record.description,
+              id: record.id,
+            })
+          }
+        })
+        setProductTypeOptions([...uniqueOptions.values()])
       }
     }
 
@@ -174,7 +188,10 @@ const NewRequest = () => {
         const Cookie = CookiesData()
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/product-class/${newItem.productTypeId}`,
-          { searchTerm: newItem.productClass ? newItem.productClass : '' },
+          {
+            idSearchTerm: newItem.productClassId ? newItem.productClassId : '',
+            descSearchTerm: newItem.productClass ? newItem.productClass : '',
+          },
           Cookie
         )
         let productClass = response?.data?.data || []
@@ -183,13 +200,16 @@ const NewRequest = () => {
           productClasses: productClass,
         })
 
-        setProductClassOptions(
-          productClass.map((record) => ({
-            Description: `${record.id} - ${record.description}`,
-            value: record.description,
-            id: record.id,
-          }))
-        )
+        const uniqueOptions = new Map()
+        productClass.forEach((record) => {
+          if (!uniqueOptions.has(record.description)) {
+            uniqueOptions.set(record.description, {
+              value: record.description,
+              id: record.id,
+            })
+          }
+        })
+        setProductClassOptions([...uniqueOptions.values()])
       }
     }
 
@@ -202,7 +222,10 @@ const NewRequest = () => {
         const Cookie = CookiesData()
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/product-line/${newItem.productClassId}`,
-          { searchTerm: newItem.productLine ? newItem.productLine : '' },
+          {
+            idSearchTerm: newItem.productLineId ? newItem.productLineId : '',
+            descSearchTerm: newItem.productLine ? newItem.productLine : '',
+          },
           Cookie
         )
         let productLine = response?.data?.data || []
@@ -211,13 +234,16 @@ const NewRequest = () => {
           productLines: productLine,
         })
 
-        setProductLineOptions(
-          productLine.map((record) => ({
-            Description: `${record.id} - ${record.description}`,
-            value: record.description,
-            id: record.id,
-          }))
-        )
+        const uniqueOptions = new Map()
+        productLine.forEach((record) => {
+          if (!uniqueOptions.has(record.description)) {
+            uniqueOptions.set(record.description, {
+              value: record.description,
+              id: record.id,
+            })
+          }
+        })
+        setProductLineOptions([...uniqueOptions.values()])
       }
     }
 
@@ -229,7 +255,10 @@ const NewRequest = () => {
       const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/uom/search`,
-        { searchTerm: newItem.uomDesc ? newItem.uomDesc : '' },
+        {
+          idSearchTerm: newItem.uom ? newItem.uom : '',
+          descSearchTerm: newItem.uomDesc ? newItem.uomDesc : '',
+        },
         Cookie
       )
       let UOM = response?.data?.data || []
@@ -260,7 +289,10 @@ const NewRequest = () => {
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/cost-component/fetch-by-cost-component-type/material`,
         {
-          searchTerm: newItem.materialCostComponent
+          idSearchTerm: newItem.materialCostComponentId
+            ? newItem.materialCostComponentId
+            : '',
+          descSearchTerm: newItem.materialCostComponent
             ? newItem.materialCostComponent
             : '',
         },
@@ -272,13 +304,16 @@ const NewRequest = () => {
         costComponents: costComponent,
       })
 
-      setCostComponentOptions(
-        costComponent.map((record) => ({
-          Description: `${record.costComponentId} - ${record.costComponentDescription}`,
-          value: record.costComponentDescription,
-          id: record.costComponentId,
-        }))
-      )
+      const uniqueOptions = new Map()
+      costComponent.forEach((record) => {
+        if (!uniqueOptions.has(record.costComponentDescription)) {
+          uniqueOptions.set(record.costComponentDescription, {
+            value: record.costComponentDescription,
+            id: record.costComponentId,
+          })
+        }
+      })
+      setCostComponentOptions([...uniqueOptions.values()])
     }
     fetchDependencies()
   }, [newItem.materialCostComponent])
@@ -288,7 +323,10 @@ const NewRequest = () => {
       const Cookie = CookiesData()
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/group-code/search`,
-        { searchTerm: newItem.groupCode ? newItem.groupCode : '' },
+        {
+          idSearchTerm: newItem.groupCodeId ? newItem.groupCodeId : '',
+          descSearchTerm: newItem.groupCode ? newItem.groupCode : '',
+        },
         Cookie
       )
       let groupCode = response?.data?.data || []
@@ -297,13 +335,16 @@ const NewRequest = () => {
         groupCodes: groupCode,
       })
 
-      setGroupCodeOptions(
-        groupCode.map((record) => ({
-          Description: `${record.groupCode} - ${record.groupName}`,
-          value: record.groupName,
-          id: record.groupCode,
-        }))
-      )
+      const uniqueOptions = new Map()
+      groupCode.forEach((record) => {
+        if (!uniqueOptions.has(record.groupName)) {
+          uniqueOptions.set(record.groupName, {
+            value: record.groupName,
+            id: record.groupCode,
+          })
+        }
+      })
+      setGroupCodeOptions([...uniqueOptions.values()])
     }
     fetchDependencies()
   }, [newItem.groupCode])
@@ -481,6 +522,58 @@ const NewRequest = () => {
                 />
                 {errors.site && <ErrorMessage>{errors.site}</ErrorMessage>}
               </Container>
+              <Container>
+                <label>Requester Code *</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={newItem.requesterId}
+                  // readOnly={true}
+                  placeholder='Select Employee Code'
+                  options={employeeOptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled
+                  onChange={(value) => {
+                    if (value === undefined || value === '') {
+                      ValueChange('requester', '')
+                      ValueChange('requesterId', '')
+                    } else {
+                      ValueChange('requesterId', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = employeeOptions.find(
+                      (option) => option.id === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('requester', selectedOption.value)
+                    } else {
+                      ValueChange('requester', '')
+                      ValueChange('requesterId', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = employeeOptions.find(
+                      (option) => option.id === newItem.requesterId
+                    )
+                    if (OptionValue) {
+                      ValueChange('requester', OptionValue.value)
+                    } else {
+                      ValueChange('requester', '')
+                      ValueChange('requesterId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                  // onFocus={(e) => FieldFocas('Item Group', 'item-group')}
+                />
+                {errors.requester && (
+                  <ErrorMessage>{errors.requester}</ErrorMessage>
+                )}
+              </Container>
 
               <Container>
                 <label>Requester *</label>
@@ -495,9 +588,24 @@ const NewRequest = () => {
                     value: option.value,
                   }))}
                   // disabled
-
                   onChange={(value) => {
-                    ValueChange('requester', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('requester', '')
+                      ValueChange('requesterId', '')
+                    } else {
+                      ValueChange('requester', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = employeeOptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('requesterId', selectedOption.id)
+                    } else {
+                      ValueChange('requester', '')
+                      ValueChange('requesterId', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = employeeOptions.find(
@@ -591,6 +699,55 @@ const NewRequest = () => {
                 </Select>
               </Container>
               <Container>
+                <label>Item Group Code</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={newItem.itemGroupId}
+                  // readOnly={true}
+                  placeholder='Select Item Group Code'
+                  options={itemgroupoptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled={newItem.productType}
+                  onChange={(value) => {
+                    if (value === undefined || value === '') {
+                      ValueChange('itemGroup', '')
+                      ValueChange('itemGroupId', '')
+                    } else {
+                      ValueChange('itemGroupId', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = itemgroupoptions.find(
+                      (option) => option.id === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('itemGroup', selectedOption.value)
+                    } else {
+                      ValueChange('itemGroup', '')
+                      ValueChange('itemGroupId', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = itemgroupoptions.find(
+                      (option) => option.id === newItem.itemGroupId
+                    )
+                    if (OptionValue) {
+                      ValueChange('itemGroup', OptionValue.value)
+                    } else {
+                      ValueChange('itemGroup', '')
+                      ValueChange('itemGroupId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                  // onFocus={(e) => FieldFocas('Item Group', 'item-group')}
+                />
+              </Container>
+              <Container>
                 <label>Item Group</label>
                 <StyledDependencies
                   type='text'
@@ -599,12 +756,28 @@ const NewRequest = () => {
                   // readOnly={true}
                   placeholder='Enter Item Group'
                   options={itemgroupoptions.map((option) => ({
-                    label: option.Description,
+                    label: option.value,
                     value: option.value,
                   }))}
                   disabled={newItem.productType}
                   onChange={(value) => {
-                    ValueChange('itemGroup', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('itemGroup', '')
+                      ValueChange('itemGroupId', '')
+                    } else {
+                      ValueChange('itemGroup', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = itemgroupoptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('itemGroupId', selectedOption.id)
+                    } else {
+                      ValueChange('itemGroup', '')
+                      ValueChange('itemGroupId', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = itemgroupoptions.find(
@@ -624,6 +797,54 @@ const NewRequest = () => {
                 />
               </Container>
               <Container>
+                <label>Product Type Code</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={newItem.productTypeId}
+                  // readOnly={true}
+                  placeholder='Select Product Type Code'
+                  options={productTypeoptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled={newItem.productClass || !newItem.itemGroup}
+                  onChange={(value) => {
+                    if (value === undefined || value === '') {
+                      ValueChange('productType', '')
+                      ValueChange('productTypeId', '')
+                    } else {
+                      ValueChange('productTypeId', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = productTypeoptions.find(
+                      (option) => option.id === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('productType', selectedOption.value)
+                    } else {
+                      ValueChange('productType', '')
+                      ValueChange('productTypeId', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = productTypeoptions.find(
+                      (option) => option.id === newItem.productTypeId
+                    )
+                    if (OptionValue) {
+                      ValueChange('productType', OptionValue.value)
+                    } else {
+                      ValueChange('productType', '')
+                      ValueChange('productTypeId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                />
+              </Container>
+              <Container>
                 <label>Product Type</label>
                 <StyledDependencies
                   type='text'
@@ -636,8 +857,27 @@ const NewRequest = () => {
                     value: option.value,
                   }))}
                   disabled={newItem.productClass || !newItem.itemGroup}
+                  // onChange={(value) => {
+                  //   ValueChange('productType', value)
+                  // }}
                   onChange={(value) => {
-                    ValueChange('productType', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('productType', '')
+                      ValueChange('productTypeId', '')
+                    } else {
+                      ValueChange('productType', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = productTypeoptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('productTypeId', selectedOption.id)
+                    } else {
+                      ValueChange('productType', '')
+                      ValueChange('productTypeId', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = productTypeoptions.find(
@@ -656,7 +896,62 @@ const NewRequest = () => {
                   maxTagCount={10}
                 />
               </Container>
-
+              <Container>
+                <label>Product Class Code</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={newItem.productClassId}
+                  // readOnly={true}
+                  placeholder='Select Product Class Code'
+                  options={productClassoptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled={newItem.productLine || !newItem.productType}
+                  onChange={(value) => {
+                    if (value === undefined || value === '') {
+                      ValueChange('productClassId', '')
+                      ValueChange('productClass', '')
+                      ValueChange(
+                        'detailedDescription',
+                        `${newItem.productLine}  ${newItem.specifications}`
+                      )
+                    } else {
+                      ValueChange('productClassId', value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${newItem.productClass} ${newItem.productLine}  ${newItem.specifications}`
+                      )
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = productClassoptions.find(
+                      (option) => option.id === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('productClass', selectedOption.value)
+                    } else {
+                      ValueChange('productClass', '')
+                      ValueChange('productClassId', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = productClassoptions.find(
+                      (option) => option.id === newItem.productClassId
+                    )
+                    if (OptionValue) {
+                      ValueChange('productClass', OptionValue.value)
+                    } else {
+                      ValueChange('productClass', '')
+                      ValueChange('productClassId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                />
+              </Container>
               <Container>
                 <label>Product Class</label>
                 <StyledDependencies
@@ -671,11 +966,31 @@ const NewRequest = () => {
                   }))}
                   disabled={newItem.productLine || !newItem.productType}
                   onChange={(value) => {
-                    ValueChange('productClass', value)
-                    ValueChange(
-                      'detailedDescription',
-                      `${value} ${newItem.productLine}  ${newItem.specifications}`
+                    if (value === undefined || value === '') {
+                      ValueChange('productClassId', '')
+                      ValueChange('productClass', '')
+                      ValueChange(
+                        'detailedDescription',
+                        `${newItem.productLine}  ${newItem.specifications}`
+                      )
+                    } else {
+                      ValueChange('productClass', value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${value} ${newItem.productLine}  ${newItem.specifications}`
+                      )
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = productClassoptions.find(
+                      (option) => option.value === value
                     )
+                    if (selectedOption) {
+                      ValueChange('productClassId', selectedOption.id)
+                    } else {
+                      ValueChange('productClass', '')
+                      ValueChange('productClassId', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = productClassoptions.find(
@@ -687,6 +1002,62 @@ const NewRequest = () => {
                     } else {
                       ValueChange('productClass', '')
                       ValueChange('productClassId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                />
+              </Container>
+              <Container>
+                <label>Product Line Code</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={newItem.productLineId}
+                  // readOnly={true}
+                  placeholder='Select Product Line Code'
+                  options={productLineoptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled={!newItem.productClass}
+                  onChange={(value) => {
+                    if (value === undefined || value === '') {
+                      ValueChange('productLineId', '')
+                      ValueChange('productLine', '')
+                      ValueChange(
+                        'detailedDescription',
+                        `${newItem.productClass} ${newItem.specifications}`
+                      )
+                    } else {
+                      ValueChange('productLineId', value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${newItem.productClass} ${newItem.productLine} ${newItem.specifications}`
+                      )
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = productLineoptions.find(
+                      (option) => option.id === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('productLine', selectedOption.value)
+                    } else {
+                      ValueChange('productLine', '')
+                      ValueChange('productLineId', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = productLineoptions.find(
+                      (option) => option.id === newItem.productLineId
+                    )
+                    if (OptionValue) {
+                      ValueChange('productLine', OptionValue.value)
+                    } else {
+                      ValueChange('productLine', '')
+                      ValueChange('productLineId', '')
                     }
                   }}
                   popupMatchSelectWidth={true}
@@ -708,11 +1079,31 @@ const NewRequest = () => {
                   }))}
                   disabled={!newItem.productClass}
                   onChange={(value) => {
-                    ValueChange('productLine', value)
-                    ValueChange(
-                      'detailedDescription',
-                      `${newItem.productClass} ${value} ${newItem.specifications}`
+                    if (value === undefined || value === '') {
+                      ValueChange('productLineId', '')
+                      ValueChange('productLine', '')
+                      ValueChange(
+                        'detailedDescription',
+                        `${newItem.productClass} ${newItem.specifications}`
+                      )
+                    } else {
+                      ValueChange('productLine', value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${newItem.productLine} ${value} ${newItem.specifications}`
+                      )
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = productLineoptions.find(
+                      (option) => option.value === value
                     )
+                    if (selectedOption) {
+                      ValueChange('productLineId', selectedOption.id)
+                    } else {
+                      ValueChange('productLine', '')
+                      ValueChange('productLineId', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = productLineoptions.find(
@@ -757,7 +1148,73 @@ const NewRequest = () => {
                   disabled
                 />
               </Container>
-
+              <Container>
+                <label>Unit Code</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={newItem.uom}
+                  // readOnly={true}
+                  placeholder='Select Unit Code'
+                  options={uomOptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled
+                  onChange={(value) => {
+                    if (value === undefined || value === '') {
+                      ValueChange('uomDesc', '')
+                      ValueChange('uom', '')
+                      ValueChange('uomId', '')
+                      ValueChange('purchaseUnit', '')
+                      ValueChange('purchasePriceUnit', '')
+                    } else {
+                      ValueChange('uom', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = uomOptions.find(
+                      (option) => option.id === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('uomDesc', selectedOption.value)
+                      ValueChange('uomId', selectedOption.uomId)
+                      ValueChange('purchaseUnit', selectedOption.id)
+                      ValueChange('purchasePriceUnit', selectedOption.id)
+                      ValueChange('purchaseUnitId', selectedOption.uomId)
+                      ValueChange('purchasePriceUnitId', selectedOption.uomId)
+                    } else {
+                      ValueChange('uomDesc', '')
+                      ValueChange('uom', '')
+                      ValueChange('uomId', '')
+                      ValueChange('purchaseUnit', '')
+                      ValueChange('purchasePriceUnit', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = uomOptions.find(
+                      (option) => option.id === newItem.uom
+                    )
+                    if (OptionValue) {
+                      ValueChange('uomId', OptionValue.uomId)
+                      ValueChange('uomDesc', OptionValue.value)
+                      ValueChange('purchaseUnit', OptionValue.id)
+                      ValueChange('purchasePriceUnit', OptionValue.id)
+                      ValueChange('purchaseUnitId', OptionValue.uomId)
+                      ValueChange('purchasePriceUnitId', OptionValue.uomId)
+                    } else {
+                      ValueChange('uomDesc', '')
+                      ValueChange('uom', '')
+                      ValueChange('uomId', '')
+                      ValueChange('purchaseUnit', '')
+                      ValueChange('purchasePriceUnit', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                />
+              </Container>
               <Container>
                 <label>Unit Of Measurement</label>
                 <StyledDependencies
@@ -771,7 +1228,34 @@ const NewRequest = () => {
                     value: option.value,
                   }))}
                   onChange={(value) => {
-                    ValueChange('uomDesc', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('uomDesc', '')
+                      ValueChange('uom', '')
+                      ValueChange('uomId', '')
+                      ValueChange('purchaseUnit', '')
+                      ValueChange('purchasePriceUnit', '')
+                    } else {
+                      ValueChange('uomDesc', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = uomOptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('uom', selectedOption.id)
+                      ValueChange('uomId', selectedOption.uomId)
+                      ValueChange('purchaseUnit', selectedOption.id)
+                      ValueChange('purchasePriceUnit', selectedOption.id)
+                      ValueChange('purchaseUnitId', selectedOption.uomId)
+                      ValueChange('purchasePriceUnitId', selectedOption.uomId)
+                    } else {
+                      ValueChange('uomDesc', '')
+                      ValueChange('uom', '')
+                      ValueChange('uomId', '')
+                      ValueChange('purchaseUnit', '')
+                      ValueChange('purchasePriceUnit', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = uomOptions.find(
@@ -849,6 +1333,38 @@ const NewRequest = () => {
                 />
               </Container>
               <Container>
+                <label>Cost Component Code</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={newItem.materialCostComponentId}
+                  // readOnly={true}
+                  placeholder='Material Cost Component Code'
+                  options={costComponentoptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled
+                  onChange={(value) => {
+                    ValueChange('materialCostComponentId', value)
+                  }}
+                  onBlur={() => {
+                    const OptionValue = costComponentoptions?.find(
+                      (option) => option.id === newItem.materialCostComponentId
+                    )
+                    if (OptionValue) {
+                      ValueChange('materialCostComponent', OptionValue.value)
+                    } else {
+                      ValueChange('materialCostComponent', '')
+                      ValueChange('materialCostComponentId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                />
+              </Container>
+              <Container>
                 <label>Cost Component</label>
                 <StyledDependencies
                   type='text'
@@ -861,7 +1377,23 @@ const NewRequest = () => {
                     value: option.value,
                   }))}
                   onChange={(value) => {
-                    ValueChange('materialCostComponent', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('materialCostComponent', '')
+                      ValueChange('materialCostComponentId', '')
+                    } else {
+                      ValueChange('materialCostComponent', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = costComponentoptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('materialCostComponentId', selectedOption.id)
+                    } else {
+                      ValueChange('materialCostComponent', '')
+                      ValueChange('materialCostComponentId', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = costComponentoptions?.find(
@@ -885,6 +1417,38 @@ const NewRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
+                  value={newItem.groupCodeId}
+                  // readOnly={true}
+                  placeholder='Select Group Code'
+                  options={groupCodeOptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled
+                  onChange={(value) => {
+                    ValueChange('groupCodeId', value)
+                  }}
+                  onBlur={() => {
+                    const OptionValue = groupCodeOptions.find(
+                      (option) => option.id === newItem.groupCodeId
+                    )
+                    if (OptionValue) {
+                      ValueChange('groupCode', OptionValue.value)
+                    } else {
+                      ValueChange('groupCodeId', '')
+                      ValueChange('groupCode', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                />
+              </Container>
+              <Container>
+                <label>Group Name</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
                   value={newItem.groupCode}
                   // readOnly={true}
                   placeholder='Group Code'
@@ -892,8 +1456,27 @@ const NewRequest = () => {
                     label: option.Description,
                     value: option.value,
                   }))}
+                  // onChange={(value) => {
+                  //   ValueChange('groupCode', value)
+                  // }}
                   onChange={(value) => {
-                    ValueChange('groupCode', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('groupCode', '')
+                      ValueChange('groupCodeId', '')
+                    } else {
+                      ValueChange('groupCode', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = groupCodeOptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('groupCodeId', selectedOption.id)
+                    } else {
+                      ValueChange('groupCode', '')
+                      ValueChange('groupCodeId', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = groupCodeOptions.find(

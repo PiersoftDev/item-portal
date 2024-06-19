@@ -53,7 +53,10 @@ const Level1ItemRequest = () => {
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/item-group/${PendingRequest.itemType}`,
           {
-            searchTerm: PendingRequest.itemGroup
+            idSearchTerm: PendingRequest.itemGroupId
+              ? PendingRequest.itemGroupId
+              : '',
+            descSearchTerm: PendingRequest.itemGroup
               ? PendingRequest.itemGroup
               : '',
           },
@@ -65,13 +68,16 @@ const Level1ItemRequest = () => {
           itemGroups: itemGroup,
         })
 
-        setItemGroupOptions(
-          itemGroup.map((record) => ({
-            Description: `${record.id} - ${record.description}`,
-            value: record.description,
-            id: record.id,
-          }))
-        )
+        const uniqueOptions = new Map()
+        itemGroup.forEach((record) => {
+          if (!uniqueOptions.has(record.description)) {
+            uniqueOptions.set(record.description, {
+              value: record.description,
+              id: record.id,
+            })
+          }
+        })
+        setItemGroupOptions([...uniqueOptions.values()])
       }
     }
 
@@ -85,7 +91,10 @@ const Level1ItemRequest = () => {
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/product-type/${PendingRequest.itemGroupId}`,
           {
-            searchTerm: PendingRequest.productType
+            idSearchTerm: PendingRequest.productTypeId
+              ? PendingRequest.productTypeId
+              : '',
+            descSearchTerm: PendingRequest.productType
               ? PendingRequest.productType
               : '',
           },
@@ -97,13 +106,16 @@ const Level1ItemRequest = () => {
           productTypes: productType,
         })
 
-        setProductTypeOptions(
-          productType.map((record) => ({
-            Description: `${record.id} - ${record.description}`,
-            value: record.description,
-            id: record.id,
-          }))
-        )
+        const uniqueOptions = new Map()
+        productType.forEach((record) => {
+          if (!uniqueOptions.has(record.description)) {
+            uniqueOptions.set(record.description, {
+              value: record.description,
+              id: record.id,
+            })
+          }
+        })
+        setProductTypeOptions([...uniqueOptions.values()])
       }
     }
 
@@ -121,7 +133,10 @@ const Level1ItemRequest = () => {
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/product-class/${PendingRequest.productTypeId}`,
           {
-            searchTerm: PendingRequest.productClass
+            idSearchTerm: PendingRequest.productClassId
+              ? PendingRequest.productClassId
+              : '',
+            descSearchTerm: PendingRequest.productClass
               ? PendingRequest.productClass
               : '',
           },
@@ -133,13 +148,16 @@ const Level1ItemRequest = () => {
           productClasses: productClass,
         })
 
-        setProductClassOptions(
-          productClass.map((record) => ({
-            Description: `${record.id} - ${record.description}`,
-            value: record.description,
-            id: record.id,
-          }))
-        )
+        const uniqueOptions = new Map()
+        productClass.forEach((record) => {
+          if (!uniqueOptions.has(record.description)) {
+            uniqueOptions.set(record.description, {
+              value: record.description,
+              id: record.id,
+            })
+          }
+        })
+        setProductClassOptions([...uniqueOptions.values()])
       }
     }
 
@@ -157,7 +175,10 @@ const Level1ItemRequest = () => {
         const response = await axios.post(
           `https://mdm.p360.build/v1/mdm/product-link/product-line/${PendingRequest.productClassId}`,
           {
-            searchTerm: PendingRequest.productLine
+            idSearchTerm: PendingRequest.productLineId
+              ? PendingRequest.productLineId
+              : '',
+            descSearchTerm: PendingRequest.productLine
               ? PendingRequest.productLine
               : '',
           },
@@ -169,13 +190,16 @@ const Level1ItemRequest = () => {
           productLines: productLine,
         })
 
-        setProductLineOptions(
-          productLine.map((record) => ({
-            Description: `${record.id} - ${record.description}`,
-            value: record.description,
-            id: record.id,
-          }))
-        )
+        const uniqueOptions = new Map()
+        productLine.forEach((record) => {
+          if (!uniqueOptions.has(record.description)) {
+            uniqueOptions.set(record.description, {
+              value: record.description,
+              id: record.id,
+            })
+          }
+        })
+        setProductLineOptions([...uniqueOptions.values()])
       }
     }
 
@@ -192,7 +216,8 @@ const Level1ItemRequest = () => {
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/uom/search`,
         {
-          searchTerm: PendingRequest.uomDesc ? PendingRequest.uomDesc : '',
+          idSearchTerm: PendingRequest.uom ? PendingRequest.uom : '',
+          descSearchTerm: PendingRequest.uomDesc ? PendingRequest.uomDesc : '',
         },
         Cookie
       )
@@ -224,7 +249,10 @@ const Level1ItemRequest = () => {
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/cost-component/fetch-by-cost-component-type/material`,
         {
-          searchTerm: PendingRequest.materialCostComponent
+          idSearchTerm: PendingRequest.materialCostComponentId
+            ? PendingRequest.materialCostComponentId
+            : '',
+          descSearchTerm: PendingRequest.materialCostComponent
             ? PendingRequest.materialCostComponent
             : '',
         },
@@ -236,13 +264,16 @@ const Level1ItemRequest = () => {
         costComponents: costComponent,
       })
 
-      setCostComponentOptions(
-        costComponent.map((record) => ({
-          Description: `${record.costComponentId} - ${record.costComponentDescription}`,
-          value: record.costComponentDescription,
-          id: record.costComponentId,
-        }))
-      )
+      const uniqueOptions = new Map()
+      costComponent.forEach((record) => {
+        if (!uniqueOptions.has(record.costComponentDescription)) {
+          uniqueOptions.set(record.costComponentDescription, {
+            value: record.costComponentDescription,
+            id: record.costComponentId,
+          })
+        }
+      })
+      setCostComponentOptions([...uniqueOptions.values()])
     }
     fetchDependencies()
   }, [PendingRequest.materialCostComponent])
@@ -253,7 +284,12 @@ const Level1ItemRequest = () => {
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/group-code/search`,
         {
-          searchTerm: PendingRequest.groupCode ? PendingRequest.groupCode : '',
+          idSearchTerm: PendingRequest.groupCodeId
+            ? PendingRequest.groupCodeId
+            : '',
+          descSearchTerm: PendingRequest.groupCode
+            ? PendingRequest.groupCode
+            : '',
         },
         Cookie
       )
@@ -263,13 +299,16 @@ const Level1ItemRequest = () => {
         groupCodes: groupCode,
       })
 
-      setGroupCodeOptions(
-        groupCode.map((record) => ({
-          Description: `${record.groupCode} - ${record.groupName}`,
-          value: record.groupName,
-          id: record.groupCode,
-        }))
-      )
+      const uniqueOptions = new Map()
+      groupCode.forEach((record) => {
+        if (!uniqueOptions.has(record.groupName)) {
+          uniqueOptions.set(record.groupName, {
+            value: record.groupName,
+            id: record.groupCode,
+          })
+        }
+      })
+      setGroupCodeOptions([...uniqueOptions.values()])
     }
     fetchDependencies()
   }, [PendingRequest.groupCode])
@@ -400,7 +439,13 @@ const Level1ItemRequest = () => {
         const reqbody = {
           ...PendingRequest,
           status: 'Declined',
-          comments: [...PendingRequest.comments, rejectReason],
+          comments: [
+            ...PendingRequest.comments,
+            {
+              txt: rejectReason,
+              level: PendingRequest.currentLevel,
+            },
+          ],
         }
         setLoading(true)
         const Cookie = CookiesData()
@@ -539,7 +584,56 @@ const Level1ItemRequest = () => {
                 </Select>
               </Container>
               <Container>
-                <label>Item Group *</label>
+                <label>Item Group Code</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={PendingRequest.itemGroupId}
+                  // readOnly={true}
+                  placeholder='Select Item Group Code'
+                  options={itemgroupoptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled={PendingRequest.productType}
+                  onChange={(value) => {
+                    if (value === undefined || value === '') {
+                      ValueChange('itemGroup', '')
+                      ValueChange('itemGroupId', '')
+                    } else {
+                      ValueChange('itemGroupId', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = itemgroupoptions.find(
+                      (option) => option.id === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('itemGroup', selectedOption.value)
+                    } else {
+                      ValueChange('itemGroup', '')
+                      ValueChange('itemGroupId', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = itemgroupoptions.find(
+                      (option) => option.id === PendingRequest.itemGroupId
+                    )
+                    if (OptionValue) {
+                      ValueChange('itemGroup', OptionValue.value)
+                    } else {
+                      ValueChange('itemGroup', '')
+                      ValueChange('itemGroupId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                  // onFocus={(e) => FieldFocas('Item Group', 'item-group')}
+                />
+              </Container>
+              <Container>
+                <label>Item Group</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -547,12 +641,28 @@ const Level1ItemRequest = () => {
                   // readOnly={true}
                   placeholder='Enter Item Group'
                   options={itemgroupoptions.map((option) => ({
-                    label: option.Description,
+                    label: option.value,
                     value: option.value,
                   }))}
                   disabled={PendingRequest.productType}
                   onChange={(value) => {
-                    ValueChange('itemGroup', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('itemGroup', '')
+                      ValueChange('itemGroupId', '')
+                    } else {
+                      ValueChange('itemGroup', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = itemgroupoptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('itemGroupId', selectedOption.id)
+                    } else {
+                      ValueChange('itemGroup', '')
+                      ValueChange('itemGroupId', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = itemgroupoptions.find(
@@ -575,7 +685,57 @@ const Level1ItemRequest = () => {
                 )}
               </Container>
               <Container>
-                <label>Product Type *</label>
+                <label>Product Type Code</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={PendingRequest.productTypeId}
+                  // readOnly={true}
+                  placeholder='Select Product Type Code'
+                  options={productTypeoptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled={
+                    PendingRequest.productClass || !PendingRequest.itemGroup
+                  }
+                  onChange={(value) => {
+                    if (value === undefined || value === '') {
+                      ValueChange('productType', '')
+                      ValueChange('productTypeId', '')
+                    } else {
+                      ValueChange('productTypeId', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = productTypeoptions.find(
+                      (option) => option.id === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('productType', selectedOption.value)
+                    } else {
+                      ValueChange('productType', '')
+                      ValueChange('productTypeId', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = productTypeoptions.find(
+                      (option) => option.id === PendingRequest.productTypeId
+                    )
+                    if (OptionValue) {
+                      ValueChange('productType', OptionValue.value)
+                    } else {
+                      ValueChange('productType', '')
+                      ValueChange('productTypeId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                />
+              </Container>
+              <Container>
+                <label>Product Type</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -589,8 +749,27 @@ const Level1ItemRequest = () => {
                   disabled={
                     PendingRequest.productClass || !PendingRequest.itemGroup
                   }
+                  // onChange={(value) => {
+                  //   ValueChange('productType', value)
+                  // }}
                   onChange={(value) => {
-                    ValueChange('productType', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('productType', '')
+                      ValueChange('productTypeId', '')
+                    } else {
+                      ValueChange('productType', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = productTypeoptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('productTypeId', selectedOption.id)
+                    } else {
+                      ValueChange('productType', '')
+                      ValueChange('productTypeId', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = productTypeoptions.find(
@@ -613,7 +792,65 @@ const Level1ItemRequest = () => {
                 )}
               </Container>
               <Container>
-                <label>Product Class *</label>
+                <label>Product Class Code</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={PendingRequest.productClassId}
+                  // readOnly={true}
+                  placeholder='Select Product Class Code'
+                  options={productClassoptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled={
+                    PendingRequest.productLine || !PendingRequest.productType
+                  }
+                  onChange={(value) => {
+                    if (value === undefined || value === '') {
+                      ValueChange('productClassId', '')
+                      ValueChange('productClass', '')
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productLine}  ${PendingRequest.specifications}`
+                      )
+                    } else {
+                      ValueChange('productClassId', value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine}  ${PendingRequest.specifications}`
+                      )
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = productClassoptions.find(
+                      (option) => option.id === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('productClass', selectedOption.value)
+                    } else {
+                      ValueChange('productClass', '')
+                      ValueChange('productClassId', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = productClassoptions.find(
+                      (option) => option.id === PendingRequest.productClassId
+                    )
+                    if (OptionValue) {
+                      ValueChange('productClass', OptionValue.value)
+                    } else {
+                      ValueChange('productClass', '')
+                      ValueChange('productClassId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                />
+              </Container>
+              <Container>
+                <label>Product Class</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -628,20 +865,33 @@ const Level1ItemRequest = () => {
                     PendingRequest.productLine || !PendingRequest.productType
                   }
                   onChange={(value) => {
-                    ValueChange('productClass', value)
-                    ValueChange(
-                      'detailedDescription',
-                      `${value} ${PendingRequest.productLine}  ${PendingRequest.specifications}`
+                    if (value === undefined || value === '') {
+                      ValueChange('productClassId', '')
+                      ValueChange('productClass', '')
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productLine}  ${PendingRequest.specifications}`
+                      )
+                    } else {
+                      ValueChange('productClass', value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${value} ${PendingRequest.productLine}  ${PendingRequest.specifications}`
+                      )
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = productClassoptions.find(
+                      (option) => option.value === value
                     )
+                    if (selectedOption) {
+                      ValueChange('productClassId', selectedOption.id)
+                    } else {
+                      ValueChange('productClass', '')
+                      ValueChange('productClassId', '')
+                    }
                   }}
                   onBlur={() => {
-                    if (
-                      !PendingRequest.productClass &&
-                      !PendingRequest.productLine &&
-                      !PendingRequest.specifications
-                    ) {
-                      ValueChange('detailedDescription', '')
-                    }
                     const OptionValue = productClassoptions.find(
                       (option) => option.value === PendingRequest.productClass
                     )
@@ -663,7 +913,63 @@ const Level1ItemRequest = () => {
               </Container>
 
               <Container>
-                <label>Product Line *</label>
+                <label>Product Line Code</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={PendingRequest.productLineId}
+                  // readOnly={true}
+                  placeholder='Select Product Line Code'
+                  options={productLineoptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled={!PendingRequest.productClass}
+                  onChange={(value) => {
+                    if (value === undefined || value === '') {
+                      ValueChange('productLineId', '')
+                      ValueChange('productLine', '')
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.specifications}`
+                      )
+                    } else {
+                      ValueChange('productLineId', value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = productLineoptions.find(
+                      (option) => option.id === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('productLine', selectedOption.value)
+                    } else {
+                      ValueChange('productLine', '')
+                      ValueChange('productLineId', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = productLineoptions.find(
+                      (option) => option.id === PendingRequest.productLineId
+                    )
+                    if (OptionValue) {
+                      ValueChange('productLine', OptionValue.value)
+                    } else {
+                      ValueChange('productLine', '')
+                      ValueChange('productLineId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                />
+              </Container>
+              <Container>
+                <label>Product Line</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -676,20 +982,33 @@ const Level1ItemRequest = () => {
                   }))}
                   disabled={!PendingRequest.productClass}
                   onChange={(value) => {
-                    ValueChange('productLine', value)
-                    ValueChange(
-                      'detailedDescription',
-                      `${PendingRequest.productClass} ${value} ${PendingRequest.specifications}`
+                    if (value === undefined || value === '') {
+                      ValueChange('productLineId', '')
+                      ValueChange('productLine', '')
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.specifications}`
+                      )
+                    } else {
+                      ValueChange('productLine', value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productLine} ${value} ${PendingRequest.specifications}`
+                      )
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = productLineoptions.find(
+                      (option) => option.value === value
                     )
+                    if (selectedOption) {
+                      ValueChange('productLineId', selectedOption.id)
+                    } else {
+                      ValueChange('productLine', '')
+                      ValueChange('productLineId', '')
+                    }
                   }}
                   onBlur={() => {
-                    if (
-                      !PendingRequest.productClass &&
-                      !PendingRequest.productLine &&
-                      !PendingRequest.specifications
-                    ) {
-                      ValueChange('detailedDescription', '')
-                    }
                     const OptionValue = productLineoptions.find(
                       (option) => option.value === PendingRequest.productLine
                     )
@@ -749,7 +1068,74 @@ const Level1ItemRequest = () => {
                 />
               </Container>
               <Container>
-                <label>Unit Of Measurement *</label>
+                <label>Unit Code</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={PendingRequest.uom}
+                  // readOnly={true}
+                  placeholder='Select Unit Code'
+                  options={uomOptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled
+                  onChange={(value) => {
+                    if (value === undefined || value === '') {
+                      ValueChange('uomDesc', '')
+                      ValueChange('uom', '')
+                      ValueChange('uomId', '')
+                      ValueChange('purchaseUnit', '')
+                      ValueChange('purchasePriceUnit', '')
+                    } else {
+                      ValueChange('uom', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = uomOptions.find(
+                      (option) => option.id === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('uomDesc', selectedOption.value)
+                      ValueChange('uomId', selectedOption.uomId)
+                      ValueChange('purchaseUnit', selectedOption.id)
+                      ValueChange('purchasePriceUnit', selectedOption.id)
+                      ValueChange('purchaseUnitId', selectedOption.uomId)
+                      ValueChange('purchasePriceUnitId', selectedOption.uomId)
+                    } else {
+                      ValueChange('uomDesc', '')
+                      ValueChange('uom', '')
+                      ValueChange('uomId', '')
+                      ValueChange('purchaseUnit', '')
+                      ValueChange('purchasePriceUnit', '')
+                    }
+                  }}
+                  onBlur={() => {
+                    const OptionValue = uomOptions.find(
+                      (option) => option.id === PendingRequest.uom
+                    )
+                    if (OptionValue) {
+                      ValueChange('uomId', OptionValue.uomId)
+                      ValueChange('uomDesc', OptionValue.value)
+                      ValueChange('purchaseUnit', OptionValue.id)
+                      ValueChange('purchasePriceUnit', OptionValue.id)
+                      ValueChange('purchaseUnitId', OptionValue.uomId)
+                      ValueChange('purchasePriceUnitId', OptionValue.uomId)
+                    } else {
+                      ValueChange('uomDesc', '')
+                      ValueChange('uom', '')
+                      ValueChange('uomId', '')
+                      ValueChange('purchaseUnit', '')
+                      ValueChange('purchasePriceUnit', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                />
+              </Container>
+              <Container>
+                <label>Unit Of Measurement</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -761,7 +1147,34 @@ const Level1ItemRequest = () => {
                     value: option.value,
                   }))}
                   onChange={(value) => {
-                    ValueChange('uomDesc', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('uomDesc', '')
+                      ValueChange('uom', '')
+                      ValueChange('uomId', '')
+                      ValueChange('purchaseUnit', '')
+                      ValueChange('purchasePriceUnit', '')
+                    } else {
+                      ValueChange('uomDesc', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = uomOptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('uom', selectedOption.id)
+                      ValueChange('uomId', selectedOption.uomId)
+                      ValueChange('purchaseUnit', selectedOption.id)
+                      ValueChange('purchasePriceUnit', selectedOption.id)
+                      ValueChange('purchaseUnitId', selectedOption.uomId)
+                      ValueChange('purchasePriceUnitId', selectedOption.uomId)
+                    } else {
+                      ValueChange('uomDesc', '')
+                      ValueChange('uom', '')
+                      ValueChange('uomId', '')
+                      ValueChange('purchaseUnit', '')
+                      ValueChange('purchasePriceUnit', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = uomOptions.find(
@@ -848,6 +1261,39 @@ const Level1ItemRequest = () => {
                 />
               </Container>
               <Container>
+                <label>Cost Component Code</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={PendingRequest.materialCostComponentId}
+                  // readOnly={true}
+                  placeholder='Material Cost Component Code'
+                  options={costComponentoptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled
+                  onChange={(value) => {
+                    ValueChange('materialCostComponentId', value)
+                  }}
+                  onBlur={() => {
+                    const OptionValue = costComponentoptions?.find(
+                      (option) =>
+                        option.id === PendingRequest.materialCostComponentId
+                    )
+                    if (OptionValue) {
+                      ValueChange('materialCostComponent', OptionValue.value)
+                    } else {
+                      ValueChange('materialCostComponent', '')
+                      ValueChange('materialCostComponentId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                />
+              </Container>
+              <Container>
                 <label>Cost Component</label>
                 <StyledDependencies
                   type='text'
@@ -860,7 +1306,23 @@ const Level1ItemRequest = () => {
                     value: option.value,
                   }))}
                   onChange={(value) => {
-                    ValueChange('materialCostComponent', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('materialCostComponent', '')
+                      ValueChange('materialCostComponentId', '')
+                    } else {
+                      ValueChange('materialCostComponent', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = costComponentoptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('materialCostComponentId', selectedOption.id)
+                    } else {
+                      ValueChange('materialCostComponent', '')
+                      ValueChange('materialCostComponentId', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = costComponentoptions?.find(
@@ -885,6 +1347,38 @@ const Level1ItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
+                  value={PendingRequest.groupCodeId}
+                  // readOnly={true}
+                  placeholder='Select Group Code'
+                  options={groupCodeOptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled
+                  onChange={(value) => {
+                    ValueChange('groupCodeId', value)
+                  }}
+                  onBlur={() => {
+                    const OptionValue = groupCodeOptions.find(
+                      (option) => option.id === PendingRequest.groupCodeId
+                    )
+                    if (OptionValue) {
+                      ValueChange('groupCode', OptionValue.value)
+                    } else {
+                      ValueChange('groupCodeId', '')
+                      ValueChange('groupCode', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                />
+              </Container>
+              <Container>
+                <label>Group Name</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
                   value={PendingRequest.groupCode}
                   // readOnly={true}
                   placeholder='Group Code'
@@ -892,8 +1386,27 @@ const Level1ItemRequest = () => {
                     label: option.Description,
                     value: option.value,
                   }))}
+                  // onChange={(value) => {
+                  //   ValueChange('groupCode', value)
+                  // }}
                   onChange={(value) => {
-                    ValueChange('groupCode', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('groupCode', '')
+                      ValueChange('groupCodeId', '')
+                    } else {
+                      ValueChange('groupCode', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = groupCodeOptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('groupCodeId', selectedOption.id)
+                    } else {
+                      ValueChange('groupCode', '')
+                      ValueChange('groupCodeId', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = groupCodeOptions.find(

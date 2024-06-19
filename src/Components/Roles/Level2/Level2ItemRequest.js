@@ -47,7 +47,10 @@ const Level2ItemRequest = () => {
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/cost-component/fetch-by-cost-component-type/material`,
         {
-          searchTerm: PendingRequest.materialCostComponent
+          idSearchTerm: PendingRequest.materialCostComponentId
+            ? PendingRequest.materialCostComponentId
+            : '',
+          descSearchTerm: PendingRequest.materialCostComponent
             ? PendingRequest.materialCostComponent
             : '',
         },
@@ -59,13 +62,16 @@ const Level2ItemRequest = () => {
         costComponents: costComponent,
       })
 
-      setCostComponentOptions(
-        costComponent.map((record) => ({
-          Description: `${record.costComponentId} - ${record.costComponentDescription}`,
-          value: record.costComponentDescription,
-          id: record.costComponentId,
-        }))
-      )
+      const uniqueOptions = new Map()
+      costComponent.forEach((record) => {
+        if (!uniqueOptions.has(record.costComponentDescription)) {
+          uniqueOptions.set(record.costComponentDescription, {
+            value: record.costComponentDescription,
+            id: record.costComponentId,
+          })
+        }
+      })
+      setCostComponentOptions([...uniqueOptions.values()])
     }
     fetchDependencies()
   }, [PendingRequest.materialCostComponent])
@@ -76,7 +82,10 @@ const Level2ItemRequest = () => {
       const response = await axios.post(
         `https://mdm.p360.build/v1/mdm/group-code/search`,
         {
-          searchTerm: PendingRequest.groupCode
+          idSearchTerm: PendingRequest.groupCodeId
+            ? PendingRequest.groupCodeId
+            : '',
+          descSearchTerm: PendingRequest.groupCode
             ? PendingRequest.groupCode
             : '',
         },
@@ -88,13 +97,16 @@ const Level2ItemRequest = () => {
         groupCodes: groupCode,
       })
 
-      setGroupCodeOptions(
-        groupCode.map((record) => ({
-          Description: `${record.groupCode} - ${record.groupName}`,
-          value: record.groupName,
-          id: record.groupCode,
-        }))
-      )
+      const uniqueOptions = new Map()
+      groupCode.forEach((record) => {
+        if (!uniqueOptions.has(record.groupName)) {
+          uniqueOptions.set(record.groupName, {
+            value: record.groupName,
+            id: record.groupCode,
+          })
+        }
+      })
+      setGroupCodeOptions([...uniqueOptions.values()])
     }
     fetchDependencies()
   }, [PendingRequest.groupCode])
@@ -182,7 +194,13 @@ const Level2ItemRequest = () => {
         const reqbody = {
           ...PendingRequest,
           status: 'Declined',
-          comments: [...PendingRequest.comments, rejectReason],
+          comments: [
+            ...PendingRequest.comments,
+            {
+              txt: rejectReason,
+              level: PendingRequest.currentLevel,
+            },
+          ],
         }
         const Cookie = CookiesData()
         setLoading(true)
@@ -619,6 +637,39 @@ const Level2ItemRequest = () => {
                 )}
               </Container>
               <Container>
+                <label>Cost Component Code</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={PendingRequest.materialCostComponentId}
+                  // readOnly={true}
+                  placeholder='Material Cost Component Code'
+                  options={costComponentoptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled
+                  onChange={(value) => {
+                    ValueChange('materialCostComponentId', value)
+                  }}
+                  onBlur={() => {
+                    const OptionValue = costComponentoptions?.find(
+                      (option) =>
+                        option.id === PendingRequest.materialCostComponentId
+                    )
+                    if (OptionValue) {
+                      ValueChange('materialCostComponent', OptionValue.value)
+                    } else {
+                      ValueChange('materialCostComponent', '')
+                      ValueChange('materialCostComponentId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                />
+              </Container>
+              <Container>
                 <label>Cost Component</label>
                 <StyledDependencies
                   type='text'
@@ -631,13 +682,28 @@ const Level2ItemRequest = () => {
                     value: option.value,
                   }))}
                   onChange={(value) => {
-                    ValueChange('materialCostComponent', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('materialCostComponent', '')
+                      ValueChange('materialCostComponentId', '')
+                    } else {
+                      ValueChange('materialCostComponent', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = costComponentoptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('materialCostComponentId', selectedOption.id)
+                    } else {
+                      ValueChange('materialCostComponent', '')
+                      ValueChange('materialCostComponentId', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = costComponentoptions?.find(
                       (option) =>
-                        option.value ===
-                        PendingRequest.materialCostComponent
+                        option.value === PendingRequest.materialCostComponent
                     )
                     if (OptionValue) {
                       ValueChange('materialCostComponentId', OptionValue.id)
@@ -657,6 +723,38 @@ const Level2ItemRequest = () => {
                 <StyledDependencies
                   type='text'
                   allowClear
+                  value={PendingRequest.groupCodeId}
+                  // readOnly={true}
+                  placeholder='Select Group Code'
+                  options={groupCodeOptions.map((option) => ({
+                    label: option.id,
+                    value: option.id,
+                  }))}
+                  disabled
+                  onChange={(value) => {
+                    ValueChange('groupCodeId', value)
+                  }}
+                  onBlur={() => {
+                    const OptionValue = groupCodeOptions.find(
+                      (option) => option.id === PendingRequest.groupCodeId
+                    )
+                    if (OptionValue) {
+                      ValueChange('groupCode', OptionValue.value)
+                    } else {
+                      ValueChange('groupCodeId', '')
+                      ValueChange('groupCode', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                />
+              </Container>
+              <Container>
+                <label>Group Name</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
                   value={PendingRequest.groupCode}
                   // readOnly={true}
                   placeholder='Group Code'
@@ -664,13 +762,31 @@ const Level2ItemRequest = () => {
                     label: option.Description,
                     value: option.value,
                   }))}
+                  // onChange={(value) => {
+                  //   ValueChange('groupCode', value)
+                  // }}
                   onChange={(value) => {
-                    ValueChange('groupCode', value)
+                    if (value === undefined || value === '') {
+                      ValueChange('groupCode', '')
+                      ValueChange('groupCodeId', '')
+                    } else {
+                      ValueChange('groupCode', value)
+                    }
+                  }}
+                  onSelect={(value) => {
+                    const selectedOption = groupCodeOptions.find(
+                      (option) => option.value === value
+                    )
+                    if (selectedOption) {
+                      ValueChange('groupCodeId', selectedOption.id)
+                    } else {
+                      ValueChange('groupCode', '')
+                      ValueChange('groupCodeId', '')
+                    }
                   }}
                   onBlur={() => {
                     const OptionValue = groupCodeOptions.find(
-                      (option) =>
-                        option.value === PendingRequest.groupCode
+                      (option) => option.value === PendingRequest.groupCode
                     )
                     if (OptionValue) {
                       ValueChange('groupCodeId', OptionValue.id)

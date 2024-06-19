@@ -53,7 +53,10 @@ const ErpItemRequest = () => {
       const response = await axios.post(
         'https://mdm.p360.build/v1/mdm/warehouse/search',
         {
-          searchTerm: PendingRequest.warehouseName
+          idSearchTerm: PendingRequest.warehouseId
+            ? PendingRequest.warehouseId
+            : '',
+          descSearchTerm: PendingRequest.warehouseName
             ? PendingRequest.warehouseName
             : '',
         },
@@ -163,7 +166,13 @@ const ErpItemRequest = () => {
         const reqbody = {
           ...PendingRequest,
           status: 'Declined',
-          comments: [...PendingRequest.comments, rejectReason],
+          comments: [
+            ...PendingRequest.comments,
+            {
+              txt: rejectReason,
+              level: PendingRequest.currentLevel,
+            },
+          ],
         }
         setLoading(true)
         const Cookie = CookiesData()
@@ -545,6 +554,40 @@ const ErpItemRequest = () => {
                 </Select>
               </Container>
               <Container>
+                <label>Warehouse Code</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={PendingRequest.warehouseId}
+                  disabled
+                  // readOnly={true}
+                  placeholder='Select Warehouse'
+                  options={warehouseOptions.map((option) => ({
+                    label: option.Description,
+                    value: option.value,
+                  }))}
+                  // onSearch={ItemGroupDescriptionSearch}
+                  onChange={(value) => {
+                    ValueChange('warehouseName', value)
+                  }}
+                  onBlur={() => {
+                    const OptionValue = warehouseOptions.find(
+                      (option) => option.value === PendingRequest.warehouseName
+                    )
+                    if (OptionValue) {
+                      ValueChange('warehouseId', OptionValue.id)
+                    } else {
+                      ValueChange('warehouseName', '')
+                      ValueChange('warehouseId', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                  // onFocus={(e) => FieldFocas('Item Group', 'item-group')}
+                />
+              </Container>
+              <Container>
                 <label>Warehouse *</label>
                 <StyledDependencies
                   type='text'
@@ -562,8 +605,7 @@ const ErpItemRequest = () => {
                   }}
                   onBlur={() => {
                     const OptionValue = warehouseOptions.find(
-                      (option) =>
-                        option.value === PendingRequest.warehouseName
+                      (option) => option.value === PendingRequest.warehouseName
                     )
                     if (OptionValue) {
                       ValueChange('warehouseId', OptionValue.id)
