@@ -362,7 +362,7 @@ const ItemsList = () => {
         <InfoRow>
           <Label>7777 :</Label>
           <Text>
-            {record.companies.some(
+            {record.companies?.some(
               (item) => item.name === '7777' && item.live
             ) ? (
               <div className='live'>Live</div>
@@ -374,7 +374,7 @@ const ItemsList = () => {
         <InfoRow>
           <Label>9999 :</Label>
           <Text>
-            {record.companies.some(
+            {record.companies?.some(
               (item) => item.name === '9999' && item.live
             ) ? (
               <div className='live'>Live</div>
