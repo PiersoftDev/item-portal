@@ -531,10 +531,10 @@ const ItemsList = () => {
                               title='Company Live Status'
                             >
                               <BranchIcon
-                                company9999Live={record.companies.some(
+                                company9999Live={record.companies?.some(
                                   (item) => item.name === '9999' && item.live
                                 )}
-                                company7777Live={record.companies.some(
+                                company7777Live={record.companies?.some(
                                   (item) => item.name === '7777' && item.live
                                 )}
                                 onClick={() => {
