@@ -35,6 +35,8 @@ const NewRequest = () => {
   const [uomOptions, setUOMOptions] = useState([])
   const [groupCodeOptions, setGroupCodeOptions] = useState([])
 
+  const [companySearchTerm, setCompanySearchTerm] = useState('7777')
+
   const CookiesData = () => {
     const accessToken = localStorage.getItem('accessToken')
     const Cookie = {
@@ -51,6 +53,7 @@ const NewRequest = () => {
       const response = await axios.post(
         `${testUrl}/v1/mdm/project/search`,
         {
+          companySearchTerm: companySearchTerm,
           idSearchTerm: newItem.siteId ? newItem.siteId : '',
           descSearchTerm: newItem.site ? newItem.site : '',
         },
@@ -74,7 +77,7 @@ const NewRequest = () => {
       setProjectOptions([...uniqueOptions.values()])
     }
     fetchDependencies()
-  }, [newItem.site, newItem.siteId])
+  }, [newItem.site, newItem.siteId, companySearchTerm])
 
   useEffect(() => {
     const fetchDependencies = async () => {
@@ -350,6 +353,10 @@ const NewRequest = () => {
     fetchDependencies()
   }, [newItem.groupCode])
 
+  const CompanyChange = (value) => {
+    setCompanySearchTerm(value)
+  }
+
   const ValueChange = (field, value) => {
     setNewItem((prevItem) => ({
       ...prevItem,
@@ -434,6 +441,13 @@ const NewRequest = () => {
           <Section>
             <SectionTitle>Contact Information</SectionTitle>
             <GridContainer>
+              <Container>
+                <label>Company</label>
+                <Select value={companySearchTerm} onChange={CompanyChange}>
+                  <Option value='7777'>7777</Option>
+                  <Option value='9999'>9999</Option>
+                </Select>
+              </Container>
               <Container>
                 <label>Site Code *</label>
                 <StyledDependencies

@@ -31,7 +31,7 @@ import HistoryModal from './modals/HistoryModal'
 import CommentsModal from './modals/CommentsModal'
 import SimilarItemsModal from './modals/SimilarItemsModal'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import { FaHistory, FaHourglassHalf, FaEye } from 'react-icons/fa'
+import { FaHourglassHalf, FaEye, FaCommentDots } from 'react-icons/fa'
 
 import { HiTemplate } from 'react-icons/hi'
 
@@ -478,14 +478,14 @@ const ItemsList = () => {
                     <TableRow key={record.id}>
                       <td>
                         <IconsContainer>
-                          <FaHourglassHalf
+                          <FaCommentDots
                             className='icon'
                             onClick={() => {
                               openCommentsModal(record)
                             }}
                             title='Comments'
                           />
-                          <FaHistory
+                          <FaHourglassHalf
                             className='icon'
                             onClick={() => openHistoryModal(record)}
                             title='History'
