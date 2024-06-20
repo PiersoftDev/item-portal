@@ -92,12 +92,12 @@ const TopBar = () => {
             <Text>Purchase Item</Text>
           </CreateButton>
         )}
-        {userDetails.roles?.some((role) => ['Admin', 'L0'].includes(role)) && (
+        {/* {userDetails.roles?.some((role) => ['Admin', 'L0'].includes(role)) && (
           <CreateButton onClick={SubconItemModalClick}>
             <FaFileContract size={10} />
             <Text>SubCon Item</Text>
           </CreateButton>
-        )}
+        )} */}
         {userDetails.roles?.some((role) => ['Admin', 'L4'].includes(role)) && (
           <CreateButton onClick={ProductCombinationModalClick}>
             <FaLink size={10} />

@@ -125,28 +125,28 @@ const Level3ItemRequest = () => {
     setErrors((prevErrors) => ({ ...prevErrors, [field]: '' }))
   }
 
-  const showApprovalConfirmation = () => {
-    const fieldErrors = {}
-    if (!PendingRequest.materialCostComponent) {
-      fieldErrors.materialCostComponent = 'Cost Component required'
-    }
-    if (!PendingRequest.groupCode) {
-      fieldErrors.groupCode = 'Group Code required'
-    }
-    if (Object.keys(fieldErrors).length > 0) {
-      setErrors(fieldErrors)
-      return false
-    }
-    Modal.confirm({
-      title: 'Approval Confirmation',
-      content: (
-        <ConfirmationContainer>
-          <Label> No Similar Items Found</Label> <Checkbox />
-        </ConfirmationContainer>
-      ),
-      onOk: async () => await ApproveItemRequest(),
-    })
-  }
+  // const showApprovalConfirmation = () => {
+  //   const fieldErrors = {}
+  //   if (!PendingRequest.materialCostComponent) {
+  //     fieldErrors.materialCostComponent = 'Cost Component required'
+  //   }
+  //   if (!PendingRequest.groupCode) {
+  //     fieldErrors.groupCode = 'Group Code required'
+  //   }
+  //   if (Object.keys(fieldErrors).length > 0) {
+  //     setErrors(fieldErrors)
+  //     return false
+  //   }
+  //   Modal.confirm({
+  //     title: 'Approval Confirmation',
+  //     content: (
+  //       <ConfirmationContainer>
+  //         <Label> No Similar Items Found</Label> <Checkbox />
+  //       </ConfirmationContainer>
+  //     ),
+  //     onOk: async () => await ApproveItemRequest(),
+  //   })
+  // }
 
   const showRejectConfirmation = () => {
     setRejectReasonModal(true)
@@ -158,6 +158,17 @@ const Level3ItemRequest = () => {
   }
 
   const ApproveItemRequest = async () => {
+    const fieldErrors = {}
+    if (!PendingRequest.materialCostComponent) {
+      fieldErrors.materialCostComponent = 'Cost Component required'
+    }
+    if (!PendingRequest.groupCode) {
+      fieldErrors.groupCode = 'Group Code required'
+    }
+    if (Object.keys(fieldErrors).length > 0) {
+      setErrors(fieldErrors)
+      return false
+    }
     if (PendingRequest.groupCode && PendingRequest.materialCostComponent) {
       try {
         const Cookie = CookiesData()
@@ -342,7 +353,7 @@ const Level3ItemRequest = () => {
             <SectionTitle>Material Information</SectionTitle>
             <Container>
               <label style={{ marginLeft: '1rem' }}>
-                Requirement Description *
+                Requirement Description
               </label>
               <textarea
                 type='textarea'
@@ -679,7 +690,7 @@ const Level3ItemRequest = () => {
                 />
               </Container>
               <Container>
-                <label>Cost Component Code</label>
+                <label>Cost Component Code *</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -712,7 +723,7 @@ const Level3ItemRequest = () => {
                 />
               </Container>
               <Container>
-                <label>Cost Component</label>
+                <label>Cost Component *</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -764,7 +775,7 @@ const Level3ItemRequest = () => {
                 )}
               </Container>
               <Container>
-                <label>Group Code</label>
+                <label>Group Code *</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -796,13 +807,13 @@ const Level3ItemRequest = () => {
                 />
               </Container>
               <Container>
-                <label>Group Name</label>
+                <label>Group Name *</label>
                 <StyledDependencies
                   type='text'
                   allowClear
                   value={PendingRequest.groupCode}
                   // readOnly={true}
-                  placeholder='Group Code'
+                  placeholder='Select Group Name'
                   options={groupCodeOptions.map((option) => ({
                     label: option.Description,
                     value: option.value,
@@ -856,7 +867,7 @@ const Level3ItemRequest = () => {
           <button className='reject' onClick={showRejectConfirmation}>
             Reject
           </button>
-          <button className='submit' onClick={showApprovalConfirmation}>
+          <button className='submit' onClick={ApproveItemRequest}>
             Approve
           </button>
         </ButtonContainer>
@@ -1109,29 +1120,95 @@ const LoadingContainer = styled.div`
   justify-content: center;
   align-items: center;
   .loader {
-    font-weight: bold;
-    font-family: monospace;
-    font-size: 30px;
-    display: inline-grid;
-    overflow: hidden;
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 8px solid #514b82;
+    animation: l20-1 0.8s infinite linear alternate, l20-2 1.6s infinite linear;
   }
-  .loader:before,
-  .loader:after {
-    content: 'Loading...';
-    grid-area: 1/1;
-    clip-path: inset(0 -200% 50%);
-    text-shadow: -10ch 0 0;
-    animation: l12 1s infinite;
-  }
-  .loader:after {
-    clip-path: inset(50% -200% 0%);
-    text-shadow: 10ch 0 0;
-    --s: -1;
-  }
-  @keyframes l12 {
-    50%,
+  @keyframes l20-1 {
+    0% {
+      clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
+    }
+    12.5% {
+      clip-path: polygon(
+        50% 50%,
+        0 0,
+        50% 0%,
+        100% 0%,
+        100% 0%,
+        100% 0%,
+        100% 0%
+      );
+    }
+    25% {
+      clip-path: polygon(
+        50% 50%,
+        0 0,
+        50% 0%,
+        100% 0%,
+        100% 100%,
+        100% 100%,
+        100% 100%
+      );
+    }
+    50% {
+      clip-path: polygon(
+        50% 50%,
+        0 0,
+        50% 0%,
+        100% 0%,
+        100% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
+    62.5% {
+      clip-path: polygon(
+        50% 50%,
+        100% 0,
+        100% 0%,
+        100% 0%,
+        100% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
+    75% {
+      clip-path: polygon(
+        50% 50%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
     100% {
-      transform: translateX(calc(var(--s, 1) * 100%));
+      clip-path: polygon(
+        50% 50%,
+        50% 100%,
+        50% 100%,
+        50% 100%,
+        50% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
+  }
+  @keyframes l20-2 {
+    0% {
+      transform: scaleY(1) rotate(0deg);
+    }
+    49.99% {
+      transform: scaleY(1) rotate(135deg);
+    }
+    50% {
+      transform: scaleY(-1) rotate(0deg);
+    }
+    100% {
+      transform: scaleY(-1) rotate(-135deg);
     }
   }
 `
