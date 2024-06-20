@@ -323,7 +323,63 @@ const Level1ItemRequest = () => {
     setErrors((prevErrors) => ({ ...prevErrors, [field]: '' }))
   }
 
-  const showApprovalConfirmation = () => {
+  // const showApprovalConfirmation = () => {
+  //   const fieldErrors = {}
+  //   if (!PendingRequest.itemGroup) {
+  //     fieldErrors.itemGroup = 'Item Group required'
+  //   }
+  //   if (!PendingRequest.productType) {
+  //     fieldErrors.productType = 'Product Type required'
+  //   }
+  //   if (!PendingRequest.productClass) {
+  //     fieldErrors.productClass = 'Product Class required'
+  //   }
+  //   if (!PendingRequest.productLine) {
+  //     fieldErrors.productLine = 'Product Line required'
+  //   }
+  //   if (!PendingRequest.specifications) {
+  //     fieldErrors.specifications = 'Specifications required'
+  //   }
+  //   if (!PendingRequest.detailedDescription) {
+  //     fieldErrors.detailedDescription = 'Detailed Description required'
+  //   }
+  //   if (PendingRequest.detailedDescription?.length > 150) {
+  //     fieldErrors.detailedDescription =
+  //       'Detailed Description length should be less than 150'
+  //   }
+  //   if (!PendingRequest.uomDesc) {
+  //     fieldErrors.uomDesc = 'Unit of Measurement required'
+  //   }
+  //   if (!PendingRequest.purchasePrice) {
+  //     fieldErrors.purchasePrice = 'Purchase Price required'
+  //   }
+
+  //   if (Object.keys(fieldErrors).length > 0) {
+  //     setErrors(fieldErrors)
+  //     return false
+  //   }
+
+  //   Modal.confirm({
+  //     title: 'Approval Confirmation',
+  //     content: (
+  //       <ConfirmationContainer>
+  //         <Label></Label>
+  //       </ConfirmationContainer>
+  //     ),
+  //     onOk: async () => await ApproveItemRequest(),
+  //   })
+  // }
+
+  const showRejectConfirmation = () => {
+    setRejectReasonModal(true)
+  }
+
+  const cancelRejectConfirmation = () => {
+    setRejectReason('')
+    setRejectReasonModal(false)
+  }
+
+  const ApproveItemRequest = async () => {
     const fieldErrors = {}
     if (!PendingRequest.itemGroup) {
       fieldErrors.itemGroup = 'Item Group required'
@@ -358,79 +414,44 @@ const Level1ItemRequest = () => {
       setErrors(fieldErrors)
       return false
     }
-
-    Modal.confirm({
-      title: 'Approval Confirmation',
-      content: (
-        <ConfirmationContainer>
-          <Label> No Similar Items Found</Label> <Checkbox />
-        </ConfirmationContainer>
-      ),
-      onOk: async () => await ApproveItemRequest(),
-    })
-  }
-
-  const showRejectConfirmation = () => {
-    setRejectReasonModal(true)
-  }
-
-  const cancelRejectConfirmation = () => {
-    setRejectReason('')
-    setRejectReasonModal(false)
-  }
-
-  const ApproveItemRequest = async () => {
-    if (
-      PendingRequest.itemGroup &&
-      PendingRequest.productType &&
-      PendingRequest.productClass &&
-      PendingRequest.productLine &&
-      PendingRequest.specifications &&
-      PendingRequest.detailedDescription &&
-      PendingRequest.uomDesc &&
-      PendingRequest.purchasePrice
-    ) {
-      try {
-        const reqbody = { ...PendingRequest, currentLevel: 'L2' }
-        console.log(reqbody)
-        setLoading(true)
-        const Cookie = CookiesData()
-        const response = await axios.put(
-          `${testUrl}/v1/mdm/purchase-item/update`,
-          reqbody,
-          Cookie
-        )
-        console.log(response.data)
-        // const updatedList = endUserRequestList.map((record) =>
-        //   record.id === response.data.data.id
-        //     ? { ...record, ...response.data.data }
-        //     : record
-        // )
-        // console.log(updatedList)
-        // setEndUserRequestList(updatedList)
-        window.location.reload()
-        setPendingRequest({})
-        setLevel1RequestModal(false)
-        // setEndUserRequestList(
-        //   endUserRequestList.map((record) =>
-        //     record.id === response.data.data.id
-        //       ? { ...record, ...response.data.data }
-        //       : record
-        //   )
-        // )
-        console.log(endUserRequestList)
-        // setEndUserRequestList(updatedList)
-        // setEndUserRequestList([...endUserRequestList, response.data.data])
-        message.success('Your Item has been Successfully Submitted')
-      } catch (err) {
-        console.log(err)
-        message.error('Submission failed')
-        throw err
-      } finally {
-        setLoading(false)
-      }
-    } else {
-      message.warning('Please fill all required fields')
+    try {
+      const reqbody = { ...PendingRequest, currentLevel: 'L2' }
+      console.log(reqbody)
+      setLoading(true)
+      const Cookie = CookiesData()
+      const response = await axios.put(
+        `${testUrl}/v1/mdm/purchase-item/update`,
+        reqbody,
+        Cookie
+      )
+      console.log(response.data)
+      // const updatedList = endUserRequestList.map((record) =>
+      //   record.id === response.data.data.id
+      //     ? { ...record, ...response.data.data }
+      //     : record
+      // )
+      // console.log(updatedList)
+      // setEndUserRequestList(updatedList)
+      window.location.reload()
+      setPendingRequest({})
+      setLevel1RequestModal(false)
+      // setEndUserRequestList(
+      //   endUserRequestList.map((record) =>
+      //     record.id === response.data.data.id
+      //       ? { ...record, ...response.data.data }
+      //       : record
+      //   )
+      // )
+      console.log(endUserRequestList)
+      // setEndUserRequestList(updatedList)
+      // setEndUserRequestList([...endUserRequestList, response.data.data])
+      message.success('Your Item has been Successfully Submitted')
+    } catch (err) {
+      console.log(err)
+      message.error('Submission failed')
+      throw err
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -560,7 +581,7 @@ const Level1ItemRequest = () => {
             <SectionTitle>Material Information</SectionTitle>
             <Container>
               <label style={{ marginLeft: '1rem' }}>
-                Requirement Description *
+                Requirement Description
               </label>
               <textarea
                 type='textarea'
@@ -586,7 +607,7 @@ const Level1ItemRequest = () => {
             <SectionTitle>Item Information</SectionTitle>
             <GridContainer>
               <Container>
-                <label>Item Group Code</label>
+                <label>Item Group Code *</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -635,7 +656,7 @@ const Level1ItemRequest = () => {
                 />
               </Container>
               <Container>
-                <label>Item Group</label>
+                <label>Item Group *</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -687,7 +708,7 @@ const Level1ItemRequest = () => {
                 )}
               </Container>
               <Container>
-                <label>Product Type Code</label>
+                <label>Product Type Code *</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -737,7 +758,7 @@ const Level1ItemRequest = () => {
                 />
               </Container>
               <Container>
-                <label>Product Type</label>
+                <label>Product Type *</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -794,7 +815,7 @@ const Level1ItemRequest = () => {
                 )}
               </Container>
               <Container>
-                <label>Product Class Code</label>
+                <label>Product Class Code *</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -852,7 +873,7 @@ const Level1ItemRequest = () => {
                 />
               </Container>
               <Container>
-                <label>Product Class</label>
+                <label>Product Class *</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -915,7 +936,7 @@ const Level1ItemRequest = () => {
               </Container>
 
               <Container>
-                <label>Product Line Code</label>
+                <label>Product Line Code *</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -971,7 +992,7 @@ const Level1ItemRequest = () => {
                 />
               </Container>
               <Container>
-                <label>Product Line</label>
+                <label>Product Line *</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -1070,7 +1091,7 @@ const Level1ItemRequest = () => {
                 />
               </Container>
               <Container>
-                <label>Unit Code</label>
+                <label>Unit Code *</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -1137,7 +1158,7 @@ const Level1ItemRequest = () => {
                 />
               </Container>
               <Container>
-                <label>Unit Of Measurement</label>
+                <label>Unit Of Measurement *</label>
                 <StyledDependencies
                   type='text'
                   allowClear
@@ -1227,7 +1248,7 @@ const Level1ItemRequest = () => {
             </GridContainer>
             <GridContainer>
               <Container>
-                <label>Detailed Description</label>
+                <label>Detailed Description *</label>
                 <div className='textCount'>{`${PendingRequest.detailedDescription?.length} / 150`}</div>
                 <INPUT
                   type='text'
@@ -1436,7 +1457,7 @@ const Level1ItemRequest = () => {
           <button className='reject' onClick={showRejectConfirmation}>
             Reject
           </button>
-          <button className='submit' onClick={showApprovalConfirmation}>
+          <button className='submit' onClick={ApproveItemRequest}>
             Approve
           </button>
         </ButtonContainer>
@@ -1689,29 +1710,95 @@ const LoadingContainer = styled.div`
   justify-content: center;
   align-items: center;
   .loader {
-    font-weight: bold;
-    font-family: monospace;
-    font-size: 30px;
-    display: inline-grid;
-    overflow: hidden;
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 8px solid #514b82;
+    animation: l20-1 0.8s infinite linear alternate, l20-2 1.6s infinite linear;
   }
-  .loader:before,
-  .loader:after {
-    content: 'Loading...';
-    grid-area: 1/1;
-    clip-path: inset(0 -200% 50%);
-    text-shadow: -10ch 0 0;
-    animation: l12 1s infinite;
-  }
-  .loader:after {
-    clip-path: inset(50% -200% 0%);
-    text-shadow: 10ch 0 0;
-    --s: -1;
-  }
-  @keyframes l12 {
-    50%,
+  @keyframes l20-1 {
+    0% {
+      clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
+    }
+    12.5% {
+      clip-path: polygon(
+        50% 50%,
+        0 0,
+        50% 0%,
+        100% 0%,
+        100% 0%,
+        100% 0%,
+        100% 0%
+      );
+    }
+    25% {
+      clip-path: polygon(
+        50% 50%,
+        0 0,
+        50% 0%,
+        100% 0%,
+        100% 100%,
+        100% 100%,
+        100% 100%
+      );
+    }
+    50% {
+      clip-path: polygon(
+        50% 50%,
+        0 0,
+        50% 0%,
+        100% 0%,
+        100% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
+    62.5% {
+      clip-path: polygon(
+        50% 50%,
+        100% 0,
+        100% 0%,
+        100% 0%,
+        100% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
+    75% {
+      clip-path: polygon(
+        50% 50%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
     100% {
-      transform: translateX(calc(var(--s, 1) * 100%));
+      clip-path: polygon(
+        50% 50%,
+        50% 100%,
+        50% 100%,
+        50% 100%,
+        50% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
+  }
+  @keyframes l20-2 {
+    0% {
+      transform: scaleY(1) rotate(0deg);
+    }
+    49.99% {
+      transform: scaleY(1) rotate(135deg);
+    }
+    50% {
+      transform: scaleY(-1) rotate(0deg);
+    }
+    100% {
+      transform: scaleY(-1) rotate(-135deg);
     }
   }
 `

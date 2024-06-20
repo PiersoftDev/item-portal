@@ -409,7 +409,46 @@ const Level0ItemRequest = () => {
     setErrors((prevErrors) => ({ ...prevErrors, [field]: '' }))
   }
 
-  const showApprovalConfirmation = () => {
+  // const showApprovalConfirmation = () => {
+  //   const fieldErrors = {}
+  //   if (!PendingRequest.site) {
+  //     fieldErrors.site = 'Site required'
+  //   }
+  //   if (!PendingRequest.requester) {
+  //     fieldErrors.requester = 'Requester required'
+  //   }
+  //   if (!PendingRequest.phoneNumber) {
+  //     fieldErrors.phoneNumber = 'Phone Number required'
+  //   }
+  //   if (!PendingRequest.requirementDesc) {
+  //     fieldErrors.requirementDesc = 'Requirement Description required'
+  //   }
+  //   if (Object.keys(fieldErrors).length > 0) {
+  //     setErrors(fieldErrors)
+  //     return false
+  //   }
+
+  //   Modal.confirm({
+  //     title: 'Approval Confirmation',
+  //     content: (
+  //       <ConfirmationContainer>
+  //         <Label> No Similar Items Found</Label> <Checkbox />
+  //       </ConfirmationContainer>
+  //     ),
+  //     onOk: async () => await ApproveItemRequest(),
+  //   })
+  // }
+
+  // const showRejectConfirmation = () => {
+  //   setRejectReasonModal(true)
+  // }
+
+  // const cancelRejectConfirmation = () => {
+  //   setRejectReason('')
+  //   setRejectReasonModal(false)
+  // }
+
+  const ApproveItemRequest = async () => {
     const fieldErrors = {}
     if (!PendingRequest.site) {
       fieldErrors.site = 'Site required'
@@ -427,28 +466,6 @@ const Level0ItemRequest = () => {
       setErrors(fieldErrors)
       return false
     }
-
-    Modal.confirm({
-      title: 'Approval Confirmation',
-      content: (
-        <ConfirmationContainer>
-          <Label> No Similar Items Found</Label> <Checkbox />
-        </ConfirmationContainer>
-      ),
-      onOk: async () => await ApproveItemRequest(),
-    })
-  }
-
-  const showRejectConfirmation = () => {
-    setRejectReasonModal(true)
-  }
-
-  const cancelRejectConfirmation = () => {
-    setRejectReason('')
-    setRejectReasonModal(false)
-  }
-
-  const ApproveItemRequest = async () => {
     try {
       const reqbody = {
         ...PendingRequest,
@@ -1626,7 +1643,7 @@ const Level0ItemRequest = () => {
           {/* <button className='reject' onClick={showRejectConfirmation}>
             Reject
           </button> */}
-          <button className='submit' onClick={showApprovalConfirmation}>
+          <button className='submit' onClick={ApproveItemRequest}>
             Submit
           </button>
         </ButtonContainer>
@@ -1879,29 +1896,95 @@ const LoadingContainer = styled.div`
   justify-content: center;
   align-items: center;
   .loader {
-    font-weight: bold;
-    font-family: monospace;
-    font-size: 30px;
-    display: inline-grid;
-    overflow: hidden;
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 8px solid #514b82;
+    animation: l20-1 0.8s infinite linear alternate, l20-2 1.6s infinite linear;
   }
-  .loader:before,
-  .loader:after {
-    content: 'Loading...';
-    grid-area: 1/1;
-    clip-path: inset(0 -200% 50%);
-    text-shadow: -10ch 0 0;
-    animation: l12 1s infinite;
-  }
-  .loader:after {
-    clip-path: inset(50% -200% 0%);
-    text-shadow: 10ch 0 0;
-    --s: -1;
-  }
-  @keyframes l12 {
-    50%,
+  @keyframes l20-1 {
+    0% {
+      clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
+    }
+    12.5% {
+      clip-path: polygon(
+        50% 50%,
+        0 0,
+        50% 0%,
+        100% 0%,
+        100% 0%,
+        100% 0%,
+        100% 0%
+      );
+    }
+    25% {
+      clip-path: polygon(
+        50% 50%,
+        0 0,
+        50% 0%,
+        100% 0%,
+        100% 100%,
+        100% 100%,
+        100% 100%
+      );
+    }
+    50% {
+      clip-path: polygon(
+        50% 50%,
+        0 0,
+        50% 0%,
+        100% 0%,
+        100% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
+    62.5% {
+      clip-path: polygon(
+        50% 50%,
+        100% 0,
+        100% 0%,
+        100% 0%,
+        100% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
+    75% {
+      clip-path: polygon(
+        50% 50%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
     100% {
-      transform: translateX(calc(var(--s, 1) * 100%));
+      clip-path: polygon(
+        50% 50%,
+        50% 100%,
+        50% 100%,
+        50% 100%,
+        50% 100%,
+        50% 100%,
+        0% 100%
+      );
+    }
+  }
+  @keyframes l20-2 {
+    0% {
+      transform: scaleY(1) rotate(0deg);
+    }
+    49.99% {
+      transform: scaleY(1) rotate(135deg);
+    }
+    50% {
+      transform: scaleY(-1) rotate(0deg);
+    }
+    100% {
+      transform: scaleY(-1) rotate(-135deg);
     }
   }
 `

@@ -192,7 +192,7 @@ const ItemsList = () => {
       userDetails.roles?.some((role) => ['Admin', 'L1'].includes(role))
     ) {
       setLevel1RequestModal(!level1requestModal)
-      setPendingRequest(record)
+      setPendingRequest({ ...record, purchasePrice: '1' })
     } else if (
       record.currentLevel === 'L2' &&
       userDetails.roles?.some((role) => ['Admin', 'L2'].includes(role))
@@ -227,6 +227,8 @@ const ItemsList = () => {
         surchargeCostComponent: 'Lumpsum Charges',
         projectOrderSystem: 'mnl',
         pegPRPWarehouseOrder: 'yes',
+        warehouseId: 'CO0001',
+        warehouseName: 'Corporate Office',
       })
     } else if (
       record.currentLevel === 'Live' ||

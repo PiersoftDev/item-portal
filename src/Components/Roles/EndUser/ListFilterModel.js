@@ -69,7 +69,7 @@ const ListFilterModel = () => {
     const Cookie = CookiesData()
     const UserId = userDetails.roles.includes('L0') ? userDetails.id : ''
     const isAdmin = userDetails?.roles?.includes('Admin') ? true : false
-    const [level] = userDetails?.roles
+    const [level] = userDetails.roles
     try {
       setItemListLoading(true)
       const res = await axios.post(
@@ -77,7 +77,11 @@ const ListFilterModel = () => {
         {
           itemType: itemListFilters.itemType,
           status: itemListFilters.status,
-          level: itemListFilters.level ? itemListFilters.level : level,
+          level: itemListFilters.level
+            ? itemListFilters.level
+            : isAdmin
+            ? ''
+            : level,
           searchTerm: itemListFilters.searchTerm,
           creatorId: UserId,
           pageNo: itemListPage,
@@ -114,7 +118,11 @@ const ListFilterModel = () => {
         {
           itemType: '',
           status: '',
-          level: isAdmin ? '' : level,
+          level: itemListFilters.level
+            ? itemListFilters.level
+            : isAdmin
+            ? ''
+            : level,
           searchTerm: '',
           creatorId: UserId,
           pageNo: itemListPage,
