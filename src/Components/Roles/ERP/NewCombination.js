@@ -42,9 +42,7 @@ const NewCombination = () => {
         const response = await axios.post(
           `${testUrl}/v1/mdm/item-group/search`,
           {
-            idSearchTerm: newProductLink.itemGroupId
-              ? newProductLink.itemGroupId
-              : '',
+            idSearchTerm: '',
             descSearchTerm: newProductLink.itemGroup
               ? newProductLink.itemGroup
               : '',
@@ -75,14 +73,12 @@ const NewCombination = () => {
 
   useEffect(() => {
     const fetchDependencies = async () => {
-      if (newProductLink.itemGroupId) {
+      if (newProductLink.itemGroup) {
         const Cookie = CookiesData()
         const response = await axios.post(
           `${testUrl}/v1/mdm/product-type/search`,
           {
-            idSearchTerm: newProductLink.productTypeId
-              ? newProductLink.productTypeId
-              : '',
+            idSearchTerm: '',
             descSearchTerm: newProductLink.productType
               ? newProductLink.productType
               : '',
@@ -117,14 +113,12 @@ const NewCombination = () => {
 
   useEffect(() => {
     const fetchDependencies = async () => {
-      if (newProductLink.productTypeId) {
+      if (newProductLink.productType) {
         const Cookie = CookiesData()
         const response = await axios.post(
           `${testUrl}/v1/mdm/product-class/search`,
           {
-            idSearchTerm: newProductLink.productClassId
-              ? newProductLink.productClassId
-              : '',
+            idSearchTerm: '',
             descSearchTerm: newProductLink.productClass
               ? newProductLink.productClass
               : '',
@@ -159,14 +153,12 @@ const NewCombination = () => {
 
   useEffect(() => {
     const fetchDependencies = async () => {
-      if (newProductLink.productClassId) {
+      if (newProductLink.productClass) {
         const Cookie = CookiesData()
         const response = await axios.post(
           `${testUrl}/v1/mdm/product-line/search`,
           {
-            idSearchTerm: newProductLink.productLineId
-              ? newProductLink.productLineId
-              : '',
+            idSearchTerm: '',
             descSearchTerm: newProductLink.productLine
               ? newProductLink.productLine
               : '',
@@ -341,12 +333,19 @@ const NewCombination = () => {
                 ValueChange('itemGroup', value)
               }
             }}
-            onSelect={(value) => {
+            onSelect={async (value) => {
               const selectedOption = itemgroupoptions.find(
                 (option) => option.value === value
               )
               if (selectedOption) {
-                ValueChange('itemGroupId', selectedOption.id)
+                const VerifySuccess = await VerifyField('itemType')
+                if (VerifySuccess) {
+                  ValueChange('itemGroupId', selectedOption.id)
+                  ValueChange('itemGroup', selectedOption.value)
+                } else {
+                  ValueChange('itemGroup', '')
+                  ValueChange('itemGroupId', '')
+                }
               } else {
                 ValueChange('itemGroup', '')
                 ValueChange('itemGroupId', '')
@@ -360,8 +359,10 @@ const NewCombination = () => {
                 const VerifySuccess = await VerifyField('itemType')
                 if (VerifySuccess) {
                   ValueChange('itemGroupId', OptionValue.id)
+                  ValueChange('itemGroupId', OptionValue.value)
                 } else {
                   ValueChange('itemGroup', '')
+                  ValueChange('itemGroupId', '')
                 }
                 // ValueChange('itemGroupId', OptionValue.id)
               } else {
@@ -395,12 +396,20 @@ const NewCombination = () => {
                 ValueChange('productType', value)
               }
             }}
-            onSelect={(value) => {
+            onSelect={async (value) => {
               const selectedOption = productTypeoptions.find(
                 (option) => option.value === value
               )
               if (selectedOption) {
-                ValueChange('productTypeId', selectedOption.id)
+                const VerifySuccess = await VerifyField('itemGroup')
+
+                if (VerifySuccess) {
+                  ValueChange('productTypeId', selectedOption.id)
+                  ValueChange('productType', selectedOption.value)
+                } else {
+                  ValueChange('productType', '')
+                  ValueChange('productTypeId', '')
+                }
               } else {
                 ValueChange('productType', '')
                 ValueChange('productTypeId', '')
@@ -414,17 +423,17 @@ const NewCombination = () => {
                 const VerifySuccess = await VerifyField('itemGroup')
                 if (VerifySuccess) {
                   ValueChange('productTypeId', OptionValue.id)
+                  ValueChange('productType', OptionValue.value)
                 } else {
                   ValueChange('productType', '')
+                  ValueChange('productTypeId', '')
                 }
-                // ValueChange('productTypeId', OptionValue.id)
-                // console.log(OptionValue)
               } else {
                 ValueChange('productType', '')
                 ValueChange('productTypeId', '')
               }
             }}
-            popupMatchSelectWidth={false}
+            // popupMatchSelectWidth={false}
             popupClassName='auto-complete-dropdown'
             maxTagCount={10}
           />
@@ -442,23 +451,26 @@ const NewCombination = () => {
             options={productClassoptions}
             // onSearch={ProductClassDescriptionSearch}
             onChange={(value) => {
-              const selectedOption = productClassoptions.find(
-                (option) => option.value === value
-              )
-              if (selectedOption) {
-                ValueChange('productClass', selectedOption.value)
-                ValueChange('productClassId', selectedOption.id)
-              } else {
+              if (value === undefined || value === '') {
                 ValueChange('productClass', '')
                 ValueChange('productClassId', '')
+              } else {
+                ValueChange('productClass', value)
               }
             }}
-            onSelect={(value) => {
+            onSelect={async (value) => {
               const selectedOption = productClassoptions.find(
                 (option) => option.value === value
               )
               if (selectedOption) {
-                ValueChange('productClassId', selectedOption.id)
+                const VerifySuccess = await VerifyField('productType')
+                if (VerifySuccess) {
+                  ValueChange('productClassId', selectedOption.id)
+                  ValueChange('productClass', selectedOption.value)
+                } else {
+                  ValueChange('productClass', '')
+                  ValueChange('productClassId', '')
+                }
               } else {
                 ValueChange('productClass', '')
                 ValueChange('productClassId', '')
@@ -474,6 +486,7 @@ const NewCombination = () => {
                   ValueChange('productClassId', OptionValue.id)
                 } else {
                   ValueChange('productClass', '')
+                  ValueChange('productClassId', '')
                 }
                 // ValueChange('productClassId', OptionValue.id)
               } else {
@@ -481,7 +494,7 @@ const NewCombination = () => {
                 ValueChange('productClassId', '')
               }
             }}
-            popupMatchSelectWidth={false}
+            // popupMatchSelectWidth={false}
             popupClassName='auto-complete-dropdown'
             maxTagCount={10}
           />
@@ -498,23 +511,25 @@ const NewCombination = () => {
             options={productLineoptions}
             // onSearch={ProductLineDescriptionSearch}
             onChange={(value) => {
-              const selectedOption = productLineoptions.find(
-                (option) => option.value === value
-              )
-              if (selectedOption) {
-                ValueChange('productLine', selectedOption.value)
-                ValueChange('productLineId', selectedOption.id)
-              } else {
+              if (value === undefined || value === '') {
                 ValueChange('productLine', '')
                 ValueChange('productLineId', '')
+              } else {
+                ValueChange('productLine', value)
               }
             }}
-            onSelect={(value) => {
+            onSelect={async (value) => {
               const selectedOption = productLineoptions.find(
                 (option) => option.value === value
               )
               if (selectedOption) {
-                ValueChange('productLineId', selectedOption.id)
+                const VerifySuccess = await VerifyField('productClass')
+                if (VerifySuccess) {
+                  ValueChange('productLineId', selectedOption.id)
+                } else {
+                  ValueChange('productLine', '')
+                  ValueChange('productLineId', '')
+                }
               } else {
                 ValueChange('productLine', '')
                 ValueChange('productLineId', '')
@@ -530,6 +545,7 @@ const NewCombination = () => {
                   ValueChange('productLineId', OptionValue.id)
                 } else {
                   ValueChange('productLine', '')
+                  ValueChange('productLineId', '')
                 }
                 // ValueChange('productLineId', OptionValue.id)
                 // console.log(OptionValue)
@@ -538,7 +554,7 @@ const NewCombination = () => {
                 ValueChange('productLineId', '')
               }
             }}
-            popupMatchSelectWidth={false}
+            // popupMatchSelectWidth={false}
             popupClassName='auto-complete-dropdown'
             maxTagCount={10}
           />
