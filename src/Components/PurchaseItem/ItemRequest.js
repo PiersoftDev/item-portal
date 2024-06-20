@@ -1343,7 +1343,9 @@ const NewRequest = () => {
                   placeholder='Enter HSN Code'
                   value={newItem.hsnCode}
                   onChange={(e) => {
-                    ValueChange('hsnCode', e.target.value)
+                    if (!isNaN(e.target.value)) {
+                      ValueChange('hsnCode', e.target.value)
+                    }
                   }}
                 />
               </Container>
