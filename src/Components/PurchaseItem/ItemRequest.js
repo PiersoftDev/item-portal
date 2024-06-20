@@ -381,6 +381,7 @@ const NewRequest = () => {
     setEndUserRequestOpen(false)
     setNewItem(InitialItem)
     setErrors(InitialErrors)
+    setCompanySearchTerm('7777')
   }
 
   const SubmitItem = async () => {
@@ -421,6 +422,7 @@ const NewRequest = () => {
         setEndUserRequestOpen(false)
         setEndUserRequestList([response.data.data, ...endUserRequestList])
         message.success('Your Item has been Successfully Submitted')
+        setCompanySearchTerm('7777')
       } catch (err) {
         console.log(err)
       } finally {
