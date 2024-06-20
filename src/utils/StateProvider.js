@@ -237,7 +237,7 @@ const StateProvider = ({ children }) => {
   const [itemListPage, setItemListPage] = useState(0)
   const [totalItemsCount, setTotalItemsCount] = useState(0)
 
-  const testUrl = `https://mdm.p360.build`
+  const testUrl = `https://mdm.kmvpl.com`
 
   return (
     <States.Provider
