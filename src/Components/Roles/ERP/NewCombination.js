@@ -35,169 +35,169 @@ const NewCombination = () => {
     return Cookie
   }
 
-  // useEffect(() => {
-  //   const fetchDependencies = async () => {
-  //     if (newProductLink.itemType) {
-  //       const Cookie = CookiesData()
-  //       const response = await axios.post(
-  //         `${testUrl}/v1/mdm/item-group/fetch-all`,
-  //         {
-  //           idSearchTerm: newProductLink.itemGroupId
-  //             ? newProductLink.itemGroupId
-  //             : '',
-  //           descSearchTerm: newProductLink.itemGroup
-  //             ? newProductLink.itemGroup
-  //             : '',
-  //         },
-  //         Cookie
-  //       )
-  //       let itemGroup = response?.data?.data || []
-  //       setDependencies({
-  //         ...dependencies,
-  //         itemGroups: itemGroup,
-  //       })
+  useEffect(() => {
+    const fetchDependencies = async () => {
+      if (newProductLink.itemType) {
+        const Cookie = CookiesData()
+        const response = await axios.post(
+          `${testUrl}/v1/mdm/item-group/search`,
+          {
+            idSearchTerm: newProductLink.itemGroupId
+              ? newProductLink.itemGroupId
+              : '',
+            descSearchTerm: newProductLink.itemGroup
+              ? newProductLink.itemGroup
+              : '',
+          },
+          Cookie
+        )
+        let itemGroup = response?.data?.data || []
+        setDependencies({
+          ...dependencies,
+          itemGroups: itemGroup,
+        })
 
-  //       const uniqueOptions = new Map()
-  //       itemGroup.forEach((record) => {
-  //         if (!uniqueOptions.has(record.description)) {
-  //           uniqueOptions.set(record.description, {
-  //             value: record.description,
-  //             id: record.id,
-  //           })
-  //         }
-  //       })
-  //       setItemGroupOptions([...uniqueOptions.values()])
-  //     }
-  //   }
+        const uniqueOptions = new Map()
+        itemGroup.forEach((record) => {
+          if (!uniqueOptions.has(record.itemGroupDescription)) {
+            uniqueOptions.set(record.itemGroupDescription, {
+              value: record.itemGroupDescription,
+              id: record.itemGroupId,
+            })
+          }
+        })
+        setItemGroupOptions([...uniqueOptions.values()])
+      }
+    }
 
-  //   fetchDependencies()
-  // }, [newProductLink.itemGroup])
+    fetchDependencies()
+  }, [newProductLink.itemGroup])
 
-  // useEffect(() => {
-  //   const fetchDependencies = async () => {
-  //     if (newProductLink.itemGroupId) {
-  //       const Cookie = CookiesData()
-  //       const response = await axios.post(
-  //         `${testUrl}/v1/mdm/product-type/fetch-all`,
-  //         {
-  //           idSearchTerm: newProductLink.productTypeId
-  //             ? newProductLink.productTypeId
-  //             : '',
-  //           descSearchTerm: newProductLink.productType
-  //             ? newProductLink.productType
-  //             : '',
-  //         },
-  //         Cookie
-  //       )
-  //       let productType = response?.data?.data || []
-  //       setDependencies({
-  //         ...dependencies,
-  //         productTypes: productType,
-  //       })
+  useEffect(() => {
+    const fetchDependencies = async () => {
+      if (newProductLink.itemGroupId) {
+        const Cookie = CookiesData()
+        const response = await axios.post(
+          `${testUrl}/v1/mdm/product-type/search`,
+          {
+            idSearchTerm: newProductLink.productTypeId
+              ? newProductLink.productTypeId
+              : '',
+            descSearchTerm: newProductLink.productType
+              ? newProductLink.productType
+              : '',
+          },
+          Cookie
+        )
+        let productType = response?.data?.data || []
+        setDependencies({
+          ...dependencies,
+          productTypes: productType,
+        })
 
-  //       const uniqueOptions = new Map()
-  //       productType.forEach((record) => {
-  //         if (!uniqueOptions.has(record.description)) {
-  //           uniqueOptions.set(record.description, {
-  //             value: record.description,
-  //             id: record.id,
-  //           })
-  //         }
-  //       })
-  //       setProductTypeOptions([...uniqueOptions.values()])
-  //     }
-  //   }
+        const uniqueOptions = new Map()
+        productType.forEach((record) => {
+          if (!uniqueOptions.has(record.productTypeDescription)) {
+            uniqueOptions.set(record.productTypeDescription, {
+              value: record.productTypeDescription,
+              id: record.productTypeId,
+            })
+          }
+        })
+        setProductTypeOptions([...uniqueOptions.values()])
+      }
+    }
 
-  //   fetchDependencies()
-  // }, [
-  //   newProductLink.productType,
-  //   newProductLink.itemGroup,
-  //   newProductLink.itemGroupId,
-  // ])
+    fetchDependencies()
+  }, [
+    newProductLink.productType,
+    newProductLink.itemGroup,
+    newProductLink.itemGroupId,
+  ])
 
-  // useEffect(() => {
-  //   const fetchDependencies = async () => {
-  //     if (newProductLink.productTypeId) {
-  //       const Cookie = CookiesData()
-  //       const response = await axios.post(
-  //         `${testUrl}/v1/mdm/product-class/fetch-all`,
-  //         {
-  //           idSearchTerm: newProductLink.productClassId
-  //             ? newProductLink.productClassId
-  //             : '',
-  //           descSearchTerm: newProductLink.productClass
-  //             ? newProductLink.productClass
-  //             : '',
-  //         },
-  //         Cookie
-  //       )
-  //       let productClass = response?.data?.data || []
-  //       setDependencies({
-  //         ...dependencies,
-  //         productClasses: productClass,
-  //       })
+  useEffect(() => {
+    const fetchDependencies = async () => {
+      if (newProductLink.productTypeId) {
+        const Cookie = CookiesData()
+        const response = await axios.post(
+          `${testUrl}/v1/mdm/product-class/search`,
+          {
+            idSearchTerm: newProductLink.productClassId
+              ? newProductLink.productClassId
+              : '',
+            descSearchTerm: newProductLink.productClass
+              ? newProductLink.productClass
+              : '',
+          },
+          Cookie
+        )
+        let productClass = response?.data?.data || []
+        setDependencies({
+          ...dependencies,
+          productClasses: productClass,
+        })
 
-  //       const uniqueOptions = new Map()
-  //       productClass.forEach((record) => {
-  //         if (!uniqueOptions.has(record.description)) {
-  //           uniqueOptions.set(record.description, {
-  //             value: record.description,
-  //             id: record.id,
-  //           })
-  //         }
-  //       })
-  //       setProductClassOptions([...uniqueOptions.values()])
-  //     }
-  //   }
+        const uniqueOptions = new Map()
+        productClass.forEach((record) => {
+          if (!uniqueOptions.has(record.productClassDescription)) {
+            uniqueOptions.set(record.productClassDescription, {
+              value: record.productClassDescription,
+              id: record.productClassId,
+            })
+          }
+        })
+        setProductClassOptions([...uniqueOptions.values()])
+      }
+    }
 
-  //   fetchDependencies()
-  // }, [
-  //   newProductLink.productClass,
-  //   newProductLink.productTypeId,
-  //   newProductLink.productType,
-  // ])
+    fetchDependencies()
+  }, [
+    newProductLink.productClass,
+    newProductLink.productTypeId,
+    newProductLink.productType,
+  ])
 
-  // useEffect(() => {
-  //   const fetchDependencies = async () => {
-  //     if (newProductLink.productClassId) {
-  //       const Cookie = CookiesData()
-  //       const response = await axios.post(
-  //         `${testUrl}/v1/mdm/product-line/fetch-all`,
-  //         {
-  //           idSearchTerm: newProductLink.productLineId
-  //             ? newProductLink.productLineId
-  //             : '',
-  //           descSearchTerm: newProductLink.productLine
-  //             ? newProductLink.productLine
-  //             : '',
-  //         },
-  //         Cookie
-  //       )
-  //       let productLine = response?.data?.data || []
-  //       setDependencies({
-  //         ...dependencies,
-  //         productLines: productLine,
-  //       })
+  useEffect(() => {
+    const fetchDependencies = async () => {
+      if (newProductLink.productClassId) {
+        const Cookie = CookiesData()
+        const response = await axios.post(
+          `${testUrl}/v1/mdm/product-line/search`,
+          {
+            idSearchTerm: newProductLink.productLineId
+              ? newProductLink.productLineId
+              : '',
+            descSearchTerm: newProductLink.productLine
+              ? newProductLink.productLine
+              : '',
+          },
+          Cookie
+        )
+        let productLine = response?.data?.data || []
+        setDependencies({
+          ...dependencies,
+          productLines: productLine,
+        })
 
-  //       const uniqueOptions = new Map()
-  //       productLine.forEach((record) => {
-  //         if (!uniqueOptions.has(record.description)) {
-  //           uniqueOptions.set(record.description, {
-  //             value: record.description,
-  //             id: record.id,
-  //           })
-  //         }
-  //       })
-  //       setProductLineOptions([...uniqueOptions.values()])
-  //     }
-  //   }
+        const uniqueOptions = new Map()
+        productLine.forEach((record) => {
+          if (!uniqueOptions.has(record.productLineDescription)) {
+            uniqueOptions.set(record.productLineDescription, {
+              value: record.productLineDescription,
+              id: record.productLineId,
+            })
+          }
+        })
+        setProductLineOptions([...uniqueOptions.values()])
+      }
+    }
 
-  //   fetchDependencies()
-  // }, [
-  //   newProductLink.productLine,
-  //   newProductLink.productClassId,
-  //   newProductLink.productClass,
-  // ])
+    fetchDependencies()
+  }, [
+    newProductLink.productLine,
+    newProductLink.productClassId,
+    newProductLink.productClass,
+  ])
 
   const VerifyField = async (prop) => {
     try {
@@ -334,12 +334,18 @@ const NewCombination = () => {
             options={itemgroupoptions}
             // onSearch={ItemGroupDescriptionSearch}
             onChange={(value) => {
-              ValueChange('itemGroup', value)
+              if (value === undefined || value === '') {
+                ValueChange('itemGroup', '')
+                ValueChange('itemGroupId', '')
+              } else {
+                ValueChange('itemGroup', value)
+              }
+            }}
+            onSelect={(value) => {
               const selectedOption = itemgroupoptions.find(
                 (option) => option.value === value
               )
               if (selectedOption) {
-                ValueChange('itemGroup', selectedOption.value)
                 ValueChange('itemGroupId', selectedOption.id)
               } else {
                 ValueChange('itemGroup', '')
@@ -365,7 +371,7 @@ const NewCombination = () => {
 
               // VerifyField('itemType')
             }}
-            popupMatchSelectWidth={false}
+            // popupMatchSelectWidth={false}
             popupClassName='auto-complete-dropdown'
             maxTagCount={10}
           />
@@ -382,11 +388,18 @@ const NewCombination = () => {
             options={productTypeoptions}
             // onSearch={ProductTypeDescriptionSearch}
             onChange={(value) => {
+              if (value === undefined || value === '') {
+                ValueChange('productType', '')
+                ValueChange('productTypeId', '')
+              } else {
+                ValueChange('productType', value)
+              }
+            }}
+            onSelect={(value) => {
               const selectedOption = productTypeoptions.find(
                 (option) => option.value === value
               )
               if (selectedOption) {
-                ValueChange('productType', selectedOption.value)
                 ValueChange('productTypeId', selectedOption.id)
               } else {
                 ValueChange('productType', '')
@@ -394,12 +407,6 @@ const NewCombination = () => {
               }
             }}
             onBlur={async () => {
-              // setVerifyValue({
-              //   id: newProductLink.productTypeId,
-              //   desc: newProductLink.productType,
-              //   parent: 'itemGroup',
-              // })
-              // await VerifyField('itemGroup')
               const OptionValue = productTypeoptions.find(
                 (option) => option.value === newProductLink.productType
               )
@@ -446,13 +453,18 @@ const NewCombination = () => {
                 ValueChange('productClassId', '')
               }
             }}
+            onSelect={(value) => {
+              const selectedOption = productClassoptions.find(
+                (option) => option.value === value
+              )
+              if (selectedOption) {
+                ValueChange('productClassId', selectedOption.id)
+              } else {
+                ValueChange('productClass', '')
+                ValueChange('productClassId', '')
+              }
+            }}
             onBlur={async () => {
-              // setVerifyValue({
-              //   id: newProductLink.productClassId,
-              //   desc: newProductLink.productClass,
-              //   parent: 'productType',
-              // })
-              // await VerifyField('productType')
               const OptionValue = productClassoptions.find(
                 (option) => option.value === newProductLink.productClass
               )
@@ -497,13 +509,18 @@ const NewCombination = () => {
                 ValueChange('productLineId', '')
               }
             }}
+            onSelect={(value) => {
+              const selectedOption = productLineoptions.find(
+                (option) => option.value === value
+              )
+              if (selectedOption) {
+                ValueChange('productLineId', selectedOption.id)
+              } else {
+                ValueChange('productLine', '')
+                ValueChange('productLineId', '')
+              }
+            }}
             onBlur={async () => {
-              // setVerifyValue({
-              //   id: newProductLink.productLineId,
-              //   desc: newProductLink.productLine,
-              //   parent: 'productClass',
-              // })
-              // await VerifyField('productClass')
               const OptionValue = productLineoptions.find(
                 (option) => option.value === newProductLink.productLine
               )
