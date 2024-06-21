@@ -239,7 +239,8 @@ const StateProvider = ({ children }) => {
   const [totalItemsCount, setTotalItemsCount] = useState(0)
 
   const [imageViewModal, setImageViewModal] = useState(false)
-  const testUrl = `https://mdm.kmvpl.com`
+
+  const testUrl = `https://mdm.p360.build`
 
   return (
     <States.Provider
