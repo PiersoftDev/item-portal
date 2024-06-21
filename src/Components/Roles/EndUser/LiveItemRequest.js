@@ -561,12 +561,14 @@ const LiveItemRequest = () => {
         </UserForm>
       </Styles>
       <CustomModal open={imageViewModal} width='60%' height='60%'>
-        <SelectedImage src={PendingRequest.itemImg} />
-        <ImageActions>
-          <button className='cancel' onClick={ViewImage}>
-            Cancel
-          </button>
-        </ImageActions>
+        <ImageViewerContainer>
+          <SelectedImage src={PendingRequest.itemImg} />
+          <ImageActions>
+            <button className='cancel' onClick={ViewImage}>
+              Cancel
+            </button>
+          </ImageActions>
+        </ImageViewerContainer>
       </CustomModal>
     </>
   )
@@ -925,6 +927,15 @@ const ImageActions = styled.div`
   }
 `
 const SelectedImage = styled.img`
+  width: auto;
+  height: auto;
+`
+const ImageViewerContainer = styled.div`
   width: 100%;
   height: 100%;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    height: 0.5rem;
+    width: 0.5rem;
+  }
 `

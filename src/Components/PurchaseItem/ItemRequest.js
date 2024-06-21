@@ -727,6 +727,7 @@ const NewRequest = () => {
                   customRequest={({ file }) => customRequest({ file })}
                   maxCount={1}
                   value={newItem.itemImg}
+                  accept='.jpg,.jpeg,.png'
                 >
                   <UploadButton>
                     <UploadIcon />
@@ -1598,16 +1599,18 @@ const NewRequest = () => {
         </ButtonContainer>
       </Styles>
       <CustomModal open={imageViewModal}>
-        <SelectedImage src={newItem.itemImg} />
-        <ImageActions>
-          <button className='cancel' onClick={ViewImage}>
-            Cancel
-          </button>
-          {/* <button className='save'>Save As Draft</button> */}
-          <button className='delete' onClick={DeleteImage}>
-            Delete Image
-          </button>
-        </ImageActions>
+        <ImageViewerContainer>
+          <SelectedImage src={newItem.itemImg} />
+          <ImageActions>
+            <button className='cancel' onClick={ViewImage}>
+              Cancel
+            </button>
+            {/* <button className='save'>Save As Draft</button> */}
+            <button className='delete' onClick={DeleteImage}>
+              Delete Image
+            </button>
+          </ImageActions>
+        </ImageViewerContainer>
       </CustomModal>
     </>
   )
@@ -1904,8 +1907,8 @@ const UploadButton = styled.button`
 `
 
 const SelectedImage = styled.img`
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
 `
 
 const StyledDependencies = styled(AutoComplete)`
@@ -2014,5 +2017,16 @@ const ImageLoader = styled.div`
     100% {
       background-position: 0% 100%, 100% 100%, 200% 100%;
     }
+  }
+`
+
+const ImageViewerContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    height: 0.5rem;
+    width: 0.5rem;
   }
 `
