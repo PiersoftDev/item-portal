@@ -411,7 +411,7 @@ const NewRequest = () => {
     try {
       setImgLoader(true)
       const response = await axios.post(
-        `https://mdm.p360.build/v1/mdm/purchase-item/upload`,
+        `${testUrl}/v1/mdm/purchase-item/upload`,
         formData,
         {
           headers: {
