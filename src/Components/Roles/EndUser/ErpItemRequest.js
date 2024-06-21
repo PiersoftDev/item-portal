@@ -792,10 +792,18 @@ const ErpItemRequest = () => {
           </Section>
         </UserForm>
         <ButtonContainer>
-          <button className='reject' onClick={showRejectConfirmation}>
+          <button
+            className='reject'
+            onClick={showRejectConfirmation}
+            disabled={imageViewModal}
+          >
             Reject
           </button>
-          <button className='submit' onClick={ApproveItemRequest}>
+          <button
+            className='submit'
+            onClick={ApproveItemRequest}
+            disabled={imageViewModal}
+          >
             Approve
           </button>
         </ButtonContainer>
@@ -824,10 +832,18 @@ const ErpItemRequest = () => {
           />
         </Container>
         <ConfirmationButton>
-          <button className='cancel' onClick={cancelRejectConfirmation}>
+          <button
+            className='cancel'
+            onClick={cancelRejectConfirmation}
+            disabled={imageViewModal}
+          >
             Cancel
           </button>
-          <button className='reject' onClick={RejectItemRequest}>
+          <button
+            className='reject'
+            onClick={RejectItemRequest}
+            disabled={imageViewModal}
+          >
             Reject
           </button>
         </ConfirmationButton>

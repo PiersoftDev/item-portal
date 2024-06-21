@@ -1467,10 +1467,18 @@ const Level1ItemRequest = () => {
         </UserForm>
         <ButtonContainer>
           {/* <button className='save'>Save As Draft</button> */}
-          <button className='reject' onClick={showRejectConfirmation}>
+          <button
+            className='reject'
+            onClick={showRejectConfirmation}
+            disabled={imageViewModal}
+          >
             Reject
           </button>
-          <button className='submit' onClick={ApproveItemRequest}>
+          <button
+            className='submit'
+            onClick={ApproveItemRequest}
+            disabled={imageViewModal}
+          >
             Approve
           </button>
         </ButtonContainer>
@@ -1499,10 +1507,18 @@ const Level1ItemRequest = () => {
           />
         </Container>
         <ConfirmationButton>
-          <button className='cancel' onClick={cancelRejectConfirmation}>
+          <button
+            className='cancel'
+            onClick={cancelRejectConfirmation}
+            disabled={imageViewModal}
+          >
             Cancel
           </button>
-          <button className='reject' onClick={RejectItemRequest}>
+          <button
+            className='reject'
+            onClick={RejectItemRequest}
+            disabled={imageViewModal}
+          >
             Reject
           </button>
         </ConfirmationButton>

@@ -1714,11 +1714,11 @@ const Level0ItemRequest = () => {
           </Section>
         </UserForm>
         <ButtonContainer>
-          {/* <button className='save'>Save As Draft</button> */}
-          {/* <button className='reject' onClick={showRejectConfirmation}>
-            Reject
-          </button> */}
-          <button className='submit' onClick={ApproveItemRequest}>
+          <button
+            className='submit'
+            onClick={ApproveItemRequest}
+            disabled={imageViewModal}
+          >
             Submit
           </button>
         </ButtonContainer>
