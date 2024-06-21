@@ -122,6 +122,8 @@ const ListFilterModel = () => {
             ? itemListFilters.level
             : isAdmin
             ? ''
+            : UserId
+            ? ''
             : level,
           searchTerm: '',
           creatorId: UserId,

@@ -129,7 +129,7 @@ const ItemsList = () => {
           {
             itemType: itemListFilters.itemType,
             status: itemListFilters.status,
-            level: isAdmin ? '' : level,
+            level: isAdmin ? '' : UserId ? '' : level,
             searchTerm: itemListFilters.searchTerm,
             creatorId: UserId,
             pageNo: itemListPage,
