@@ -725,6 +725,7 @@ const ItemsList = () => {
           <PaginationContainer>
             <Pagination
               value={itemListPage + 1}
+              itemsPerPage={20}
               onChange={PageChange}
               total={totalItemsCount}
             />
