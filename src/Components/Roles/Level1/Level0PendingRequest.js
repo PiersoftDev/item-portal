@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { AutoComplete, Checkbox, Input, Modal, Select, message } from 'antd'
+import {
+  AutoComplete,
+  Checkbox,
+  Input,
+  Modal,
+  Select,
+  Upload,
+  message,
+} from 'antd'
 import { useStates } from '../../../utils/StateProvider'
 import axios from 'axios'
 import CustomModal from '../../Global/CustomModal'
+import { UploadOutlined } from '@ant-design/icons'
+import { CiImageOn } from 'react-icons/ci'
 
 const { Option } = Select
 
@@ -19,6 +29,8 @@ const Level0ItemRequest = () => {
     setLevel1RequestModal,
     setErrors,
     testUrl,
+    imageViewModal,
+    setImageViewModal,
   } = useStates()
 
   const [loading, setLoading] = useState(false)
@@ -33,6 +45,8 @@ const Level0ItemRequest = () => {
   const [costComponentoptions, setCostComponentOptions] = useState([])
   const [uomOptions, setUOMOptions] = useState([])
   const [groupCodeOptions, setGroupCodeOptions] = useState([])
+
+  const [imgLoader, setImgLoader] = useState(false)
 
   const RejectReasonChange = (e) => {
     setRejectReason(e.target.value)
@@ -407,6 +421,44 @@ const Level0ItemRequest = () => {
       }))
     }
     setErrors((prevErrors) => ({ ...prevErrors, [field]: '' }))
+  }
+
+  const customRequest = async ({ file }) => {
+    const accessToken = localStorage.getItem('accessToken')
+    const formData = new FormData()
+    formData.append('itemImage', file)
+    try {
+      setImgLoader(true)
+      const response = await axios.post(
+        `https://mdm.p360.build/v1/mdm/purchase-item/upload`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      setPendingRequest({ ...PendingRequest, itemImg: response.data.data })
+      message.success('File uploaded successfully')
+    } catch (error) {
+      console.error('Error uploading file:', error)
+    } finally {
+      setImgLoader(false)
+    }
+  }
+
+  const ViewImage = () => {
+    setImageViewModal(!imageViewModal)
+  }
+
+  const DeleteImage = () => {
+    setImageViewModal(!imageViewModal)
+    setPendingRequest((prevItem) => ({
+      ...prevItem,
+      itemImg: '',
+    }))
+    message.success('Attached Image Removed successfully')
   }
 
   // const showApprovalConfirmation = () => {
@@ -790,6 +842,28 @@ const Level0ItemRequest = () => {
                   <ErrorMessage>{errors.phoneNumber}</ErrorMessage>
                 )}
               </Container>
+              <UploadContainer>
+                <Upload
+                  showUploadList={false}
+                  customRequest={({ file }) => customRequest({ file })}
+                  maxCount={1}
+                  value={PendingRequest.itemImg}
+                >
+                  <UploadButton>
+                    <UploadIcon />
+                    {imgLoader && (
+                      <ImageLoader>
+                        <div className='loader' />
+                      </ImageLoader>
+                    )}
+                  </UploadButton>
+                </Upload>
+                {PendingRequest.itemImg && (
+                  <CiImageOn className='img' onClick={ViewImage} />
+                )}
+                {/* <Image width={50} height={50} src={PendingRequest.itemImg} /> */}
+                {/* </CiImageOn> */}
+              </UploadContainer>
             </GridContainer>
           </Section>
           <Section>
@@ -1649,6 +1723,18 @@ const Level0ItemRequest = () => {
           </button>
         </ButtonContainer>
       </Styles>
+      <CustomModal open={imageViewModal} width='60%' height='60%'>
+        <SelectedImage src={PendingRequest.itemImg} />
+        <ImageActions>
+          <button className='cancel' onClick={ViewImage}>
+            Cancel
+          </button>
+          {/* <button className='save'>Save As Draft</button> */}
+          <button className='delete' onClick={DeleteImage}>
+            Delete Image
+          </button>
+        </ImageActions>
+      </CustomModal>
       {/* <CustomModal
         open={rejectReasonModal}
         width='400px'
@@ -2065,6 +2151,133 @@ const ConfirmationButton = styled.div`
     transition: all 0.3s ease-in-out;
     &:hover {
       color: #c40c0c;
+    }
+  }
+`
+const UploadContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  gap: 0.7rem;
+  .img {
+    font-size: 1.8rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+  }
+`
+const UploadIcon = styled(UploadOutlined)`
+  color: #49619f;
+  font-size: 0.8rem;
+`
+
+const UploadButton = styled.button`
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 5px;
+  background: transparent;
+  border: 1px solid #ccc;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 400 !important;
+  letter-spacing: 0.5px;
+  width: 100%;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+  &:hover {
+    border: 1px solid #49619f;
+    color: #49619f;
+  }
+`
+
+const SelectedImage = styled.img`
+  width: 100%;
+  height: 100%;
+`
+const ImageActions = styled.div`
+  display: flex;
+  gap: 1rem;
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  .cancel {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.8rem;
+    border-radius: 0.5rem;
+    background: #616366;
+    color: #fff;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    &:hover {
+      background: #77838f;
+    }
+  }
+
+  .delete {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.8rem;
+    border-radius: 0.5rem;
+    background: #d04848;
+    color: #fff;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+    opacity: 60%;
+    transition: all 0.3s ease;
+    &:hover {
+      opacity: 100%;
+    }
+  }
+`
+const ImageLoader = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .loader {
+    --r1: 154%;
+    --r2: 68.5%;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 5px;
+    background: radial-gradient(
+        var(--r1) var(--r2) at top,
+        #0000 79.5%,
+        #269af2 80%
+      ),
+      radial-gradient(var(--r1) var(--r2) at bottom, #269af2 79.5%, #0000 80%),
+      radial-gradient(var(--r1) var(--r2) at top, #0000 79.5%, #269af2 80%),
+      #ccc;
+    background-size: 50.5% 220%;
+    background-position: -100% 0%, 0% 0%, 100% 0%;
+    background-repeat: no-repeat;
+    animation: l9 2s infinite linear;
+  }
+  @keyframes l9 {
+    33% {
+      background-position: 0% 33%, 100% 33%, 200% 33%;
+    }
+    66% {
+      background-position: -100% 66%, 0% 66%, 100% 66%;
+    }
+    100% {
+      background-position: 0% 100%, 100% 100%, 200% 100%;
     }
   }
 `
