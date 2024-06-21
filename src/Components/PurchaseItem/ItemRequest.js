@@ -1001,16 +1001,8 @@ const NewRequest = () => {
                     if (value === undefined || value === '') {
                       ValueChange('productClassId', '')
                       ValueChange('productClass', '')
-                      ValueChange(
-                        'detailedDescription',
-                        `${newItem.productLine}  ${newItem.specifications}`
-                      )
                     } else {
                       ValueChange('productClassId', value)
-                      ValueChange(
-                        'detailedDescription',
-                        `${newItem.productClass} ${newItem.productLine}  ${newItem.specifications}`
-                      )
                     }
                   }}
                   onSelect={(value) => {
@@ -1019,6 +1011,10 @@ const NewRequest = () => {
                     )
                     if (selectedOption) {
                       ValueChange('productClass', selectedOption.value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${newItem.productClass} ${newItem.productLine} ${newItem.specifications}`
+                      )
                     } else {
                       ValueChange('productClass', '')
                       ValueChange('productClassId', '')
@@ -1030,6 +1026,10 @@ const NewRequest = () => {
                     )
                     if (OptionValue) {
                       ValueChange('productClass', OptionValue.value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${newItem.productClass} ${newItem.productLine} ${newItem.specifications}`
+                      )
                     } else {
                       ValueChange('productClass', '')
                       ValueChange('productClassId', '')
@@ -1057,16 +1057,8 @@ const NewRequest = () => {
                     if (value === undefined || value === '') {
                       ValueChange('productClassId', '')
                       ValueChange('productClass', '')
-                      ValueChange(
-                        'detailedDescription',
-                        `${newItem.productLine}  ${newItem.specifications}`
-                      )
                     } else {
                       ValueChange('productClass', value)
-                      ValueChange(
-                        'detailedDescription',
-                        `${value} ${newItem.productLine}  ${newItem.specifications}`
-                      )
                     }
                   }}
                   onSelect={(value) => {
@@ -1075,6 +1067,10 @@ const NewRequest = () => {
                     )
                     if (selectedOption) {
                       ValueChange('productClassId', selectedOption.id)
+                      ValueChange(
+                        'detailedDescription',
+                        `${newItem.productClass} ${newItem.productLine} ${newItem.specifications}`
+                      )
                     } else {
                       ValueChange('productClass', '')
                       ValueChange('productClassId', '')
@@ -1086,7 +1082,10 @@ const NewRequest = () => {
                     )
                     if (OptionValue) {
                       ValueChange('productClassId', OptionValue.id)
-                      console.log(OptionValue)
+                      ValueChange(
+                        'detailedDescription',
+                        `${newItem.productClass} ${newItem.productLine} ${newItem.specifications}`
+                      )
                     } else {
                       ValueChange('productClass', '')
                       ValueChange('productClassId', '')
@@ -1114,16 +1113,8 @@ const NewRequest = () => {
                     if (value === undefined || value === '') {
                       ValueChange('productLineId', '')
                       ValueChange('productLine', '')
-                      ValueChange(
-                        'detailedDescription',
-                        `${newItem.productClass} ${newItem.specifications}`
-                      )
                     } else {
                       ValueChange('productLineId', value)
-                      ValueChange(
-                        'detailedDescription',
-                        `${newItem.productClass} ${newItem.productLine} ${newItem.specifications}`
-                      )
                     }
                   }}
                   onSelect={(value) => {
@@ -1132,6 +1123,10 @@ const NewRequest = () => {
                     )
                     if (selectedOption) {
                       ValueChange('productLine', selectedOption.value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${newItem.productClass} ${newItem.productLine} ${newItem.specifications}`
+                      )
                     } else {
                       ValueChange('productLine', '')
                       ValueChange('productLineId', '')
@@ -1143,6 +1138,10 @@ const NewRequest = () => {
                     )
                     if (OptionValue) {
                       ValueChange('productLine', OptionValue.value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${newItem.productClass} ${newItem.productLine} ${newItem.specifications}`
+                      )
                     } else {
                       ValueChange('productLine', '')
                       ValueChange('productLineId', '')
@@ -1170,16 +1169,8 @@ const NewRequest = () => {
                     if (value === undefined || value === '') {
                       ValueChange('productLineId', '')
                       ValueChange('productLine', '')
-                      ValueChange(
-                        'detailedDescription',
-                        `${newItem.productClass} ${newItem.specifications}`
-                      )
                     } else {
                       ValueChange('productLine', value)
-                      ValueChange(
-                        'detailedDescription',
-                        `${newItem.productLine} ${value} ${newItem.specifications}`
-                      )
                     }
                   }}
                   onSelect={(value) => {
@@ -1188,6 +1179,10 @@ const NewRequest = () => {
                     )
                     if (selectedOption) {
                       ValueChange('productLineId', selectedOption.id)
+                      ValueChange(
+                        'detailedDescription',
+                        `${newItem.productClass} ${newItem.productLine} ${newItem.specifications}`
+                      )
                     } else {
                       ValueChange('productLine', '')
                       ValueChange('productLineId', '')
@@ -1199,7 +1194,10 @@ const NewRequest = () => {
                     )
                     if (OptionValue) {
                       ValueChange('productLineId', OptionValue.id)
-                      console.log(OptionValue)
+                      ValueChange(
+                        'detailedDescription',
+                        `${newItem.productClass} ${newItem.productLine} ${newItem.specifications}`
+                      )
                     } else {
                       ValueChange('productLine', '')
                       ValueChange('productLineId', '')
@@ -1221,9 +1219,18 @@ const NewRequest = () => {
                   value={newItem.specifications}
                   onChange={(e) => {
                     ValueChange('specifications', e.target.value)
+                  }}
+                  onBlur={() => {
+                    if (
+                      !newItem.productClass &&
+                      !newItem.productLine &&
+                      !newItem.specifications
+                    ) {
+                      ValueChange('detailedDescription', '')
+                    }
                     ValueChange(
                       'detailedDescription',
-                      `${newItem.productClass} ${newItem.productLine} ${e.target.value}`
+                      `${newItem.productClass} ${newItem.productLine} ${newItem.specifications}`
                     )
                   }}
                 />

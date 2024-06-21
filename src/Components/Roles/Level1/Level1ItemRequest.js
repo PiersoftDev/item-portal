@@ -845,16 +845,8 @@ const Level1ItemRequest = () => {
                     if (value === undefined || value === '') {
                       ValueChange('productClassId', '')
                       ValueChange('productClass', '')
-                      ValueChange(
-                        'detailedDescription',
-                        `${PendingRequest.productLine}  ${PendingRequest.specifications}`
-                      )
                     } else {
                       ValueChange('productClassId', value)
-                      ValueChange(
-                        'detailedDescription',
-                        `${PendingRequest.productClass} ${PendingRequest.productLine}  ${PendingRequest.specifications}`
-                      )
                     }
                   }}
                   onSelect={(value) => {
@@ -863,6 +855,10 @@ const Level1ItemRequest = () => {
                     )
                     if (selectedOption) {
                       ValueChange('productClass', selectedOption.value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productClass', '')
                       ValueChange('productClassId', '')
@@ -874,6 +870,10 @@ const Level1ItemRequest = () => {
                     )
                     if (OptionValue) {
                       ValueChange('productClass', OptionValue.value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productClass', '')
                       ValueChange('productClassId', '')
@@ -903,16 +903,8 @@ const Level1ItemRequest = () => {
                     if (value === undefined || value === '') {
                       ValueChange('productClassId', '')
                       ValueChange('productClass', '')
-                      ValueChange(
-                        'detailedDescription',
-                        `${PendingRequest.productLine}  ${PendingRequest.specifications}`
-                      )
                     } else {
                       ValueChange('productClass', value)
-                      ValueChange(
-                        'detailedDescription',
-                        `${value} ${PendingRequest.productLine}  ${PendingRequest.specifications}`
-                      )
                     }
                   }}
                   onSelect={(value) => {
@@ -921,6 +913,10 @@ const Level1ItemRequest = () => {
                     )
                     if (selectedOption) {
                       ValueChange('productClassId', selectedOption.id)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productClass', '')
                       ValueChange('productClassId', '')
@@ -932,7 +928,10 @@ const Level1ItemRequest = () => {
                     )
                     if (OptionValue) {
                       ValueChange('productClassId', OptionValue.id)
-                      console.log(OptionValue)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productClass', '')
                       ValueChange('productClassId', '')
@@ -964,16 +963,8 @@ const Level1ItemRequest = () => {
                     if (value === undefined || value === '') {
                       ValueChange('productLineId', '')
                       ValueChange('productLine', '')
-                      ValueChange(
-                        'detailedDescription',
-                        `${PendingRequest.productClass} ${PendingRequest.specifications}`
-                      )
                     } else {
                       ValueChange('productLineId', value)
-                      ValueChange(
-                        'detailedDescription',
-                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
-                      )
                     }
                   }}
                   onSelect={(value) => {
@@ -982,6 +973,10 @@ const Level1ItemRequest = () => {
                     )
                     if (selectedOption) {
                       ValueChange('productLine', selectedOption.value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productLine', '')
                       ValueChange('productLineId', '')
@@ -993,6 +988,10 @@ const Level1ItemRequest = () => {
                     )
                     if (OptionValue) {
                       ValueChange('productLine', OptionValue.value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productLine', '')
                       ValueChange('productLineId', '')
@@ -1020,16 +1019,8 @@ const Level1ItemRequest = () => {
                     if (value === undefined || value === '') {
                       ValueChange('productLineId', '')
                       ValueChange('productLine', '')
-                      ValueChange(
-                        'detailedDescription',
-                        `${PendingRequest.productClass} ${PendingRequest.specifications}`
-                      )
                     } else {
                       ValueChange('productLine', value)
-                      ValueChange(
-                        'detailedDescription',
-                        `${PendingRequest.productLine} ${value} ${PendingRequest.specifications}`
-                      )
                     }
                   }}
                   onSelect={(value) => {
@@ -1038,6 +1029,10 @@ const Level1ItemRequest = () => {
                     )
                     if (selectedOption) {
                       ValueChange('productLineId', selectedOption.id)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productLine', '')
                       ValueChange('productLineId', '')
@@ -1049,7 +1044,10 @@ const Level1ItemRequest = () => {
                     )
                     if (OptionValue) {
                       ValueChange('productLineId', OptionValue.id)
-                      console.log(OptionValue)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productLine', '')
                       ValueChange('productLineId', '')
@@ -1087,6 +1085,10 @@ const Level1ItemRequest = () => {
                     ) {
                       ValueChange('detailedDescription', '')
                     }
+                    ValueChange(
+                      'detailedDescription',
+                      `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                    )
                   }}
                 />
                 {errors.specifications && (
