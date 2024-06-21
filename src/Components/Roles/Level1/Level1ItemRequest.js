@@ -1935,6 +1935,10 @@ const UploadContainer = styled.div`
 `
 
 const ImageViewerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
   overflow: auto;
@@ -1948,7 +1952,7 @@ const ImageActions = styled.div`
   display: flex;
   gap: 1rem;
   position: absolute;
-  top: 1rem;
+  top: 0rem;
   right: 2rem;
   .cancel {
     font-family: 'Open Sans', sans-serif;
@@ -1969,4 +1973,7 @@ const ImageActions = styled.div`
 const SelectedImage = styled.img`
   width: auto;
   height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 10px;
 `

@@ -1909,6 +1909,9 @@ const UploadButton = styled.button`
 const SelectedImage = styled.img`
   width: auto;
   height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 10px;
 `
 
 const StyledDependencies = styled(AutoComplete)`
@@ -2021,7 +2024,10 @@ const ImageLoader = styled.div`
 `
 
 const ImageViewerContainer = styled.div`
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
   overflow: auto;
