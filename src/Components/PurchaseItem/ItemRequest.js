@@ -1216,6 +1216,7 @@ const NewRequest = () => {
                   type='text'
                   allowClear
                   placeholder='Enter specifications'
+                  maxLength={90}
                   value={newItem.specifications}
                   onChange={(e) => {
                     ValueChange('specifications', e.target.value)

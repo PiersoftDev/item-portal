@@ -1059,6 +1059,7 @@ const Level1ItemRequest = () => {
                   allowClear
                   placeholder='Enter specifications'
                   value={PendingRequest.specifications}
+                  maxLength={90}
                   onChange={(e) => {
                     ValueChange('specifications', e.target.value)
                     ValueChange(
