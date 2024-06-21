@@ -240,7 +240,7 @@ const StateProvider = ({ children }) => {
 
   const [imageViewModal, setImageViewModal] = useState(false)
 
-  const testUrl = `https://mdm.p360.build`
+  const testUrl = `https://mdm.kmvpl.com`
 
   return (
     <States.Provider
