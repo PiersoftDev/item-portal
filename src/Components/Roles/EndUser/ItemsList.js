@@ -129,7 +129,7 @@ const ItemsList = () => {
           {
             itemType: itemListFilters.itemType,
             status: itemListFilters.status,
-            level: isAdmin ? '' : level,
+            level: isAdmin ? '' : UserId ? '' : level,
             searchTerm: itemListFilters.searchTerm,
             creatorId: UserId,
             pageNo: itemListPage,
@@ -725,6 +725,7 @@ const ItemsList = () => {
           <PaginationContainer>
             <Pagination
               value={itemListPage + 1}
+              itemsPerPage={20}
               onChange={PageChange}
               total={totalItemsCount}
             />

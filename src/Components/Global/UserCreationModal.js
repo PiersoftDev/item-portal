@@ -142,8 +142,16 @@ const UserCreationModal = () => {
     if (!createUser.email) {
       fieldErrors.email = 'Email required'
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(createUser.email)) {
+      fieldErrors.email = 'Invalid Email'
+    }
+
     if (!createUser.mobileNumber) {
       fieldErrors.mobileNumber = 'Number required'
+    }
+    if (createUser.roles.length === 0) {
+      message.warning('Please Select Role')
+      fieldErrors.roles = 'Roles required'
     }
 
     if (Object.keys(fieldErrors).length > 0) {
@@ -292,42 +300,42 @@ const UserCreationModal = () => {
                   <Checkbox
                     checked={selectedRoles.includes('Admin')}
                     onChange={() => toggleRole('Admin')}
-                  />{' '}
+                  />
                   <CheckboxLabel>Admin</CheckboxLabel>
                 </CheckboxContainer>
                 <CheckboxContainer>
                   <Checkbox
                     checked={selectedRoles.includes('L0')}
                     onChange={() => toggleRole('L0')}
-                  />{' '}
+                  />
                   <CheckboxLabel>L0 (End User)</CheckboxLabel>
                 </CheckboxContainer>
                 <CheckboxContainer>
                   <Checkbox
                     checked={selectedRoles.includes('L1')}
                     onChange={() => toggleRole('L1')}
-                  />{' '}
+                  />
                   <CheckboxLabel>L1 (Purchase)</CheckboxLabel>
                 </CheckboxContainer>
                 <CheckboxContainer>
                   <Checkbox
                     checked={selectedRoles.includes('L2')}
                     onChange={() => toggleRole('L2')}
-                  />{' '}
+                  />
                   <CheckboxLabel>L2 (Taxation)</CheckboxLabel>
                 </CheckboxContainer>
                 <CheckboxContainer>
                   <Checkbox
                     checked={selectedRoles.includes('L3')}
                     onChange={() => toggleRole('L3')}
-                  />{' '}
+                  />
                   <CheckboxLabel>L3 (PMD)</CheckboxLabel>
                 </CheckboxContainer>
                 <CheckboxContainer>
                   <Checkbox
                     checked={selectedRoles.includes('L4')}
                     onChange={() => toggleRole('L4')}
-                  />{' '}
+                  />
                   <CheckboxLabel>L4 (ERP)</CheckboxLabel>
                 </CheckboxContainer>
               </CheckBoxDiv>

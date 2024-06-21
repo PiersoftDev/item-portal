@@ -120,6 +120,7 @@ const StateProvider = ({ children }) => {
     surchargeCostComponent: '',
     projectOrderSystem: '',
     pegPRPWarehouseOrder: '',
+    itemImg: '',
     status: 'Pending',
     currentLevel: 'L1',
     creatorId: userDetails.id,
@@ -237,6 +238,7 @@ const StateProvider = ({ children }) => {
   const [itemListPage, setItemListPage] = useState(0)
   const [totalItemsCount, setTotalItemsCount] = useState(0)
 
+  const [imageViewModal, setImageViewModal] = useState(false)
   const testUrl = `https://mdm.kmvpl.com`
 
   return (
@@ -334,6 +336,8 @@ const StateProvider = ({ children }) => {
         setItemListPage,
         totalItemsCount,
         setTotalItemsCount,
+        imageViewModal,
+        setImageViewModal,
       }}
     >
       {children}

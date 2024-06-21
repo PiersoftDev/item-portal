@@ -4,6 +4,7 @@ import { AutoComplete, Checkbox, Input, Modal, Select, message } from 'antd'
 import { useStates } from '../../../utils/StateProvider'
 import axios from 'axios'
 import CustomModal from '../../Global/CustomModal'
+import { CiImageOn } from 'react-icons/ci'
 
 const { Option } = Select
 
@@ -19,6 +20,8 @@ const Level1ItemRequest = () => {
     setLevel1RequestModal,
     setErrors,
     testUrl,
+    imageViewModal,
+    setImageViewModal,
   } = useStates()
 
   const [loading, setLoading] = useState(false)
@@ -314,6 +317,10 @@ const Level1ItemRequest = () => {
     fetchDependencies()
   }, [PendingRequest.groupCode])
 
+  const ViewImage = () => {
+    setImageViewModal(!imageViewModal)
+  }
+
   const ValueChange = (field, value) => {
     setPendingRequest((prevItem) => ({
       ...prevItem,
@@ -575,6 +582,11 @@ const Level1ItemRequest = () => {
                   <ErrorMessage>{errors.phoneNumber}</ErrorMessage>
                 )}
               </Container>
+              {PendingRequest.itemImg && (
+                <UploadContainer>
+                  <CiImageOn className='img' onClick={ViewImage} />
+                </UploadContainer>
+              )}
             </GridContainer>
           </Section>
           <Section>
@@ -833,16 +845,8 @@ const Level1ItemRequest = () => {
                     if (value === undefined || value === '') {
                       ValueChange('productClassId', '')
                       ValueChange('productClass', '')
-                      ValueChange(
-                        'detailedDescription',
-                        `${PendingRequest.productLine}  ${PendingRequest.specifications}`
-                      )
                     } else {
                       ValueChange('productClassId', value)
-                      ValueChange(
-                        'detailedDescription',
-                        `${PendingRequest.productClass} ${PendingRequest.productLine}  ${PendingRequest.specifications}`
-                      )
                     }
                   }}
                   onSelect={(value) => {
@@ -851,6 +855,10 @@ const Level1ItemRequest = () => {
                     )
                     if (selectedOption) {
                       ValueChange('productClass', selectedOption.value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productClass', '')
                       ValueChange('productClassId', '')
@@ -862,6 +870,10 @@ const Level1ItemRequest = () => {
                     )
                     if (OptionValue) {
                       ValueChange('productClass', OptionValue.value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productClass', '')
                       ValueChange('productClassId', '')
@@ -891,16 +903,8 @@ const Level1ItemRequest = () => {
                     if (value === undefined || value === '') {
                       ValueChange('productClassId', '')
                       ValueChange('productClass', '')
-                      ValueChange(
-                        'detailedDescription',
-                        `${PendingRequest.productLine}  ${PendingRequest.specifications}`
-                      )
                     } else {
                       ValueChange('productClass', value)
-                      ValueChange(
-                        'detailedDescription',
-                        `${value} ${PendingRequest.productLine}  ${PendingRequest.specifications}`
-                      )
                     }
                   }}
                   onSelect={(value) => {
@@ -909,6 +913,10 @@ const Level1ItemRequest = () => {
                     )
                     if (selectedOption) {
                       ValueChange('productClassId', selectedOption.id)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productClass', '')
                       ValueChange('productClassId', '')
@@ -920,7 +928,10 @@ const Level1ItemRequest = () => {
                     )
                     if (OptionValue) {
                       ValueChange('productClassId', OptionValue.id)
-                      console.log(OptionValue)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productClass', '')
                       ValueChange('productClassId', '')
@@ -952,16 +963,8 @@ const Level1ItemRequest = () => {
                     if (value === undefined || value === '') {
                       ValueChange('productLineId', '')
                       ValueChange('productLine', '')
-                      ValueChange(
-                        'detailedDescription',
-                        `${PendingRequest.productClass} ${PendingRequest.specifications}`
-                      )
                     } else {
                       ValueChange('productLineId', value)
-                      ValueChange(
-                        'detailedDescription',
-                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
-                      )
                     }
                   }}
                   onSelect={(value) => {
@@ -970,6 +973,10 @@ const Level1ItemRequest = () => {
                     )
                     if (selectedOption) {
                       ValueChange('productLine', selectedOption.value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productLine', '')
                       ValueChange('productLineId', '')
@@ -981,6 +988,10 @@ const Level1ItemRequest = () => {
                     )
                     if (OptionValue) {
                       ValueChange('productLine', OptionValue.value)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productLine', '')
                       ValueChange('productLineId', '')
@@ -1008,16 +1019,8 @@ const Level1ItemRequest = () => {
                     if (value === undefined || value === '') {
                       ValueChange('productLineId', '')
                       ValueChange('productLine', '')
-                      ValueChange(
-                        'detailedDescription',
-                        `${PendingRequest.productClass} ${PendingRequest.specifications}`
-                      )
                     } else {
                       ValueChange('productLine', value)
-                      ValueChange(
-                        'detailedDescription',
-                        `${PendingRequest.productLine} ${value} ${PendingRequest.specifications}`
-                      )
                     }
                   }}
                   onSelect={(value) => {
@@ -1026,6 +1029,10 @@ const Level1ItemRequest = () => {
                     )
                     if (selectedOption) {
                       ValueChange('productLineId', selectedOption.id)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productLine', '')
                       ValueChange('productLineId', '')
@@ -1037,7 +1044,10 @@ const Level1ItemRequest = () => {
                     )
                     if (OptionValue) {
                       ValueChange('productLineId', OptionValue.id)
-                      console.log(OptionValue)
+                      ValueChange(
+                        'detailedDescription',
+                        `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                      )
                     } else {
                       ValueChange('productLine', '')
                       ValueChange('productLineId', '')
@@ -1059,6 +1069,7 @@ const Level1ItemRequest = () => {
                   allowClear
                   placeholder='Enter specifications'
                   value={PendingRequest.specifications}
+                  maxLength={90}
                   onChange={(e) => {
                     ValueChange('specifications', e.target.value)
                     ValueChange(
@@ -1074,6 +1085,10 @@ const Level1ItemRequest = () => {
                     ) {
                       ValueChange('detailedDescription', '')
                     }
+                    ValueChange(
+                      'detailedDescription',
+                      `${PendingRequest.productClass} ${PendingRequest.productLine} ${PendingRequest.specifications}`
+                    )
                   }}
                 />
                 {errors.specifications && (
@@ -1454,10 +1469,18 @@ const Level1ItemRequest = () => {
         </UserForm>
         <ButtonContainer>
           {/* <button className='save'>Save As Draft</button> */}
-          <button className='reject' onClick={showRejectConfirmation}>
+          <button
+            className='reject'
+            onClick={showRejectConfirmation}
+            disabled={imageViewModal}
+          >
             Reject
           </button>
-          <button className='submit' onClick={ApproveItemRequest}>
+          <button
+            className='submit'
+            onClick={ApproveItemRequest}
+            disabled={imageViewModal}
+          >
             Approve
           </button>
         </ButtonContainer>
@@ -1486,13 +1509,31 @@ const Level1ItemRequest = () => {
           />
         </Container>
         <ConfirmationButton>
-          <button className='cancel' onClick={cancelRejectConfirmation}>
+          <button
+            className='cancel'
+            onClick={cancelRejectConfirmation}
+            disabled={imageViewModal}
+          >
             Cancel
           </button>
-          <button className='reject' onClick={RejectItemRequest}>
+          <button
+            className='reject'
+            onClick={RejectItemRequest}
+            disabled={imageViewModal}
+          >
             Reject
           </button>
         </ConfirmationButton>
+      </CustomModal>
+      <CustomModal open={imageViewModal} width='60%' height='60%'>
+        <ImageViewerContainer>
+          <SelectedImage src={PendingRequest.itemImg} />
+          <ImageActions>
+            <button className='cancel' onClick={ViewImage}>
+              Cancel
+            </button>
+          </ImageActions>
+        </ImageViewerContainer>
       </CustomModal>
     </>
   )
@@ -1880,4 +1921,61 @@ const ConfirmationButton = styled.div`
       color: #c40c0c;
     }
   }
+`
+
+const UploadContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  gap: 0.7rem;
+  .img {
+    font-size: 1.8rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+  }
+`
+
+const ImageViewerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    height: 0.5rem;
+    width: 0.5rem;
+  }
+`
+
+const ImageActions = styled.div`
+  display: flex;
+  gap: 1rem;
+  position: absolute;
+  top: 0rem;
+  right: 2rem;
+  .cancel {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.8rem;
+    border-radius: 0.5rem;
+    background: #616366;
+    color: #fff;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    &:hover {
+      background: #77838f;
+    }
+  }
+`
+const SelectedImage = styled.img`
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 10px;
 `

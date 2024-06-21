@@ -118,11 +118,7 @@ const ListFilterModel = () => {
         {
           itemType: '',
           status: '',
-          level: itemListFilters.level
-            ? itemListFilters.level
-            : isAdmin
-            ? ''
-            : level,
+          level: isAdmin || UserId ? '' : level,
           searchTerm: '',
           creatorId: UserId,
           pageNo: itemListPage,

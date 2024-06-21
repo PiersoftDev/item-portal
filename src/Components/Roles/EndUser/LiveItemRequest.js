@@ -4,7 +4,7 @@ import { AutoComplete, Checkbox, Input, Modal, Select, message } from 'antd'
 import { useStates } from '../../../utils/StateProvider'
 import axios from 'axios'
 import CustomModal from '../../Global/CustomModal'
-
+import { CiImageOn } from 'react-icons/ci'
 const { Option } = Select
 
 const LiveItemRequest = () => {
@@ -18,6 +18,8 @@ const LiveItemRequest = () => {
     setEndUserRequestList,
     endUserRequestList,
     setErrors,
+    imageViewModal,
+    setImageViewModal,
   } = useStates()
 
   const [loading, setLoading] = useState(false)
@@ -31,6 +33,10 @@ const LiveItemRequest = () => {
 
   const RejectReasonChange = (e) => {
     setRejectReason(e.target.value)
+  }
+
+  const ViewImage = () => {
+    setImageViewModal(!imageViewModal)
   }
 
   const ValueChange = (field, value) => {
@@ -114,6 +120,11 @@ const LiveItemRequest = () => {
                   <ErrorMessage>{errors.phoneNumber}</ErrorMessage>
                 )}
               </Container>
+              {PendingRequest.itemImg && (
+                <UploadContainer>
+                  <CiImageOn className='img' onClick={ViewImage} />
+                </UploadContainer>
+              )}
             </GridContainer>
           </Section>
           <Section>
@@ -549,6 +560,16 @@ const LiveItemRequest = () => {
           </Section>
         </UserForm>
       </Styles>
+      <CustomModal open={imageViewModal} width='60%' height='60%'>
+        <ImageViewerContainer>
+          <SelectedImage src={PendingRequest.itemImg} />
+          <ImageActions>
+            <button className='cancel' onClick={ViewImage}>
+              Cancel
+            </button>
+          </ImageActions>
+        </ImageViewerContainer>
+      </CustomModal>
     </>
   )
 }
@@ -868,4 +889,61 @@ const ConfirmationButton = styled.div`
       color: #c40c0c;
     }
   }
+`
+
+const UploadContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  gap: 0.7rem;
+  .img {
+    font-size: 1.8rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+  }
+`
+
+const ImageViewerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    height: 0.5rem;
+    width: 0.5rem;
+  }
+`
+
+const ImageActions = styled.div`
+  display: flex;
+  gap: 1rem;
+  position: absolute;
+  top: 0rem;
+  right: 2rem;
+  .cancel {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.8rem;
+    border-radius: 0.5rem;
+    background: #616366;
+    color: #fff;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    &:hover {
+      background: #77838f;
+    }
+  }
+`
+const SelectedImage = styled.img`
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 10px;
 `
