@@ -282,7 +282,7 @@ const NewRequest = () => {
       UOM.forEach((record) => {
         if (!uniqueOptions.has(record.unitDescription)) {
           uniqueOptions.set(record.unitDescription, {
-            Description: `${record.unit} - ${record.unitDescription}`,
+            // Description: `${record.unit} - ${record.unitDescription}`,
             uomId: record.uomId,
             value: record.unitDescription,
             id: record.unit,
