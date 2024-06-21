@@ -149,7 +149,7 @@ const UserCreationModal = () => {
     if (!createUser.mobileNumber) {
       fieldErrors.mobileNumber = 'Number required'
     }
-    if (createUser.roles.length === 0) {
+    if (selectedRoles.length === 0) {
       message.warning('Please Select Role')
       fieldErrors.roles = 'Roles required'
     }
