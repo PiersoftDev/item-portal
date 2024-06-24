@@ -7,7 +7,7 @@ const Error = () => {
   return (
     <Wrapper>
       <h1>Page Not Found</h1>
-      <button onClick={() => navigate('/home')}>Go to Home</button>
+      <button onClick={() => navigate('/')}>Go to Home</button>
     </Wrapper>
   )
 }
