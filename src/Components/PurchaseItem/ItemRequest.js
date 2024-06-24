@@ -755,7 +755,8 @@ const NewRequest = () => {
             <SectionTitle>Material Information</SectionTitle>
             <Container>
               <label style={{ marginLeft: '1rem' }}>
-                Requirement Description *
+                Requirement Description * ( Please mention where the item will
+                be Used )
               </label>
               <textarea
                 type='textarea'
