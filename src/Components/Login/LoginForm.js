@@ -42,7 +42,7 @@ const LoginForm = () => {
   useEffect(() => {
     const AccessToken = localStorage.getItem('accessToken')
     if (AccessToken) {
-      navigate('/home')
+      navigate('/')
     }
   }, [])
 
@@ -82,7 +82,7 @@ const LoginForm = () => {
           localStorage.setItem('accessToken', res.data.accessToken)
           localStorage.setItem('refreshToken', res.data.refreshToken)
 
-          navigate('/home')
+          navigate('/')
           setLogingDetails({
             username: '',
             confirmationCode: '',

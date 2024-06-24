@@ -756,6 +756,9 @@ const NewRequest = () => {
             <Container>
               <label style={{ marginLeft: '1rem' }}>
                 Requirement Description *
+                <span style={{ fontSize: '0.6rem', letterSpacing: '0.2px' }}>
+                  ( Please mention where the item will be Used )
+                </span>
               </label>
               <textarea
                 type='textarea'

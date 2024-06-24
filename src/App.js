@@ -15,7 +15,7 @@ const App = () => {
       <StateProvider>
         <Routes>
           <Route path='/login' element={<Login />} />
-          <Route path='/home' element={<SharedLayout />} />
+          <Route path='/' element={<SharedLayout />} />
           <Route path='*' element={<Error />} />
         </Routes>
       </StateProvider>
