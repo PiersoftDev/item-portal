@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { useStates } from '../../../utils/StateProvider'
 import NewCombination from './NewCombination'
 import axios from 'axios'
+import { UploadOutlined } from '@ant-design/icons'
+import { Upload, message } from 'antd'
 
 const Titles = [
   'Item Type',
@@ -27,6 +29,7 @@ const ProductCombination = () => {
   } = useStates()
 
   const [loading, setLoading] = useState(false)
+  const [imgLoader, setImgLoader] = useState(false)
 
   const [filters, setFilters] = useState({
     itemType: '',
@@ -69,6 +72,32 @@ const ProductCombination = () => {
     fetchItem()
   }, [])
 
+  const customRequest = async ({ file }) => {
+    const accessToken = localStorage.getItem('accessToken')
+    const formData = new FormData()
+    formData.append('file', file)
+    try {
+      setImgLoader(true)
+      const response = await axios.post(
+        `${testUrl}/v1/mdm/purchase-item/upload`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      // setNewItem({ ...newItem, itemImg: response.data.data })
+      message.success('File uploaded successfully')
+    } catch (error) {
+      console.error('Error uploading file:', error)
+      message.error('Error uploading file:')
+    } finally {
+      setImgLoader(false)
+    }
+  }
+
   const handleFilterChange = (e) => {
     const { name, value } = e.target
     setFilters((prevFilters) => ({
@@ -97,7 +126,23 @@ const ProductCombination = () => {
     <Wrapper>
       <Top>
         <Title>Product Combination</Title>
+
         <ButtonContainer>
+          <Upload
+            showUploadList={false}
+            customRequest={({ file }) => customRequest({ file })}
+            maxCount={1}
+            accept='.xlsx,.xls,.csv'
+          >
+            <UploadButton title='Import'>
+              <UploadIcon />
+              {imgLoader && (
+                <ImageLoader>
+                  <div className='loader' />
+                </ImageLoader>
+              )}
+            </UploadButton>
+          </Upload>
           <Button className='cancel' onClick={CancelClick}>
             Cancel
           </Button>
@@ -372,4 +417,75 @@ const NewCombinationContainer = styled.div`
   transform: ${(props) =>
     props.open ? 'translate(0,0)' : 'translate(0,-150%)'};
   transition: transform 0.3s ease-in-out;
+`
+
+const UploadIcon = styled(UploadOutlined)`
+  color: #49619f;
+  font-size: 0.8rem;
+`
+
+const UploadButton = styled.button`
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 5px;
+  background: transparent;
+  border: 1px solid #ccc;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 400 !important;
+  letter-spacing: 0.5px;
+  width: 100%;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+  &:hover {
+    border: 1px solid #49619f;
+    color: #49619f;
+  }
+`
+const ImageLoader = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .loader {
+    --r1: 154%;
+    --r2: 68.5%;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 5px;
+    background: radial-gradient(
+        var(--r1) var(--r2) at top,
+        #0000 79.5%,
+        #269af2 80%
+      ),
+      radial-gradient(var(--r1) var(--r2) at bottom, #269af2 79.5%, #0000 80%),
+      radial-gradient(var(--r1) var(--r2) at top, #0000 79.5%, #269af2 80%),
+      #ccc;
+    background-size: 50.5% 220%;
+    background-position: -100% 0%, 0% 0%, 100% 0%;
+    background-repeat: no-repeat;
+    animation: l9 2s infinite linear;
+  }
+  @keyframes l9 {
+    33% {
+      background-position: 0% 33%, 100% 33%, 200% 33%;
+    }
+    66% {
+      background-position: -100% 66%, 0% 66%, 100% 66%;
+    }
+    100% {
+      background-position: 0% 100%, 100% 100%, 200% 100%;
+    }
+  }
 `

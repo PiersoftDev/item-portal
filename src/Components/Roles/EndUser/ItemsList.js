@@ -133,7 +133,7 @@ const ItemsList = () => {
             searchTerm: itemListFilters.searchTerm,
             creatorId: UserId,
             pageNo: itemListPage,
-            pageSize: 20,
+            pageSize: 10,
             isAdmin: isAdmin,
           },
           Cookie

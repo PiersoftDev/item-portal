@@ -19,6 +19,8 @@ const SubConItemRequest = () => {
     setEndUserRequestList,
     Requestdependencies,
     setRequestDependencies,
+    userDetails,
+    testUrl,
   } = useStates()
 
   const [loading, setLoading] = useState(false)
@@ -44,7 +46,7 @@ const SubConItemRequest = () => {
     const fetchDependencies = async () => {
       const Cookie = CookiesData()
       const response = await axios.post(
-        `https://mdm.p360.build/v1/mdm/project/search`,
+        `${testUrl}/v1/mdm/project/search`,
         { searchTerm: subConItem.site ? subConItem.site : '' },
         Cookie
       )
@@ -74,7 +76,7 @@ const SubConItemRequest = () => {
       try {
         const Cookie = CookiesData()
         const response = await axios.post(
-          'https://mdm.p360.build/v1/mdm/employee/search/0/50',
+          `${testUrl}/v1/mdm/employee/search/0/50`,
           { searchTerm: subConItem.requester || '' },
           Cookie
         )
@@ -111,7 +113,7 @@ const SubConItemRequest = () => {
       if (subConItem.itemType) {
         const Cookie = CookiesData()
         const response = await axios.post(
-          `https://mdm.p360.build/v1/mdm/product-link/item-group/${subConItem.itemType}`,
+          `${testUrl}/v1/mdm/product-link/item-group/${subConItem.itemType}`,
           { searchTerm: subConItem.itemGroup ? subConItem.itemGroup : '' },
           Cookie
         )
@@ -138,7 +140,7 @@ const SubConItemRequest = () => {
     const fetchDependencies = async () => {
       const Cookie = CookiesData()
       const response = await axios.post(
-        `https://mdm.p360.build/v1/mdm/uom/search`,
+        `${testUrl}/v1/mdm/uom/search`,
         { searchTerm: subConItem.uomDesc ? subConItem.uomDesc : '' },
         Cookie
       )
@@ -168,7 +170,7 @@ const SubConItemRequest = () => {
     const fetchDependencies = async () => {
       const Cookie = CookiesData()
       const response = await axios.post(
-        `https://mdm.p360.build/v1/mdm/cost-component/fetch-by-cost-component-type/material`,
+        `${testUrl}/v1/mdm/cost-component/fetch-by-cost-component-type/material`,
         {
           searchTerm: subConItem.materialCostComponent
             ? subConItem.materialCostComponent
@@ -197,7 +199,7 @@ const SubConItemRequest = () => {
     const fetchDependencies = async () => {
       const Cookie = CookiesData()
       const response = await axios.post(
-        `https://mdm.p360.build/v1/mdm/group-code/search`,
+        `${testUrl}/v1/mdm/group-code/search`,
         { searchTerm: subConItem.groupCode ? subConItem.groupCode : '' },
         Cookie
       )
@@ -222,7 +224,6 @@ const SubConItemRequest = () => {
     setSubConItem((prevItem) => ({
       ...prevItem,
       [field]: value,
-      generatedDescription: `${prevItem?.productClass} ${prevItem?.productLine} ${prevItem.specifications}`,
     }))
     setErrors((prevErrors) => ({ ...prevErrors, [field]: '' }))
   }
@@ -247,34 +248,37 @@ const SubConItemRequest = () => {
     if (!subConItem.requirementDesc) {
       fieldErrors.requirementDesc = 'Requirement Description required'
     }
+    if (!subConItem.description) {
+      fieldErrors.description = 'Description required'
+    }
+    if (!subConItem.inventoryUnit) {
+      fieldErrors.inventoryUnit = 'Unit required'
+    }
+    if (!subConItem.detailedDescription) {
+      fieldErrors.detailedDescription = 'Detailed Description required'
+    }
     if (Object.keys(fieldErrors).length > 0) {
       setErrors(fieldErrors)
       return false
     }
-    if (
-      subConItem.site &&
-      subConItem.requester &&
-      subConItem.phoneNumber &&
-      subConItem.requirementDesc
-    ) {
-      try {
-        const Cookie = CookiesData()
-        setLoading(true)
-        const response = await axios.post(
-          'https://mdm.p360.build/v1/mdm/purchase-item/create',
-          subConItem,
-          Cookie
-        )
-        console.log(response.data)
-        setSubConItem(IntialSubConItem)
-        setSubConItemRequestModalopen(false)
-        setEndUserRequestList([response.data.data, ...endUserRequestList])
-        message.success('Your Item has been Successfully Submitted')
-      } catch (err) {
-        console.log(err)
-      } finally {
-        setLoading(false)
-      }
+    try {
+      const reqbody = { ...subConItem, creatorId: userDetails.id }
+      const Cookie = CookiesData()
+      setLoading(true)
+      const response = await axios.post(
+        `${testUrl}/v1/mdm/purchase-item/create`,
+        reqbody,
+        Cookie
+      )
+      console.log(response.data)
+      setSubConItem(IntialSubConItem)
+      setSubConItemRequestModalopen(false)
+      setEndUserRequestList([response.data.data, ...endUserRequestList])
+      message.success('Your Item has been Successfully Submitted')
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -418,7 +422,7 @@ const SubConItemRequest = () => {
             <SectionTitle>Item Information</SectionTitle>
             <GridContainer>
               <Container>
-                <label>Description</label>
+                <label>Description *</label>
                 <INPUT
                   placeholder='Description'
                   type='text'
@@ -428,11 +432,57 @@ const SubConItemRequest = () => {
                     ValueChange('description', e.target.value)
                   }}
                 />
+                {errors.description && (
+                  <ErrorMessage>{errors.description}</ErrorMessage>
+                )}
               </Container>
               <Container>
-                <label>Item Type *</label>
+                <label>Unit Of Measurement *</label>
+                <StyledDependencies
+                  type='text'
+                  allowClear
+                  value={subConItem.inventoryUnit}
+                  // readOnly={true}
+                  placeholder='Enter Unit of Measurement'
+                  options={uomOptions.map((option) => ({
+                    label: option.Description,
+                    value: option.value,
+                  }))}
+                  onChange={(value) => {
+                    ValueChange('inventoryUnit', value)
+                  }}
+                  onBlur={() => {
+                    const OptionValue = uomOptions.find(
+                      (option) => option.value === subConItem.inventoryUnit
+                    )
+                    if (OptionValue) {
+                      ValueChange('uomId', OptionValue.uomId)
+                      ValueChange('uom', OptionValue.id)
+                      ValueChange('purchaseUnit', OptionValue.id)
+                      ValueChange('purchasePriceUnit', OptionValue.id)
+                      ValueChange('purchaseUnitId', OptionValue.uomId)
+                      ValueChange('purchasePriceUnitId', OptionValue.uomId)
+                    } else {
+                      ValueChange('inventoryUnit', '')
+                      ValueChange('uom', '')
+                      ValueChange('uomId', '')
+                      ValueChange('purchaseUnit', '')
+                      ValueChange('purchasePriceUnit', '')
+                    }
+                  }}
+                  popupMatchSelectWidth={true}
+                  popupClassName='auto-complete-dropdown'
+                  maxTagCount={10}
+                />
+                {errors.inventoryUnit && (
+                  <ErrorMessage>{errors.inventoryUnit}</ErrorMessage>
+                )}
+              </Container>
+              <Container>
+                <label>Item Type</label>
                 <Select
                   value={subConItem.itemType}
+                  disabled
                   onChange={(value) => ValueChange('itemType', value)}
                   placeholder='Select Item Type'
                 >
@@ -477,9 +527,10 @@ const SubConItemRequest = () => {
               </Container>
 
               <Container>
-                <label>Project Order System *</label>
+                <label>Project Order System</label>
                 <Select
                   value={subConItem.projectOrderSystem}
+                  disabled
                   onChange={(value) => ValueChange('projectOrderSystem', value)}
                   placeholder='Select Project Order System'
                 >
@@ -490,9 +541,10 @@ const SubConItemRequest = () => {
                 </Select>
               </Container>
               <Container>
-                <label>Price Policy *</label>
+                <label>Price Policy</label>
                 <Select
                   value={subConItem.pricePolicy}
+                  disabled
                   onChange={(value) => ValueChange('pricePolicy', value)}
                   placeholder='Select Price Policy'
                 >
@@ -555,9 +607,10 @@ const SubConItemRequest = () => {
                 />
               </Container>
               <Container>
-                <label>Control Function *</label>
+                <label>Control Function</label>
                 <Select
                   value={subConItem.controlFunction}
+                  disabled
                   onChange={(value) => ValueChange('controlFunction', value)}
                   placeholder='Select Control Function'
                 >
@@ -613,9 +666,10 @@ const SubConItemRequest = () => {
                 />
               </Container>
               <Container>
-                <label>Cost Determination *</label>
+                <label>Cost Determination</label>
                 <Select
                   value={subConItem.costDetermination}
+                  disabled
                   onChange={(value) => ValueChange('costDetermination', value)}
                   placeholder='Select Cost Determination'
                 >
@@ -623,45 +677,7 @@ const SubConItemRequest = () => {
                   <Option value='amountOfTime'>Amount of Time</Option>
                 </Select>
               </Container>
-              <Container>
-                <label>Unit Of Measurement</label>
-                <StyledDependencies
-                  type='text'
-                  allowClear
-                  value={subConItem.uomDesc}
-                  // readOnly={true}
-                  placeholder='Enter Unit of Measurement'
-                  options={uomOptions.map((option) => ({
-                    label: option.Description,
-                    value: option.value,
-                  }))}
-                  onChange={(value) => {
-                    ValueChange('uomDesc', value)
-                  }}
-                  onBlur={() => {
-                    const OptionValue = uomOptions.find(
-                      (option) => option.value === subConItem.uomDesc
-                    )
-                    if (OptionValue) {
-                      ValueChange('uomId', OptionValue.uomId)
-                      ValueChange('uom', OptionValue.id)
-                      ValueChange('purchaseUnit', OptionValue.id)
-                      ValueChange('purchasePriceUnit', OptionValue.id)
-                      ValueChange('purchaseUnitId', OptionValue.uomId)
-                      ValueChange('purchasePriceUnitId', OptionValue.uomId)
-                    } else {
-                      ValueChange('uomDesc', '')
-                      ValueChange('uom', '')
-                      ValueChange('uomId', '')
-                      ValueChange('purchaseUnit', '')
-                      ValueChange('purchasePriceUnit', '')
-                    }
-                  }}
-                  popupMatchSelectWidth={true}
-                  popupClassName='auto-complete-dropdown'
-                  maxTagCount={10}
-                />
-              </Container>
+
               <Container>
                 <label>Time Unit</label>
                 <INPUT
@@ -689,6 +705,9 @@ const SubConItemRequest = () => {
                   }}
                   // disabled
                 />
+                {errors.detailedDescription && (
+                  <ErrorMessage>{errors.detailedDescription}</ErrorMessage>
+                )}
               </Container>
             </GridContainer>
           </Section>
@@ -702,6 +721,7 @@ const SubConItemRequest = () => {
                   // readOnly={true}
                   type='text'
                   allowClear
+                  disabled
                   placeholder='Enter Purchase Price'
                   // onFocus={() => FieldFocas('Units')}
                   value={subConItem.purchasePrice}
@@ -736,6 +756,7 @@ const SubConItemRequest = () => {
                   // readOnly={true}
                   type='text'
                   allowClear
+                  disabled
                   placeholder='Enter Sales Price'
                   // onFocus={() => FieldFocas('Units')}
                   value={subConItem.salesPrice}
@@ -765,9 +786,10 @@ const SubConItemRequest = () => {
                 />
               </Container>
               <Container>
-                <label>Register Process *</label>
+                <label>Register Process</label>
                 <Select
                   value={subConItem.registerProgress}
+                  disabled
                   onChange={(value) => ValueChange('registerProgress', value)}
                   placeholder='Select Register Process'
                 >
@@ -776,9 +798,10 @@ const SubConItemRequest = () => {
                 </Select>
               </Container>
               <Container>
-                <label>Used In Schedule *</label>
+                <label>Used In Schedule</label>
                 <Select
                   value={subConItem.usedInSchedule}
+                  disabled
                   onChange={(value) => ValueChange('usedInSchedule', value)}
                   placeholder='Select Used In Schedule'
                 >
@@ -787,9 +810,10 @@ const SubConItemRequest = () => {
                 </Select>
               </Container>
               <Container>
-                <label>Billabale *</label>
+                <label>Billabale</label>
                 <Select
                   value={subConItem.billabale}
+                  disabled
                   onChange={(value) => ValueChange('billabale', value)}
                   placeholder='Select Billabale'
                 >
@@ -805,9 +829,9 @@ const SubConItemRequest = () => {
             Cancel
           </button>
           {/* <button className='save'>Save As Draft</button> */}
-          {/* <button className='submit' disabled onClick={SubmitItem}>
+          <button className='submit' onClick={SubmitItem}>
             Submit
-          </button> */}
+          </button>
         </ButtonContainer>
       </Styles>
     </>
