@@ -74,8 +74,8 @@ const Level1ItemRequest = () => {
 
         const uniqueOptions = new Map()
         itemGroup.forEach((record) => {
-          if (!uniqueOptions.has(record.description)) {
-            uniqueOptions.set(record.description, {
+          if (!uniqueOptions.has(record.id)) {
+            uniqueOptions.set(record.id, {
               value: record.description,
               id: record.id,
             })
@@ -112,8 +112,8 @@ const Level1ItemRequest = () => {
 
         const uniqueOptions = new Map()
         productType.forEach((record) => {
-          if (!uniqueOptions.has(record.description)) {
-            uniqueOptions.set(record.description, {
+          if (!uniqueOptions.has(record.id)) {
+            uniqueOptions.set(record.id, {
               value: record.description,
               id: record.id,
             })
@@ -154,8 +154,8 @@ const Level1ItemRequest = () => {
 
         const uniqueOptions = new Map()
         productClass.forEach((record) => {
-          if (!uniqueOptions.has(record.description)) {
-            uniqueOptions.set(record.description, {
+          if (!uniqueOptions.has(record.id)) {
+            uniqueOptions.set(record.id, {
               value: record.description,
               id: record.id,
             })
@@ -196,8 +196,8 @@ const Level1ItemRequest = () => {
 
         const uniqueOptions = new Map()
         productLine.forEach((record) => {
-          if (!uniqueOptions.has(record.description)) {
-            uniqueOptions.set(record.description, {
+          if (!uniqueOptions.has(record.id)) {
+            uniqueOptions.set(record.id, {
               value: record.description,
               id: record.id,
             })
